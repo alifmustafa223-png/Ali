@@ -18,7 +18,9 @@ GOLD, RED = (255, 190, 70), (230, 40, 50)
 
 def back(x):
     """Ease-out with a little overshoot (the 'pop')."""
-    x = max(0.0, min(1.0, x))
+    if x <= 0:
+        return 0.0
+    x = min(1.0, x)
     c1 = 1.70158
     return 1 + (c1 + 1) * (x - 1) ** 3 + c1 * (x - 1) ** 2
 

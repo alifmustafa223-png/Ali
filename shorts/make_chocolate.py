@@ -70,7 +70,7 @@ def camera(img, t, draw_fn, anchor):
     img.alpha_composite(layer)
 
 
-def title_pop(img, text, f, y, t, delay=0.15, color=(255, 255, 255), gap=0.09):
+def title_pop(img, text, f, y, t, delay=0.15, color=(255, 255, 255), gap=0.09, colors=None):
     """Title where each word pops in (scale bounce) one after another."""
     d = ImageDraw.Draw(img, "RGBA")
     words = text.split()
@@ -99,7 +99,8 @@ def title_pop(img, text, f, y, t, delay=0.15, color=(255, 255, 255), gap=0.09):
                 cx, cy = x + ww / 2, y + li * lh + f.size * 0.55
                 a = int(255 * min(1, p * 2.5))
                 ld.text((cx - sw / 2 + 4, cy - fs.size * 0.55 + 5), w, font=fs, fill=(0, 0, 0, int(a * 0.55)))
-                ld.text((cx - sw / 2, cy - fs.size * 0.55), w, font=fs, fill=color + (a,))
+                wc = (colors or {}).get(w.strip(".,!?").upper(), color)
+                ld.text((cx - sw / 2, cy - fs.size * 0.55), w, font=fs, fill=wc + (a,))
             x += ww + space
             i += 1
     img.alpha_composite(layer)
