@@ -19,6 +19,7 @@ GOLD, HOOKRED = (255, 190, 70), (245, 70, 60)
 
 # ---------- new animation helpers ----------
 
+SPLAT_COLOR = KETCHUP  # other videos can set their own splat color
 _BLOBS = [((k * 389) % W, (k * 557) % H, 380 + (k * 131) % 260) for k in range(16)] + [(0, 0, 520), (W, 0, 520), (0, H, 520), (W, H, 520), (W / 2, H / 2, 600)]
 
 
@@ -44,7 +45,7 @@ def splat(img, t, dur, idx):
     if c > 0.92:
         md.rectangle([0, 0, W // 4, H // 4], fill=255)
     mask = mask.resize((W, H), Image.BILINEAR)
-    red = Image.new("RGBA", (W, H), KETCHUP + (255,))
+    red = Image.new("RGBA", (W, H), SPLAT_COLOR + (255,))
     out = img.copy()
     out.paste(red, (0, 0), mask)
     return out
@@ -54,7 +55,7 @@ def camera(img, t, draw_fn, anchor):
     """Art layer with soft shadow; pops in with squash-and-stretch, then slowly pushes in."""
     art = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     draw_fn(ImageDraw.Draw(art, "RGBA"))
-    a = art.getchannel("A").resize((W // 6, H // 6), Image.BILINEAR).filter(ImageFilter.GaussianBlur(3))
+    a = art.getchannel("A").point(lambda v: v if v > 200 else 0).resize((W // 6, H // 6), Image.BILINEAR).filter(ImageFilter.GaussianBlur(3))
     a = a.resize((W, H), Image.BILINEAR).point(lambda v: int(v * 0.5))
     shadow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     shadow.paste((0, 0, 0, 255), (0, 22), a.crop((0, 0, W, H - 22)))
