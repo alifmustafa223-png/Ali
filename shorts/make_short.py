@@ -273,6 +273,8 @@ SCENES = [
 
 # Skip the hook scene's intro animation so the very first frame already shows the full hook.
 HOOK_SKIP = 1.2
+# Optional custom scene transition: fn(img, t, dur, scene_index) -> img. None = dip to black.
+TRANSITION = None
 
 
 def main():
@@ -298,11 +300,14 @@ def main():
             img = bgs[idx].copy()
             d = ImageDraw.Draw(img, "RGBA")
             fn(img, d, t + (HOOK_SKIP if idx == 0 else 0))
-            # quick dip to black between scenes; never fade in the first frame
-            fade_in = 1 if idx == 0 else ease(t / 0.2)
-            fade = min(fade_in, ease((dur - t) / 0.2))
-            if fade < 1:
-                img = Image.blend(Image.new("RGBA", (W, H), (0, 0, 0, 255)), img, fade)
+            if TRANSITION is not None:
+                img = TRANSITION(img, t, dur, idx)
+            else:
+                # quick dip to black between scenes; never fade in the first frame
+                fade_in = 1 if idx == 0 else ease(t / 0.2)
+                fade = min(fade_in, ease((dur - t) / 0.2))
+                if fade < 1:
+                    img = Image.blend(Image.new("RGBA", (W, H), (0, 0, 0, 255)), img, fade)
             # progress bar
             dd = ImageDraw.Draw(img)
             elapsed = sum(s[0] for s in SCENES[:idx]) + t
