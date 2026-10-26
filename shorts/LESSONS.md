@@ -42,3 +42,12 @@
 19. **Short scenes need fast motion**: anything travelling (ship, train) must arrive within the
     scene's length — base the easing on the scene duration, not a fixed number.
 20. Long title text in a slam: measure it first (slam text must be <= 940 px wide).
+
+## Added after the nutmeg video
+21. **Use `timing.Timeline` for every cut and cue** — it matched hand timing to 0.01 s.
+    Speech recognition mishears some words ("and here's" → "and years", "plague" → "played"),
+    so anchor on plain words; the tool stops with an error instead of guessing.
+22. Things that pop in during the hook's second beat must stay **below y≈880**, clear of the
+    hook text and slam (the New York skyline grew into "MORE THAN GOLD").
+23. Hook top-lines get `fit_font()` too — long ones touched the screen edges.
+24. Use `fx.overlay()` for smoke/glows; use `fx.impact()` when a slam or stamp lands.
