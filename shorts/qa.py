@@ -43,6 +43,10 @@ if voice:
     early = [p for p in sil if 0.05 < p[0] < 1.0]
     report("no pause inside the hook's first second", not early, f"pauses: {early or 'none'}")
 
+lufs = re.findall(r"I:\s+(-?[0-9.]+) LUFS", ff("-i", video, "-af", "ebur128", "-f", "null", "-"))
+if lufs:
+    report("loudness near YouTube's -14 LUFS", -16 <= float(lufs[-1]) <= -12, f"{lufs[-1]} LUFS")
+
 f0 = frame(0, "qa_f0.png")
 st = ImageStat.Stat(f0)
 report("first frame is not dark/empty", st.mean[0] > 18 and st.stddev[0] > 25, f"brightness {st.mean[0]:.0f}, detail {st.stddev[0]:.0f}")

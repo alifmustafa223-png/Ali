@@ -56,12 +56,15 @@ class Timeline:
         return float(out)
 
     def find(self, phrase, after=0.0):
-        """Start time of the first occurrence of `phrase` (one or more words) after `after`."""
-        target = phrase.lower().split()
+        """Start time of the first occurrence of `phrase` after `after`.
+        Use "|" between words for alternatives the recognizer may hear instead, e.g. "then|than the"."""
+        target = [alts.split("|") for alts in phrase.lower().split()]
+        def match(w, alts):
+            return any(w.startswith(a[:4]) or a.startswith(w) and len(w) >= 3 for a in alts)
         for i, (t, w) in enumerate(self.words):
             if t < after:
                 continue
-            if all(i + j < len(self.words) and self.words[i + j][1].startswith(tw[:4]) for j, tw in enumerate(target)):
+            if all(i + j < len(self.words) and match(self.words[i + j][1], alts) for j, alts in enumerate(target)):
                 return t
         raise ValueError(f"'{phrase}' not found after {after:.2f}s")
 

@@ -51,3 +51,13 @@
     hook text and slam (the New York skyline grew into "MORE THAN GOLD").
 23. Hook top-lines get `fit_font()` too — long ones touched the screen edges.
 24. Use `fx.overlay()` for smoke/glows; use `fx.impact()` when a slam or stamp lands.
+
+## Added after the popcorn video
+25. **Sound design is part of every video now** (`audio.py`): real music that ducks under the
+    voice, whoosh on every cut, thud on slams/stamps, pop on pop-ins, click/ding on the CTA.
+26. **Master to -14 LUFS.** Videos 1–14 were at -18.8 LUFS (≈5 dB quieter than other Shorts —
+    YouTube turns loud videos down but never turns quiet ones up). `qa.py` now checks this.
+27. Timing anchors can list alternatives the recognizer may hear: `"then|than the"`.
+28. Accessories go where they belong on the body: bow ties at the collar (head-formula − 120·s),
+    not under the face — on a small face they read as a tongue.
+29. Stamps must not cover the scene's main object; put them in the gap under the subtitle.
