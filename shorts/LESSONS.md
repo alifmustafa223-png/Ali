@@ -61,3 +61,14 @@
 28. Accessories go where they belong on the body: bow ties at the collar (head-formula − 120·s),
     not under the face — on a small face they read as a tongue.
 29. Stamps must not cover the scene's main object; put them in the gap under the subtitle.
+
+## Added after the banana video (stop-the-scroll hook)
+30. **Stop-the-scroll formula**: bright, *contrasting* hook background (most Shorts are dark);
+    address the viewer ("you've"); full sentence on screen from frame 0 as captions (works muted);
+    a visual of the claim at once (copy-paste clones); a stakes beat at ~2–3 s.
+31. **Hero object must contrast with the background** — yellow bananas vanished on yellow;
+    on complementary blue they pop. qa.py's frame-0 "detail" check caught the flat frame.
+32. **Karaoke captions: highlight the current word with a box, never resize words** — growing
+    words collided with their neighbours ("Everybanana").
+33. Use exact recognized word times for captions when the word count matches; otherwise spread.
+34. Run `Timeline.check([...all anchors and cues...])` before rendering — one pass, no retries.

@@ -85,3 +85,13 @@ class Timeline:
         """Seconds into `scene` when `phrase` is spoken (minus a small lead so visuals land on the word)."""
         start = self.starts[scene]
         return round(self.find(phrase, start) - start - lead, 2)
+
+    def check(self, phrases):
+        """Try every anchor/cue at once and report which ones the recognizer missed (run before rendering)."""
+        missing = []
+        for p in phrases:
+            try:
+                self.find(p)
+            except ValueError:
+                missing.append(p)
+        return missing
