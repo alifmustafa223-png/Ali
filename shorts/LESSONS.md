@@ -72,3 +72,12 @@
     words collided with their neighbours ("Everybanana").
 33. Use exact recognized word times for captions when the word count matches; otherwise spread.
 34. Run `Timeline.check([...all anchors and cues...])` before rendering — one pass, no retries.
+
+## Added after the toothpaste video
+35. Long hook sentences wrap to 3 caption lines — place the slam **below the last caption line**
+    (captions end ≈ y 300 + lines·100), not at a fixed y.
+36. Small props need contrast and space: put ingredients on their own dark plates in a clear row,
+    never on top of busy background art (eggshells vanished on the pyramid).
+37. In timing anchors, `|` gives alternatives **per word**, not per phrase
+    ("and actually|and it" splits wrongly — use separate plain phrases).
+38. A make_*.py now runs `Timeline.check()` itself and stops with the heard words on any miss.
