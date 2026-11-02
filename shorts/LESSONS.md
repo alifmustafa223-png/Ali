@@ -81,3 +81,14 @@
 37. In timing anchors, `|` gives alternatives **per word**, not per phrase
     ("and actually|and it" splits wrongly — use separate plain phrases).
 38. A make_*.py now runs `Timeline.check()` itself and stops with the heard words on any miss.
+
+## Added after the fork video
+39. **Live captions for the whole video** (`livecap.py`): script text (never the recognizer's
+    spelling), timed per scene, ≤4-word chunks, current word highlighted, placed mid-screen
+    (y≈600) because YouTube's own UI covers the bottom of Shorts.
+40. **Open-loop hook**: sentence 2 promises a payoff that only arrives later
+    ("...and one princess paid for it with her life!").
+41. **Loop ending**: the CTA sits on a solid panel over the hook scene, then fades out for the last
+    second so the final frame matches frame 0 and replays flow seamlessly.
+42. Semi-transparent CTA panels let art "ghost" through — keep them ≥ 90 % opaque.
+43. Hands holding things: palm + finger shapes + thumb; a plain rectangle reads as a bottle.
