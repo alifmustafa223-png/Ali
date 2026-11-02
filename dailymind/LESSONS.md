@@ -1,0 +1,146 @@
+# Cronos File — lessons learned (read before every video, add to it after every video)
+
+## Text & layout
+1. **Titles must fit on one line.** Wrapped titles collided with subtitles in pizza, chocolate,
+   carrot, honey, lobster. → Use `style.heading()`, which shrinks the title to fit and places the
+   subtitle under the title's real height.
+2. **No orphan words** ("...was / once", "jam!"). Split hook text into deliberate lines.
+3. **Keep art below y≈880** when a subtitle exists; stamps go in the gap between text and art,
+   never over characters, crowns or food.
+4. Text that sits on art must be removed/hidden when the art moves (falling bottles' "?").
+
+## Drawing
+5. **Never draw see-through shapes on top of other art with ImageDraw** — on RGBA images it
+   *replaces* pixels, punching holes (bokeh dots, tomb light rays, calendar pages).
+   → Draw glows/rays/beams on their own layer and `alpha_composite` it.
+6. **Never draw with alpha 0** (it erases). `back()` now returns exactly 0 before an animation
+   starts; keep `if p <= 0: continue` guards.
+7. Only solid shapes cast shadows (camera shadow ignores alpha < 200).
+8. Polygons must not cross themselves (capsule "candy cane" bug) — order the points around the shape.
+9. Characters: hats/monocles/faces must be positioned from the head formula
+   (head centre = cy - 200·s in `person()`); stripes/clothes start below the head.
+10. Moving things (trains, ships) must be on screen when the narrator talks about them.
+
+## Hook (first 2 seconds)
+11. **No pause before or inside the first sentence** — the claim is spoken in ~1.5 s.
+12. Frame 0 shows the hook text + moving art. The key word **slams** in on the spoken word.
+13. A second surprise lands at ~2–3 s (counter, price tag, flip).
+
+## Timing
+14. Run `align.py` on the voice; cut scenes in pauses; time stamps/pop-ins to the exact word.
+15. Length 61–65 s: script 900–930 characters (≤ 1,000 so it costs 14 credits);
+    use `atempo` 0.97–1.03 to land inside the range.
+
+## Every video
+16. Run `qa.py final.mp4 "durations"` and look at every tile of `qa_sheet.png`,
+    plus extra frames at every stamp/slam/transition moment.
+17. After the video: add any new glitch and its fix to this file.
+
+## Added after the potato video
+18. **Show things when they're mentioned, not before** (guards appeared before "put guards").
+    Introduce the person first; pop objects in on their word.
+19. **Short scenes need fast motion**: anything travelling (ship, train) must arrive within the
+    scene's length — base the easing on the scene duration, not a fixed number.
+20. Long title text in a slam: measure it first (slam text must be <= 940 px wide).
+
+## Added after the nutmeg video
+21. **Use `timing.Timeline` for every cut and cue** — it matched hand timing to 0.01 s.
+    Speech recognition mishears some words ("and here's" → "and years", "plague" → "played"),
+    so anchor on plain words; the tool stops with an error instead of guessing.
+22. Things that pop in during the hook's second beat must stay **below y≈880**, clear of the
+    hook text and slam (the New York skyline grew into "MORE THAN GOLD").
+23. Hook top-lines get `fit_font()` too — long ones touched the screen edges.
+24. Use `fx.overlay()` for smoke/glows; use `fx.impact()` when a slam or stamp lands.
+
+## Added after the popcorn video
+25. **Sound design is part of every video now** (`audio.py`): real music that ducks under the
+    voice, whoosh on every cut, thud on slams/stamps, pop on pop-ins, click/ding on the CTA.
+26. **Master to -14 LUFS.** Videos 1–14 were at -18.8 LUFS (≈5 dB quieter than other Shorts —
+    YouTube turns loud videos down but never turns quiet ones up). `qa.py` now checks this.
+27. Timing anchors can list alternatives the recognizer may hear: `"then|than the"`.
+28. Accessories go where they belong on the body: bow ties at the collar (head-formula − 120·s),
+    not under the face — on a small face they read as a tongue.
+29. Stamps must not cover the scene's main object; put them in the gap under the subtitle.
+
+## Added after the banana video (stop-the-scroll hook)
+30. **Stop-the-scroll formula**: bright, *contrasting* hook background (most Shorts are dark);
+    address the viewer ("you've"); full sentence on screen from frame 0 as captions (works muted);
+    a visual of the claim at once (copy-paste clones); a stakes beat at ~2–3 s.
+31. **Hero object must contrast with the background** — yellow bananas vanished on yellow;
+    on complementary blue they pop. qa.py's frame-0 "detail" check caught the flat frame.
+32. **Karaoke captions: highlight the current word with a box, never resize words** — growing
+    words collided with their neighbours ("Everybanana").
+33. Use exact recognized word times for captions when the word count matches; otherwise spread.
+34. Run `Timeline.check([...all anchors and cues...])` before rendering — one pass, no retries.
+
+## Added after the toothpaste video
+35. Long hook sentences wrap to 3 caption lines — place the slam **below the last caption line**
+    (captions end ≈ y 300 + lines·100), not at a fixed y.
+36. Small props need contrast and space: put ingredients on their own dark plates in a clear row,
+    never on top of busy background art (eggshells vanished on the pyramid).
+37. In timing anchors, `|` gives alternatives **per word**, not per phrase
+    ("and actually|and it" splits wrongly — use separate plain phrases).
+38. A make_*.py now runs `Timeline.check()` itself and stops with the heard words on any miss.
+
+## Added after the fork video
+39. **Live captions for the whole video** (`livecap.py`): script text (never the recognizer's
+    spelling), timed per scene, ≤4-word chunks, current word highlighted, placed mid-screen
+    (y≈600) because YouTube's own UI covers the bottom of Shorts.
+40. **Open-loop hook**: sentence 2 promises a payoff that only arrives later
+    ("...and one princess paid for it with her life!").
+41. **Loop ending**: the CTA sits on a solid panel over the hook scene, then fades out for the last
+    second so the final frame matches frame 0 and replays flow seamlessly.
+42. Semi-transparent CTA panels let art "ghost" through — keep them ≥ 90 % opaque.
+43. Hands holding things: palm + finger shapes + thumb; a plain rectangle reads as a bottle.
+
+## USER PREFERENCE (after the fork video) — overrides lessons 30, 32, 39
+44. **The owner prefers the classic ketchup-video look**: dark scenes, title + subtitle (subtitle
+    appears on its spoken words), vignette and dust, no caption boxes, no bright hook frame,
+    classic "Learned something new?" ending. Keep the slam, open loop, impact, splats, sound
+    design and -14 LUFS. Template: `make_fork_classic.py`.
+
+## Added after the animation upgrade (fork v2)
+45. **Art pass for every video** (`look.camera`): automatic cartoon outlines + lower-right shade +
+    upper-left highlight on every drawn object; use `look.backdrop()` for subtle scene depth
+    (hall / street / table) and `look.Talk` + `talking_mouth()` so on-screen speakers' mouths
+    follow the voice loudness.
+46. Lesson 5 applies to backdrops too: they must be drawn on their own layer (first try came out
+    as solid black arches and glaring white bricks).
+
+## Added after the pineapple video (first one made from Gemini illustrations)
+47. **AI-picture workflow**: ~10 Gemini images (9:16, no text, dark empty top third, same style
+    block + identical character descriptions in every prompt). Animate with `shot()` (slow
+    push-in/pull-out toward the subject), then put living light *on the real objects*
+    (candles, lanterns, fire flicker), weather/particles (snow, steam, flies, stars, sparkles), and
+    small character tricks (eyelid blink painted from sampled skin colour). Map features first with
+    a gridded contact sheet of every picture (source-pixel coordinates).
+48. Paste prompts into a **new Gemini chat** — with an old picture open, Gemini edits it instead
+    (the "green-screen cut-outs" came back as green paint over the market picture).
+49. **Free voice when vidIQ credits run out**: Kokoro (offline, `scratchpad/tts/say.py`, voice
+    am_michael, speed 1.16) — generate per paragraph and save exact paragraph start/end times, so
+    scene cuts need no speech recognition.
+50. **Loudness: master in two passes** (measure, then `loudnorm linear=true` with the measured
+    values). The single pass landed at -16.6 LUFS on this voice; now -14.7.
+51. Stamps sit at y≈720 with **one-line subtitles only** — measure every subtitle (≤ 940 px at 50 px);
+    two-line subtitles ran into the stamp ("MANURE!" under "EWW!").
+52. **Characters move** (`motion.py`, puppet-style mesh warp with OpenCV): heads tilt/nod/shake
+    around the neck, arms lift around the shoulder, chests breathe, props swing (watch, lantern,
+    shovel), legs kick. Rigid core + soft edge (smoothstep) so bodies bend, never tear. Keep angles
+    small (heads 2-4°, arms 3-5°, light props up to 14°); check close-up crops at extreme poses
+    before rendering; make lights follow moving props (the lantern glow swings with the lantern).
+53. **Title pop has no overshoot** (`title_pop` scale capped at 1.0): the bouncing words grew into
+    each other mid-pop ("Thedisgustingtrick") — invisible on sheets, caught on frame-by-frame zoom.
+    The first scene of any clip opens with a splat reveal so no title is ever half-drawn on frame 0.
+54. Thrown particles (manure, sweat) must start **on the object** they come from and use its colour
+    with a highlight; dark round blobs far from the shovel read as olives.
+55. **Skia engine for code-drawn art** (`ultimate/ultimate.py`): anti-aliased bezier shapes, real
+    gradients, blurred soft shadows/glows, a volumetric spotlight, bloom (threshold colour matrix +
+    blur + additive), vignette and film grain — far beyond PIL. Coins use a real physics simulation
+    (gravity, bounce, spin, motion stretch) and lie FLAT once they land (edge-on coins read as sticks).
+    Never blink during a reaction beat (the shocked face blinked on "$8,000").
+56. **Full code-drawn videos with the toon kit** (`ultimate/toon.py` + `make_toon.py`): chibi characters
+    with IK arms, poses and expressions; Skia art per scene, then the classic PIL text layer and gold
+    splats on top. Check one still per scene before the 25-minute render. Export with `base.CRF = 16`
+    (slow preset) for sharper Full HD after YouTube's compression.
+57. Never reuse a short helper name (`S`, `P`, `C`) as a variable in `__main__` — `S = starts`
+    shadowed the stroke helper and crashed the render on frame 1 (stills mode didn't catch it).
