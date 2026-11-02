@@ -831,9 +831,9 @@ def art_empire(c, t):
     bounce = abs(math.sin(t * 5)) * 14
     wp = dict(hands=[(-70, -230 - 15 * math.sin(t * 6)), (70, -230 + 15 * math.sin(t * 6))], eyes="closed", mouth="laugh", brows="up",
               tilt=5 * math.sin(t * 5), hat_bounce=-10 * abs(math.sin(t * 5)))
-    person(c, 540, 1590 - bounce, 1.15, WRIGLEY, wp, t)
-    for x, y, r, face, speed in U.coins_at(t):
+    for x, y, r, face, speed in U.coins_at(t):  # coins rain behind him (never over his face)
         U.draw_coin(c, x, y, r, face, speed)
+    person(c, 540, 1590 - bounce, 1.15, WRIGLEY, wp, t)
 
 
 def art_singapore(c, t):
@@ -1108,12 +1108,13 @@ if __name__ == "__main__":
     VOX = load_vox(voice)
     # scene cuts in the pause before each paragraph's first words
     firsts = ["in denmark", "the ancient", "then", "he gave", "and|adams strive|tried", "they|then saw", "santana|santa", "years later",
-              "so it's|he", "to|today they|got", "learn"]
+              "so it's|is|he", "to|today they|got", "learn"]
     after, starts = 0.3, [0.0]
     for ph in firsts:
         w = tl.find(ph, after)
         before = [p for p in tl.pauses if p[1] <= w + 0.2 and p[0] >= after - 0.3]
-        cut = (before[-1][0] + before[-1][1]) / 2 if before else w - 0.15
+        # cut late in the pause (0.25 s before the next words) so the last stamp/slam stays readable longer
+        cut = max((before[-1][0] + before[-1][1]) / 2, before[-1][1] - 0.25) if before else w - 0.15
         starts.append(round(cut, 3))
         after = w + 0.3
     total = round(tl.length + 1.9, 2)

@@ -153,3 +153,24 @@
     Add the misheard words as `|` alternatives in the cue anchors; never guess times by hand.
 60. Paragraph cuts for a vidIQ voice come from the word list + `silencedetect` (every sentence and some
     commas also pause, so match paragraph first-words to the pause just before them).
+
+## Added after the chewing-gum video (Skia toon, vidIQ "Chris")
+61. **Long Chris takes: tighten pauses, don't speed up.** `tighten.py in.mp3 out.wav 0.65` cuts every
+    pause longer than 0.65 s from its middle (20 ms crossfades). 999 chars came back at 64.2 s;
+    tightened to 61.6 s with the natural pace kept.
+62. **A stamp/slam near the end of a scene needs ~0.6 s of full visibility before the splat.**
+    "FAILED", "AN ARMY?!" and "EMPIRE!" were readable for only 0.3 s. Fixes: insert 0.35–0.5 s of
+    silence after the key word, and cut late in the pause (`max(mid, pause_end - 0.25)`).
+63. **Anchors: one `|` list per word**, e.g. `"they|then saw"` — never `"they saw|then he saw"`
+    (it splits on spaces). Short anchors match longer words ("so" matched "soap"): add a 2nd word.
+64. **Lip-sync from the real voice**: `load_vox()` = RMS per frame (30 fps) normalised to the 95th
+    percentile → `mouth="talk", talk=vox(global_t)` only while the character is "speaking" a quote.
+65. **New toon features** (`toon.py`): `walk=phase` (legs swing around the hip, body bobs; derive
+    phase from distance travelled so feet never slide), `mouth="chew", talk=t`, hats
+    (`bicorne`, `bowler`, `laurel`) with `hat_bounce` spring, `sideburns`, `pigtails`,
+    `epaulettes`/`medals`/`sash` (chest items under the arms, epaulettes over them).
+66. Check **every pose's hand side**: hands = [left, right]; the girl raised the wrong hand and held
+    the coin over her own face. Things that fly (gum balls) must never cross a face on their path.
+67. Particles that rain (coins) go **behind** the hero character, or they cover his face.
+68. A thought bubble's trail must not touch the speaker's hat; put the bubble beside the head.
+69. Keep wall art (maps, frames) below the slide-in path of text blocks (they slide up 60 px).
