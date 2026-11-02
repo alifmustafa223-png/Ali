@@ -138,3 +138,9 @@
     blur + additive), vignette and film grain — far beyond PIL. Coins use a real physics simulation
     (gravity, bounce, spin, motion stretch) and lie FLAT once they land (edge-on coins read as sticks).
     Never blink during a reaction beat (the shocked face blinked on "$8,000").
+56. **Full code-drawn videos with the toon kit** (`ultimate/toon.py` + `make_toon.py`): chibi characters
+    with IK arms, poses and expressions; Skia art per scene, then the classic PIL text layer and gold
+    splats on top. Check one still per scene before the 25-minute render. Export with `base.CRF = 16`
+    (slow preset) for sharper Full HD after YouTube's compression.
+57. Never reuse a short helper name (`S`, `P`, `C`) as a variable in `__main__` — `S = starts`
+    shadowed the stroke helper and crashed the render on frame 1 (stills mode didn't catch it).

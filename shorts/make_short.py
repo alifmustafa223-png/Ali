@@ -1,6 +1,5 @@
 """Render a 1080x1920 YouTube Short: "How Humans Learned to Cook"."""
 import math
-import os
 import subprocess
 import sys
 
@@ -8,18 +7,15 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 W, H, FPS = 1080, 1920, 30
 OUT = sys.argv[1]
-FONT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts")
-FONT_B = os.path.join(FONT_DIR, "Inter-ExtraBold.otf")
-FONT_M = os.path.join(FONT_DIR, "Inter-Medium.otf")
+FONT_B = "/usr/share/fonts/opentype/inter/Inter-ExtraBold.otf"
+FONT_M = "/usr/share/fonts/opentype/inter/Inter-Medium.otf"
 
 
 def font(path, size):
-    for p in (path, "arialbd.ttf", "Arial Bold.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"):
-        try:
-            return ImageFont.truetype(p, size)
-        except OSError:
-            continue
-    return ImageFont.load_default(size)
+    try:
+        return ImageFont.truetype(path, size)
+    except OSError:
+        return ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", size)
 
 
 F_BIG, F_MID, F_SMALL, F_TAG = font(FONT_B, 104), font(FONT_B, 76), font(FONT_M, 52), font(FONT_B, 44)
@@ -273,6 +269,7 @@ SCENES = [
 
 # Skip the hook scene's intro animation so the very first frame already shows the full hook.
 HOOK_SKIP = 1.2
+CRF = 20  # quality (lower = sharper; 16 for the HQ exports)
 # Optional custom scene transition: fn(img, t, dur, scene_index) -> img. None = dip to black.
 TRANSITION = None
 
@@ -289,7 +286,7 @@ def main():
          # soft ambient pad: A minor chord with slow tremolo
          f"aevalsrc='0.06*(sin(2*PI*220*t)+sin(2*PI*261.63*t)+sin(2*PI*329.63*t)+0.5*sin(2*PI*110*t))*(0.7+0.3*sin(2*PI*0.25*t))':s=44100:d={total}",
          "-af", f"afade=t=in:d=1.5,afade=t=out:st={total - 2}:d=2",
-         "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "20", "-preset", "medium",
+         "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", str(CRF), "-preset", "slow" if CRF < 18 else "medium",
          "-c:a", "aac", "-b:a", "128k", "-shortest", "-movflags", "+faststart", OUT],
         stdin=subprocess.PIPE,
     )
