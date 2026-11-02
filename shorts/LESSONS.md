@@ -98,3 +98,11 @@
     appears on its spoken words), vignette and dust, no caption boxes, no bright hook frame,
     classic "Learned something new?" ending. Keep the slam, open loop, impact, splats, sound
     design and -14 LUFS. Template: `make_fork_classic.py`.
+
+## Added after the animation upgrade (fork v2)
+45. **Art pass for every video** (`look.camera`): automatic cartoon outlines + lower-right shade +
+    upper-left highlight on every drawn object; use `look.backdrop()` for subtle scene depth
+    (hall / street / table) and `look.Talk` + `talking_mouth()` so on-screen speakers' mouths
+    follow the voice loudness.
+46. Lesson 5 applies to backdrops too: they must be drawn on their own layer (first try came out
+    as solid black arches and glaring white bricks).
