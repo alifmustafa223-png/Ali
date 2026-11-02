@@ -3,7 +3,8 @@
     person(c, x, y, s, LOOK, pose, t)   # feet at (x, y), scale s
     pose = dict(lean=deg, tilt=deg, hands=[(dx, dy), (dx, dy)] relative to shoulders (left, right),
                 eyes='open|wide|squint|closed|sad', look=(lx, ly), brows='up|angry|sad|smug|flat',
-                mouth='smile|O|frown|disgust|grin|laugh|talk', talk=0..1, blink=bool)
+                mouth='smile|O|frown|disgust|grin|laugh|talk|chew', talk=0..1 (chew: time), blink=bool,
+                walk=phase (legs swing + body bobs), hat_bounce=deg (hat lags behind the head))
 """
 import math
 import random
@@ -172,6 +173,14 @@ def brow(c, x, y, kind, side, col):
 
 def mouth(c, x, y, kind, talk, lips):
     col = C(150, 40, 50) if lips else C(110, 35, 35)
+    if kind == "chew":  # jaw working sideways, talk = time
+        ph = talk * 8.5
+        w, h = 17 + 5 * math.sin(ph), 4 + 9 * abs(math.sin(ph))
+        ox = 7 * math.sin(ph * 0.5)
+        p = oval(x + ox, y + 2, w, h)
+        c.drawPath(p, P(C(110, 25, 35)))
+        c.drawPath(p, S(OUT, 4))
+        return
     if kind == "talk":
         kind = "O" if talk > 0.45 else "smile" if talk < 0.15 else "open"
     if kind == "smile":
@@ -209,7 +218,7 @@ def mouth(c, x, y, kind, talk, lips):
         c.drawPath(p, S(col, 7))
 
 
-def hair_back(c, look, R):
+def hair_back(c, look, R, t=0.0):
     hc = look["hair_col"]
     h = look["hair"]
     if h == "grey":
@@ -226,6 +235,11 @@ def hair_back(c, look, R):
             cx = math.cos(a) * R * 1.05 * (1 if i % 2 else 1.08)
             cy = -R * 0.1 + math.sin(a) * R * 1.6
             blob(c, oval(-cx if i < 8 else cx, cy, 34, 34), hc, 1.8, 0.7)
+    elif h == "pigtails":
+        for side in (-1, 1):
+            sw = math.sin(t * 3.1 + side) * 6
+            blob(c, oval(side * R * 1.25 + sw, R * 0.05, R * 0.32, R * 0.48), hc, 1.2, 0.7)
+            c.drawCircle(side * R * 1.05, -R * 0.3, 14, P(C(240, 90, 140)))
     elif h == "wig":
         blob(c, oval(0, -R * 1.2, R * 0.95, R * 1.35), hc, 1.08, 0.75)
         for i in range(5):
@@ -280,7 +294,7 @@ def hair_front(c, look, R, t):
         p.cubicTo(-R * 0.9, -R * 1.3, R * 0.9, -R * 1.3, R * 0.95, -R * 0.3)
         p.cubicTo(R * 0.5, -R * 0.7, -R * 0.5, -R * 0.7, -R * 0.95, -R * 0.3)
         blob(c, p, hc, 1.05, 0.8)
-    elif h == "neat":
+    elif h in ("neat", "pigtails"):
         p = skia.Path()
         p.moveTo(-R * 0.98, -R * 0.2)
         p.cubicTo(-R * 1.0, -R * 1.2, R * 1.0, -R * 1.2, R * 0.98, -R * 0.25)
@@ -312,7 +326,7 @@ def hair_front(c, look, R, t):
 
 def head(c, look, pose, t, R=88):
     lx, ly = pose.get("look", (0, 0))
-    hair_back(c, look, R)
+    hair_back(c, look, R, t)
     face = oval(0, 0, R, R * 1.02)
     blob(c, face, look["skin"], 1.12, 0.8)
     for side in (-1, 1):  # ears
@@ -354,6 +368,15 @@ def head(c, look, pose, t, R=88):
             c.drawPath(p, S(C(25, 18, 20), 9))
     mouth(c, 0, R * 0.55, pose.get("mouth", "smile"), pose.get("talk", 0), look.get("lips"))
     hair_front(c, look, R, t)
+    if look.get("sideburns"):
+        for side in (-1, 1):
+            p = skia.Path()
+            p.moveTo(side * R * 0.97, -R * 0.35)
+            p.cubicTo(side * R * 1.02, R * 0.1, side * R * 0.9, R * 0.45, side * R * 0.7, R * 0.55)
+            p.lineTo(side * R * 0.75, -R * 0.35)
+            p.close()
+            blob(c, p, look["hair_col"], 1.2, 0.7)
+    hat(c, look, pose, R)
     if look.get("crown"):
         p = skia.Path()
         p.moveTo(-50, -R * 0.95)
@@ -364,6 +387,74 @@ def head(c, look, pose, t, R=88):
         c.drawCircle(0, -R * 1.1, 9, P(C(220, 30, 60)))
         for px in (-50, 0, 50):
             c.drawCircle(px, -R * (1.45 if px else 1.55), 7, P(C(255, 245, 200)))
+
+
+def hat(c, look, pose, R):
+    kind = look.get("hat")
+    if not kind:
+        return
+    c.save()
+    c.translate(0, -R * 0.75)
+    c.rotate(pose.get("hat_bounce", 0.0))
+    if kind == "bicorne":  # Napoleon-style general's hat, side to side
+        p = skia.Path()
+        p.moveTo(-R * 1.55, R * 0.05)
+        p.cubicTo(-R * 1.0, -R * 0.35, -R * 0.55, -R * 1.05, 0, -R * 1.05)
+        p.cubicTo(R * 0.55, -R * 1.05, R * 1.0, -R * 0.35, R * 1.55, R * 0.05)
+        p.cubicTo(R * 0.8, -R * 0.12, -R * 0.8, -R * 0.12, -R * 1.55, R * 0.05)
+        p.close()
+        blob(c, p, (30, 28, 40), 1.6, 0.7)
+        trim = skia.Path()
+        trim.moveTo(-R * 1.5, R * 0.02)
+        trim.cubicTo(-R * 0.8, -R * 0.16, R * 0.8, -R * 0.16, R * 1.5, R * 0.02)
+        c.drawPath(trim, S(C(235, 190, 80), 7))
+        c.drawCircle(0, -R * 0.42, 22, P(C(245, 245, 240)))  # cockade
+        c.drawCircle(0, -R * 0.42, 13, P(C(60, 140, 80)))
+        c.drawCircle(0, -R * 0.42, 6, P(C(210, 40, 50)))
+        c.drawCircle(0, -R * 0.42, 22, S(OUT, 3))
+    elif kind == "bowler":
+        blob(c, oval(0, -R * 0.08, R * 1.2, R * 0.18), (45, 40, 40), 1.5, 0.7)
+        p = skia.Path()
+        p.moveTo(-R * 0.78, -R * 0.1)
+        p.cubicTo(-R * 0.82, -R * 1.05, R * 0.82, -R * 1.05, R * 0.78, -R * 0.1)
+        p.close()
+        blob(c, p, (50, 44, 44), 1.6, 0.7)
+        c.drawRect(skia.Rect(-R * 0.78, -R * 0.3, R * 0.78, -R * 0.14), P(C(120, 40, 45)))
+    elif kind == "laurel":
+        for side in (-1, 1):
+            for k in range(6):
+                a = math.radians(200 + k * 14) if side < 0 else math.radians(-20 - k * 14)
+                lx, ly = math.cos(a) * R * 0.95, R * 0.55 + math.sin(a) * R * 0.95
+                c.save()
+                c.translate(lx, ly)
+                c.rotate(math.degrees(a) + 90 * side)
+                blob(c, oval(0, 0, 9, 18), (90, 160, 70), 1.4, 0.7)
+                c.restore()
+    c.restore()
+
+
+def uniform_front(c, look, layer):
+    """Military/toga details: 'chest' items go over the torso (under the arms), epaulettes over the arms."""
+    if layer == "chest" and look.get("sash"):
+        p = skia.Path()
+        p.moveTo(-58, -250)
+        p.lineTo(-30, -250)
+        p.lineTo(70, -110)
+        p.lineTo(45, -95)
+        p.close()
+        blob(c, p, look["sash"], 1.3, 0.75)
+    if layer == "chest" and look.get("medals"):
+        for k, col in enumerate([(250, 200, 70), (220, 220, 230), (250, 200, 70)]):
+            x = 22 + k * 22
+            c.drawRect(skia.Rect(x - 7, -222, x + 7, -200), P(C(*[(200, 40, 50), (40, 120, 70), (240, 240, 240)][k])))
+            c.drawCircle(x, -190, 10, P(C(*col)))
+            c.drawCircle(x, -190, 10, S(OUT, 2))
+    if layer == "arms" and look.get("epaulettes"):
+        for side in (-1, 1):
+            blob(c, oval(side * 66, -246, 34, 15), (240, 195, 80), 1.3, 0.7)
+            for k in range(5):
+                fx = side * 66 - 26 + k * 13
+                c.drawLine(fx, -236, fx, -214, S(C(230, 180, 60), 5))
 
 
 def person(c, x, y, s, look, pose, t):
@@ -388,11 +479,20 @@ def person(c, x, y, s, look, pose, t):
             c.drawLine(-120 + k * 60, -120 + abs(k - 2) * 10, -150 + k * 75, 0, S(C(255, 255, 255, 60), 4))
         c.drawPath(p, S(C(255, 235, 240, 140), 3))
     else:
+        walk = pose.get("walk")
         for side in (-1, 1):
+            c.save()
+            if walk is not None:  # legs swing around the hip, opposite phase
+                c.translate(side * 36, -95)
+                c.rotate(side * 24 * math.sin(walk))
+                c.translate(-side * 36, 95)
             leg = rrect(side * 36 - 21, -95, side * 36 + 21, -18, 14)
             blob(c, leg, (240, 240, 240) if look.get("stockings") else look.get("pants", (60, 50, 50)))
             shoe = oval(side * 40 + 8, -14, 32, 16)
             blob(c, shoe, (40, 30, 30), 1.4)
+            c.restore()
+        if walk is not None:
+            c.translate(0, -9 * abs(math.sin(walk)))
     # torso
     coat = look["coat"]
     tor = skia.Path()
@@ -455,6 +555,7 @@ def person(c, x, y, s, look, pose, t):
     if look.get("jabot"):
         for k in range(3):
             blob(c, oval(0, -240 + k * 16, 22 - k * 4, 11), (250, 245, 230), 1.0, 0.85)
+    uniform_front(c, look, "chest")
     # head
     c.save()
     c.translate(0, -262)
@@ -471,6 +572,7 @@ def person(c, x, y, s, look, pose, t):
     for side, (hx, hy) in zip((-1, 1), hands):
         sx, sy = side * 60, -235
         arm(c, sx, sy, sx + hx, sy + hy, sleeve, look["skin"], -side if hy > 0 else side)
+    uniform_front(c, look, "arms")
     c.restore()
 
 
