@@ -617,12 +617,12 @@ if __name__ == "__main__":
     durs = [round(b - a, 2) for a, b in zip(starts, starts[1:] + [total])]
     S0 = starts
     f = lambda phrase, sc, lead=0.1: round(tl.find(phrase, S0[sc]) - S0[sc] - lead, 2)
-    CUE.update(d=durs, rented=f("rented", 0, 0.12), pine=f("pineapples", 0), house=f("and one", 0),
+    CUE.update(d=durs, rented=f("rented", 0, 0.12), pine=f("pineapples", 0), house=f("and|in one", 0),
                eight=f("eight", 1, 0.12), todays=f("today's", 1), fruit=f("fruit", 2), carib=f("caribbean", 2, 0.3),
                almost=f("almost", 3, 0.3), rot=f("rod|rot", 3, 0.0), cold=f("the cold", 4, 0.3), two=f("two hundred", 4),
-               heated=f("heated", 5, 0.4), rotting=f("rotting", 5), handed=f("handed|filing", 6), royal=f("royal", 6, 0.3),
-               sat=f("they sat|said", 7, 0.3), went=f("went|toilet", 7), same=f("same", 8, 0.4), giant=f("giant", 9), still=f("still", 9, 0.3),
-               dollars=f("two dollars", 10, 0.05), fast=f("fast|fashions", 10, 0.3))
+               heated=f("heated|heeded", 5, 0.4), rotting=f("rotting", 5), handed=f("handed|filing", 6), royal=f("royal", 6, 0.3),
+               sat=f("they sat|said", 7, 0.3), went=f("went|toilet|been", 7), same=f("same", 8, 0.4), giant=f("giant", 9), still=f("still", 9, 0.3),
+               dollars=f("two dollars", 10, 0.05), fast=f("fast|fashions|friendships", 10, 0.3))
     CUE["cta_off"] = round(tl.find("like", S0[11]) - S0[11] - 1.6 + 0.15, 2)
     print("durations:", durs, round(sum(durs), 2))
     if STILLS:  # check frames: python make_toon.py x scene t1,t2

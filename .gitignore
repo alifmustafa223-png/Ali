@@ -1,2 +1,6 @@
 __pycache__/
 *.pyc
+dailymind/ultimate/base_toon.mp4
+dailymind/**/music.wav
+dailymind/**/sfx.wav
+dailymind/**/stills/
