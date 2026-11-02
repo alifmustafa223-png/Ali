@@ -93,7 +93,7 @@ def title_pop(img, text, f, y, t, delay=0.15, color=(255, 255, 255), gap=0.09, c
         for w, ww in ws:
             p = (t - delay - i * gap) / 0.35
             if p > 0:
-                sc = max(0.05, back(p))
+                sc = max(0.05, min(back(p), 1.0))  # no overshoot: growing words closed the gaps ("Thedisgustingtrick")
                 fs = font(f.path, max(8, int(f.size * sc)))
                 sw = ld.textlength(w, font=fs)
                 cx, cy = x + ww / 2, y + li * lh + f.size * 0.55

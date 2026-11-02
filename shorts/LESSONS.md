@@ -128,3 +128,13 @@
     shovel), legs kick. Rigid core + soft edge (smoothstep) so bodies bend, never tear. Keep angles
     small (heads 2-4°, arms 3-5°, light props up to 14°); check close-up crops at extreme poses
     before rendering; make lights follow moving props (the lantern glow swings with the lantern).
+53. **Title pop has no overshoot** (`title_pop` scale capped at 1.0): the bouncing words grew into
+    each other mid-pop ("Thedisgustingtrick") — invisible on sheets, caught on frame-by-frame zoom.
+    The first scene of any clip opens with a splat reveal so no title is ever half-drawn on frame 0.
+54. Thrown particles (manure, sweat) must start **on the object** they come from and use its colour
+    with a highlight; dark round blobs far from the shovel read as olives.
+55. **Skia engine for code-drawn art** (`ultimate/ultimate.py`): anti-aliased bezier shapes, real
+    gradients, blurred soft shadows/glows, a volumetric spotlight, bloom (threshold colour matrix +
+    blur + additive), vignette and film grain — far beyond PIL. Coins use a real physics simulation
+    (gravity, bounce, spin, motion stretch) and lie FLAT once they land (edge-on coins read as sticks).
+    Never blink during a reaction beat (the shocked face blinked on "$8,000").
