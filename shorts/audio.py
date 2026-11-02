@@ -146,6 +146,14 @@ def master(video, voice, music_wav, sfx_wav, out):
            "[m][vsc]sidechaincompress=threshold=0.02:ratio=6:attack=20:release=400[md];"
            "[v][md][3:a]amix=inputs=3:normalize=0:duration=longest[mix];"
            "[mix]loudnorm=I=-14:TP=-1.5:LRA=11[a]")
+    # two-pass loudness: measure first, then normalise with the measured values (one pass landed at -16.6)
+    import json, re
+    log = subprocess.run(["ffmpeg", "-hide_banner", "-i", video, "-i", voice, "-i", music_wav, "-i", sfx_wav,
+                          "-filter_complex", flt.replace("loudnorm=I=-14:TP=-1.5:LRA=11", "loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json"),
+                          "-map", "[a]", "-f", "null", "-"], capture_output=True, text=True).stderr
+    m = json.loads(re.findall(r"\{[^{}]*\}", log)[-1])
+    flt = flt.replace("loudnorm=I=-14:TP=-1.5:LRA=11", "loudnorm=I=-14:TP=-1.5:LRA=11:linear=true:measured_I={input_i}:measured_TP={input_tp}:"
+                      "measured_LRA={input_lra}:measured_thresh={input_thresh}:offset={target_offset}".format(**m))
     subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", video, "-i", voice, "-i", music_wav, "-i", sfx_wav,
                     "-filter_complex", flt, "-map", "0:v", "-map", "[a]", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
                     "-ar", "44100", "-shortest", "-movflags", "+faststart", out], check=True)

@@ -106,3 +106,20 @@
     follow the voice loudness.
 46. Lesson 5 applies to backdrops too: they must be drawn on their own layer (first try came out
     as solid black arches and glaring white bricks).
+
+## Added after the pineapple video (first one made from Gemini illustrations)
+47. **AI-picture workflow**: ~10 Gemini images (9:16, no text, dark empty top third, same style
+    block + identical character descriptions in every prompt). Animate with `shot()` (slow
+    push-in/pull-out toward the subject), then put living light *on the real objects*
+    (candles, lanterns, fire flicker), weather/particles (snow, steam, flies, stars, sparkles), and
+    small character tricks (eyelid blink painted from sampled skin colour). Map features first with
+    a gridded contact sheet of every picture (source-pixel coordinates).
+48. Paste prompts into a **new Gemini chat** — with an old picture open, Gemini edits it instead
+    (the "green-screen cut-outs" came back as green paint over the market picture).
+49. **Free voice when vidIQ credits run out**: Kokoro (offline, `scratchpad/tts/say.py`, voice
+    am_michael, speed 1.16) — generate per paragraph and save exact paragraph start/end times, so
+    scene cuts need no speech recognition.
+50. **Loudness: master in two passes** (measure, then `loudnorm linear=true` with the measured
+    values). The single pass landed at -16.6 LUFS on this voice; now -14.7.
+51. Stamps sit at y≈720 with **one-line subtitles only** — measure every subtitle (≤ 940 px at 50 px);
+    two-line subtitles ran into the stamp ("MANURE!" under "EWW!").
