@@ -144,3 +144,12 @@
     (slow preset) for sharper Full HD after YouTube's compression.
 57. Never reuse a short helper name (`S`, `P`, `C`) as a variable in `__main__` — `S = starts`
     shadowed the stroke helper and crashed the render on frame 1 (stills mode didn't catch it).
+
+## Added after the pineapple re-voice (vidIQ "Chris")
+58. **Chris reads ~996 chars in ~59 s** — too short on its own. Slow it with `atempo=0.97` (before the
+    highpass/compressor) to land at ~61 s of voice / ~63 s total, then rescale the paragraph timings.
+59. **Re-run speech recognition after any tempo change** — the recognizer hears different words on the
+    slowed take ("heated"→"heeded", "fast ships"→"friendships", "went bad"→"been to a one bed").
+    Add the misheard words as `|` alternatives in the cue anchors; never guess times by hand.
+60. Paragraph cuts for a vidIQ voice come from the word list + `silencedetect` (every sentence and some
+    commas also pause, so match paragraph first-words to the pause just before them).
