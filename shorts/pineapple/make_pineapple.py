@@ -91,6 +91,57 @@ def scene_base(img, frame):
     img.paste(frame)
 
 
+
+# ---------- character motion (motion.py) ----------
+import motion as mo
+from motion import breathe, move, rot, wave
+
+S2 = lambda f: (lambda t: f(t))
+RIG_SPECS = {
+    "01": [rot((650, 2010), (560, 1740), (200, 330), lambda t: 2 + 3.5 * math.sin(2 * math.pi * t / 1.5)),        # lady shows off the pineapple
+           rot((840, 1965), (850, 1690), (240, 300), wave(3, 2.3, 1.0)),                                            # smug head tilt
+           breathe((850, 2230), (330, 260), lambda t: 0.012 * math.sin(2 * math.pi * t / 2.4)),
+           rot((240, 1890), (240, 1760), (115, 140), lambda t: -3 * ease(t / 0.6) + wave(1.5, 1.7)(t)),            # crowd recoils
+           rot((340, 1930), (345, 1820), (95, 120), lambda t: 3 * ease((t - 0.3) / 0.6) + wave(1.2, 1.9, 2)(t)),
+           rot((1170, 1890), (1170, 1770), (110, 130), lambda t: 3 * ease((t - 0.2) / 0.6) + wave(1.5, 2.1, 1)(t)),
+           rot((1400, 1910), (1400, 1790), (115, 130), lambda t: -3 * ease((t - 0.4) / 0.6) + wave(1.2, 1.8, 3)(t))],
+    "02": [move((770, 1950), (120, 200), lambda t: (0, -10 * math.sin(2 * math.pi * t / 2.2)))],                       # pineapple floats
+    "03": [rot((665, 1690), (710, 1510), (190, 210), wave(3, 2.6)),                                                    # Columbus head
+           rot((640, 1905), (770, 2080), (240, 170), lambda t: -3.5 * ease(t / 2.2) + wave(1, 1.7)(t), tilt=25),      # reaching arm
+           rot((1130, 2420), (1130, 2120), (330, 330), wave(1.6, 2.4))],                                              # plant sways
+    "04": [rot((1066, 1830), (1080, 1600), (210, 240), lambda t: wave(3.5, 0.9)(t) * (0.6 + 0.4 * math.sin(t))),      # disgusted head shake
+           rot((560, 1325), (560, 1530), (115, 185), wave(6, 1.8)),                                                   # swinging lantern
+           breathe((1100, 2050), (330, 220), wave(0.012, 2.0))],
+    "05": [rot((760, 1810), (740, 1580), (240, 240), lambda t: -2.5 * math.sin(math.pi * min(1, t / 4.0)) + wave(0.8, 2.2)(t)),  # sad head droop
+           breathe((760, 2080), (400, 330), lambda t: 0.016 * max(0, math.sin(2 * math.pi * t / 2.8))),             # big sigh
+           rot((850, 1995), (870, 1800), (190, 200), wave(2, 2.0, 1))],                                               # droopy leaves
+    "06": [rot((902, 1865), (885, 1615), (250, 270), lambda t: wave(3.5, 0.75)(t) + 1.5),                             # gagging head shake
+           rot((1236, 2062), (880, 2200), (440, 130), lambda t: 4 * math.sin(2 * math.pi * t / 1.6), tilt=-21.6),     # shovel scoops
+           breathe((900, 2150), (330, 250), wave(0.012, 1.6))],
+    "07": [move((735, 2020), (180, 270), lambda t: (0, -22 * ease(t / 1.2) - 8 * math.sin(2 * math.pi * t / 1.6))),    # offers the pineapple
+           rot((440, 2000), (428, 1840), (165, 175), wave(3, 1.8)),                                                   # gardener nods
+           rot((1100, 2320), (1030, 1800), (300, 520), lambda t: -2.5 * ease(t / 1.4) + wave(0.8, 2.0)(t))],          # King leans in
+    "02b_face": [move((770, 1950), (230, 270), lambda t: (0, -8 * math.sin(2 * math.pi * t / 1.8))),
+                 breathe((770, 2050), (230, 200), wave(0.015, 1.8))],
+    "08": [rot((658, 1886), (654, 1975), (55, 85), wave(14, 1.2)),                                                     # pocket watch swings
+           rot((505, 1840), (494, 1667), (155, 190), wave(2.5, 2.2)),                                                 # shopkeeper tilts head
+           rot((1229, 1960), (1229, 1690), (280, 330), wave(2.5, 1.3, 1)),                                            # excited lady bobs
+           move((801, 2018), (115, 170), lambda t: (12 * math.sin(2 * math.pi * t / 2.0), 0))],
+    "10": [rot((797, 1350), (809, 1240), (175, 175), wave(4, 0.6)),                                                    # laughing kid
+           rot((671, 1380), (690, 1280), (135, 125), wave(5, 0.9, 1)),                                                # eating arm
+           rot((694, 1555), (630, 1625), (85, 80), wave(12, 0.9)),                                                    # legs swing
+           rot((774, 1575), (757, 1650), (80, 70), wave(12, 0.9, math.pi))],
+}
+RIGS = {}
+
+
+def animated(name, t, src=None):
+    """Picture `name` with its characters posed for time t; returns a key usable by shot()."""
+    if name not in RIGS:
+        RIGS[name] = mo.Rig(src or load(name), RIG_SPECS[name])
+    SRC[name + "@"] = RIGS[name].at(t)
+    return name + "@"
+
 # ---------- light + particles ----------
 
 _SPRITE = Image.new("L", (128, 128), 0)
@@ -248,7 +299,7 @@ def title(img, t, text, sub=None, sub_at=1.0, y=400, sub_color=(255, 235, 210), 
 # ---------- scenes ----------
 
 def s_hook(img, d, t):
-    fr, to, k = shot("01", t, C["d"][0], 1.0, 1.12, (768, 1380), (640, 1520))
+    fr, to, k = shot(animated("01", t), t, C["d"][0], 1.0, 1.12, (768, 1380), (640, 1520))
     scene_base(img, fr)
     lights(img, t, to, k, [(760, 1120, True), (40, 1380, False), (1490, 1380, False), (250, 1500, False), (1290, 1500, False)], r=90)
     sparkles(img, t, to, k, [(470, 1600), (560, 1660), (500, 1800), (600, 1760), (430, 1720)], size=16, speed=1.3)
@@ -267,7 +318,7 @@ def s_hook(img, d, t):
 
 
 def s_price(img, d, t):
-    fr, to, k = shot("02", t, C["d"][1], 1.05, 1.25, (768, 1400), (770, 1520))
+    fr, to, k = shot(animated("02", t), t, C["d"][1], 1.05, 1.25, (768, 1400), (770, 1520))
     scene_base(img, fr)
     sp = 0.35 + 0.25 * max(0.0, 1 - abs(t - C["eight"] - 0.2) / 0.6)
     glows(img, [(*to(770, 1700), 330 * k, (255, 235, 180), sp)])
@@ -282,7 +333,7 @@ def s_price(img, d, t):
 
 
 def s_columbus(img, d, t):
-    fr, to, k = shot("03", t, C["d"][2], 1.0, 1.15, (768, 1380), (900, 1500))
+    fr, to, k = shot(animated("03", t), t, C["d"][2], 1.0, 1.15, (768, 1380), (900, 1500))
     scene_base(img, fr)
     glows(img, [(*to(980, 1640), 260 * k, (255, 170, 90), 0.35 + 0.08 * math.sin(t * 1.5))])
     shimmer(img, t, to, k)
@@ -293,9 +344,11 @@ def s_columbus(img, d, t):
 
 
 def s_ship(img, d, t):
-    fr, to, k = shot("04", t, C["d"][3], 1.1, 1.0, (820, 1500), (768, 1376))
+    fr, to, k = shot(animated("04", t), t, C["d"][3], 1.1, 1.0, (820, 1500), (768, 1376))
     scene_base(img, fr)
-    lights(img, t, to, k, [(540, 1530, True)], r=120, base_=0.55, amp=0.3)
+    ang = math.radians(wave(6, 1.8)(t))
+    lx, ly = 560 - 205 * math.sin(ang), 1325 + 205 * math.cos(ang)
+    lights(img, t, to, k, [(lx, ly, True)], r=120, base_=0.55, amp=0.3)
     flies(img, t, to, [(350, 2330), (1180, 2420), (180, 2160)])
     finish(img, t, 4)
     title(img, t, "The long trip home...", "Almost every pineapple...", C["almost"])
@@ -304,7 +357,7 @@ def s_ship(img, d, t):
 
 
 def s_snow(img, d, t):
-    fr, to, k = shot("05", t, C["d"][4], 1.0, 1.12, (768, 1380), (740, 1500))
+    fr, to, k = shot(animated("05", t), t, C["d"][4], 1.0, 1.12, (768, 1380), (740, 1500))
     scene_base(img, fr)
     glows(img, [(*to(1200, 1300), 300 * k, (190, 160, 220), 0.25)])
     snow(img, t)
@@ -315,7 +368,7 @@ def s_snow(img, d, t):
 
 
 def s_manure(img, d, t):
-    fr, to, k = shot("06", t, C["d"][5], 1.0, 1.15, (768, 1380), (870, 1540))
+    fr, to, k = shot(animated("06", t), t, C["d"][5], 1.0, 1.15, (768, 1380), (870, 1540))
     scene_base(img, fr)
     lights(img, t, to, k, [(200, 2010, True), (248, 1500, False), (448, 1580, False)], col=(255, 140, 50), r=110, base_=0.55, amp=0.3)
     steam(img, t, to, k, [(250, 2300), (640, 2450), (1150, 2400), (900, 2600), (420, 2600)])
@@ -326,7 +379,7 @@ def s_manure(img, d, t):
 
 
 def s_king(img, d, t):
-    fr, to, k = shot("07", t, C["d"][6], 1.0, 1.12, (768, 1380), (790, 1520))
+    fr, to, k = shot(animated("07", t), t, C["d"][6], 1.0, 1.12, (768, 1380), (790, 1520))
     scene_base(img, fr)
     lights(img, t, to, k, [(32, 1340, True), (1500, 1340, True), (1450, 1450, False)], r=90)
     glows(img, [(*to(735, 1930), 170 * k, (255, 225, 120), 0.25 + 0.35 * ease((t - C["handed"]) / 0.4))])
@@ -341,7 +394,10 @@ def s_trophy(img, d, t):
     blink = SRC["blink"]
     cyc = (t + 0.4) % 2.8
     closed = 2 if 0.05 < cyc < 0.13 else 1 if cyc < 0.18 else 0
-    SRC["02b_now"] = blink[closed]
+    key = f"02b_face{closed}"
+    if key not in RIG_SPECS:
+        RIG_SPECS[key] = RIG_SPECS["02b_face"]
+    SRC["02b_now"] = SRC[animated(key, t, blink[closed])]
     fr, to, k = shot("02b_now", t, C["d"][7], 1.1, 1.3, (780, 1700), (770, 1800))
     scene_base(img, fr)
     glows(img, [(*to(770, 1700), 300 * k, (220, 240, 255), 0.25 + 0.06 * math.sin(t * 2))])
@@ -353,7 +409,7 @@ def s_trophy(img, d, t):
 
 
 def s_rent(img, d, t):
-    fr, to, k = shot("08", t, C["d"][8], 1.0, 1.12, (768, 1380), (760, 1540))
+    fr, to, k = shot(animated("08", t), t, C["d"][8], 1.0, 1.12, (768, 1380), (760, 1540))
     scene_base(img, fr)
     lights(img, t, to, k, [(920, 1530, True), (80, 2110, False), (200, 2290, False), (1000, 1960, False), (240, 1340, False)], r=80)
     sw = (t * 1.2) % 2.2
@@ -378,7 +434,7 @@ def s_house(img, d, t):
 
 
 def s_today(img, d, t):
-    fr, to, k = shot("10", t, C["d"][10], 1.12, 1.0, (770, 1500), (768, 1376))
+    fr, to, k = shot(animated("10", t), t, C["d"][10], 1.12, 1.0, (770, 1500), (768, 1376))
     scene_base(img, fr)
     bulbs = [(176, 1060), (516, 1080), (1036, 1080), (1368, 1040), (368, 1170), (1236, 1170), (1500, 1250), (240, 1320)]
     lights(img, t, to, k, [(x, y, False) for x, y in bulbs], col=(255, 200, 110), r=55, base_=0.5, amp=0.15)

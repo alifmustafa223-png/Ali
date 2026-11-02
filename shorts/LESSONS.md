@@ -123,3 +123,8 @@
     values). The single pass landed at -16.6 LUFS on this voice; now -14.7.
 51. Stamps sit at y≈720 with **one-line subtitles only** — measure every subtitle (≤ 940 px at 50 px);
     two-line subtitles ran into the stamp ("MANURE!" under "EWW!").
+52. **Characters move** (`motion.py`, puppet-style mesh warp with OpenCV): heads tilt/nod/shake
+    around the neck, arms lift around the shoulder, chests breathe, props swing (watch, lantern,
+    shovel), legs kick. Rigid core + soft edge (smoothstep) so bodies bend, never tear. Keep angles
+    small (heads 2-4°, arms 3-5°, light props up to 14°); check close-up crops at extreme poses
+    before rendering; make lights follow moving props (the lantern glow swings with the lantern).
