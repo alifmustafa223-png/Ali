@@ -8,6 +8,7 @@ Usage: python make_toon.py final.mp4 [scene,scene,...]   (run inside short/ultim
 """
 import json
 import math
+import os
 import sys
 
 import numpy as np
@@ -579,7 +580,7 @@ def tx_king(img, t):
 
 
 def tx_trophy(img, t):
-    title(img, t, "Nobody even ATE them!", "Just trophies, until they rotted!", CUE["sat"])
+    title(img, t, "Nobody ATE them!", "Just trophies, until they rotted!", CUE["sat"])
 
 
 def tx_shop(img, t):
@@ -607,8 +608,9 @@ TEXT = [tx_hook, tx_price, tx_beach, tx_hold, tx_snow, tx_hot, tx_king, tx_troph
 base.TRANSITION = splat
 
 if __name__ == "__main__":
-    voice = "../pineapple/voice.mp3"
-    paras = json.load(open("../pineapple/paras.json"))
+    vdir = os.environ.get("DM_VOICE_DIR", "../pineapple")  # e.g. ../pineapple_chris (vidIQ "Chris" voice)
+    voice = f"{vdir}/voice.mp3"
+    paras = json.load(open(f"{vdir}/paras.json"))
     tl = Timeline(voice)
     starts = [0.0] + [(paras[i - 1][1] + paras[i][0]) / 2 for i in range(1, len(paras))]
     total = round(tl.length + 1.9, 2)
@@ -618,9 +620,9 @@ if __name__ == "__main__":
     CUE.update(d=durs, rented=f("rented", 0, 0.12), pine=f("pineapples", 0), house=f("and one", 0),
                eight=f("eight", 1, 0.12), todays=f("today's", 1), fruit=f("fruit", 2), carib=f("caribbean", 2, 0.3),
                almost=f("almost", 3, 0.3), rot=f("rod|rot", 3, 0.0), cold=f("the cold", 4, 0.3), two=f("two hundred", 4),
-               heated=f("heated", 5, 0.4), rotting=f("rotting", 5), handed=f("handed", 6), royal=f("royal", 6, 0.3),
-               sat=f("they sat", 7, 0.3), went=f("went", 7), same=f("same", 8, 0.4), giant=f("giant", 9), still=f("still", 9, 0.3),
-               dollars=f("two dollars", 10, 0.05), fast=f("fast", 10, 0.3))
+               heated=f("heated", 5, 0.4), rotting=f("rotting", 5), handed=f("handed|filing", 6), royal=f("royal", 6, 0.3),
+               sat=f("they sat|said", 7, 0.3), went=f("went|toilet", 7), same=f("same", 8, 0.4), giant=f("giant", 9), still=f("still", 9, 0.3),
+               dollars=f("two dollars", 10, 0.05), fast=f("fast|fashions", 10, 0.3))
     CUE["cta_off"] = round(tl.find("like", S0[11]) - S0[11] - 1.6 + 0.15, 2)
     print("durations:", durs, round(sum(durs), 2))
     if STILLS:  # check frames: python make_toon.py x scene t1,t2
