@@ -92,3 +92,9 @@
     second so the final frame matches frame 0 and replays flow seamlessly.
 42. Semi-transparent CTA panels let art "ghost" through — keep them ≥ 90 % opaque.
 43. Hands holding things: palm + finger shapes + thumb; a plain rectangle reads as a bottle.
+
+## USER PREFERENCE (after the fork video) — overrides lessons 30, 32, 39
+44. **The owner prefers the classic ketchup-video look**: dark scenes, title + subtitle (subtitle
+    appears on its spoken words), vignette and dust, no caption boxes, no bright hook frame,
+    classic "Learned something new?" ending. Keep the slam, open loop, impact, splats, sound
+    design and -14 LUFS. Template: `make_fork_classic.py`.
