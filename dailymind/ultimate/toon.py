@@ -229,12 +229,13 @@ def hair_back(c, look, R, t=0.0):
             p.cubicTo(side * R * 0.8, R * 0.6, side * R * 0.75, R * 0.2, side * R * 0.75, -R * 0.3)
             p.close()
             blob(c, p, hc, 1.2, 0.7)
-    elif h == "curly":
-        for i in range(16):
-            a = math.pi * (0.05 + 0.9 * i / 15)
-            cx = math.cos(a) * R * 1.05 * (1 if i % 2 else 1.08)
-            cy = -R * 0.1 + math.sin(a) * R * 1.6
-            blob(c, oval(-cx if i < 8 else cx, cy, 34, 34), hc, 1.8, 0.7)
+    elif h == "curly":  # symmetric halo of curls that ends at the jaw (never hangs over the shoulders/arms)
+        for side in (-1, 1):
+            for k in range(7):
+                ang = math.radians(-95 + k * 25)
+                cx = side * math.cos(ang) * R * 1.03
+                cy = math.sin(ang) * R * 1.03
+                blob(c, oval(cx, cy, 33, 33), hc, 1.8, 0.7)
     elif h == "pigtails":
         for side in (-1, 1):
             sw = math.sin(t * 3.1 + side) * 6
@@ -324,9 +325,10 @@ def hair_front(c, look, R, t):
         blob(c, brim, (100, 65, 40))
 
 
-def head(c, look, pose, t, R=88):
+def head(c, look, pose, t, R=88, back=True):
     lx, ly = pose.get("look", (0, 0))
-    hair_back(c, look, R, t)
+    if back:
+        hair_back(c, look, R, t)
     face = oval(0, 0, R, R * 1.02)
     blob(c, face, look["skin"], 1.12, 0.8)
     for side in (-1, 1):  # ears
@@ -420,6 +422,17 @@ def hat(c, look, pose, R):
         p.close()
         blob(c, p, (50, 44, 44), 1.6, 0.7)
         c.drawRect(skia.Rect(-R * 0.78, -R * 0.3, R * 0.78, -R * 0.14), P(C(120, 40, 45)))
+    elif kind == "tophat":
+        blob(c, oval(0, -R * 0.06, R * 1.15, R * 0.17), (35, 32, 38), 1.5, 0.7)
+        crown = skia.Path()
+        crown.moveTo(-R * 0.72, -R * 0.1)
+        crown.lineTo(-R * 0.8, -R * 1.25)
+        crown.cubicTo(-R * 0.4, -R * 1.33, R * 0.4, -R * 1.33, R * 0.8, -R * 1.25)
+        crown.lineTo(R * 0.72, -R * 0.1)
+        crown.close()
+        blob(c, crown, (40, 36, 44), 1.7, 0.7)
+        c.drawRect(skia.Rect(-R * 0.74, -R * 0.4, R * 0.74, -R * 0.2), P(C(110, 30, 40)))
+        c.drawLine(-R * 0.55, -R * 1.15, -R * 0.5, -R * 0.5, S(C(255, 255, 255, 50), 6))
     elif kind == "laurel":
         for side in (-1, 1):
             for k in range(6):
@@ -493,6 +506,13 @@ def person(c, x, y, s, look, pose, t):
             c.restore()
         if walk is not None:
             c.translate(0, -9 * abs(math.sin(walk)))
+    # back hair goes BEHIND the body, so long hair never covers the shoulders, arms or hands
+    c.save()
+    c.translate(0, -262)
+    c.rotate(pose.get("tilt", 0))
+    c.translate(0, -70)
+    hair_back(c, look, 88, t)
+    c.restore()
     # torso
     coat = look["coat"]
     tor = skia.Path()
@@ -564,7 +584,7 @@ def person(c, x, y, s, look, pose, t):
     if look.get("pearls"):
         c.drawArc(skia.Rect(-46, 40, 46, 120), 20, 140, False, P(C(250, 250, 245), Style=skia.Paint.kStroke_Style, StrokeWidth=9,
                                                                        PathEffect=skia.DashPathEffect.Make([1, 13], 0), StrokeCap=skia.Paint.kRound_Cap))
-    head(c, look, pose, t)
+    head(c, look, pose, t, back=False)
     c.restore()
     # arms (in front)
     sleeve = look["coat"] if not look.get("dress") else look["coat"]

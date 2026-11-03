@@ -174,3 +174,19 @@
 67. Particles that rain (coins) go **behind** the hero character, or they cover his face.
 68. A thought bubble's trail must not touch the speaker's hat; put the bubble beside the head.
 69. Keep wall art (maps, frames) below the slide-in path of text blocks (they slide up 60 px).
+
+## Added after the ice video (Frederic Tudor, the Ice King)
+70. **Natural voice = untouched voice.** The owner heard the gum voice as less natural: cutting pauses
+    (`tighten.py`) and inserting digital silence break the speaker's breathing rhythm. Now: write the
+    script so Chris lands at 59–63 s on his own (997 chars with "..." and short sentences = 63.1 s),
+    use it exactly as generated, only `highpass=f=70` + a gentle `acompressor` (ratio 1.6).
+    Shorten the CTA tail (`TAIL = 1.75`) instead of editing the voice when it runs long.
+    Write years as words ("eighteen-oh-six") and use contractions/short sentences for a talking feel.
+71. **Long hair glitch (owner report):** `hair_back` was drawn AFTER the torso, so long hair lay on top
+    of the shoulders/arms, and the curly style stacked all its back curls on one side like a braid over
+    the left arm. Now `person()` draws the back hair behind the body, and curly hair is a symmetric
+    halo ending at the jaw. Test sheet: every hairstyle × poses (down/up/hands-on-head/side/scratch).
+72. Props held at the chest (buckets, shakers, ice blocks) must sit **below the chin**: check
+    `hand_pos` y against the head centre (`y - 332*s`); a raised hand + prop covered two faces.
+73. A flying prop (newspaper) must settle **above** the crowd's head tops (`head_top(y, s)`).
+74. Glows on bright props: keep the glow alpha low (≤ 70) or the bloom pass turns the prop into a white blob.
