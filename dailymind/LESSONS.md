@@ -190,3 +190,13 @@
     `hand_pos` y against the head centre (`y - 332*s`); a raised hand + prop covered two faces.
 73. A flying prop (newspaper) must settle **above** the crowd's head tops (`head_top(y, s)`).
 74. Glows on bright props: keep the glow alpha low (≤ 70) or the bloom pass turns the prop into a white blob.
+
+## Added after the chess video (the queen used to be the weakest piece)
+75. **Board scenes: pieces must be big enough to read their faces** — first pass used 0.5x pieces on a
+    1,060 px board and they were unreadable dots. Rule of thumb: the hero piece ≥ 380 px tall on screen,
+    others ≥ 250 px; use fewer pieces rather than smaller ones. `Board.sq()` returns a depth scale `k`.
+76. Spotlight the hero piece (soft beam + floor glow) so viewers know who the story is about in the hook.
+77. Animals: check they read correctly at a glance — the first horse (vertical neck) read as a llama.
+    Horses need a forward-leaning thick neck, a long head angled down, ears and a mane.
+78. Don't stack glow sources (piece glow + burst sparkles + bloom) on one object — it turns white.
+79. The recognizer heard "like" as "within": always list alternatives for the CTA anchor too.

@@ -433,6 +433,19 @@ def hat(c, look, pose, R):
         blob(c, crown, (40, 36, 44), 1.7, 0.7)
         c.drawRect(skia.Rect(-R * 0.74, -R * 0.4, R * 0.74, -R * 0.2), P(C(110, 30, 40)))
         c.drawLine(-R * 0.55, -R * 1.15, -R * 0.5, -R * 0.5, S(C(255, 255, 255, 50), 6))
+    elif kind == "turban":
+        tc = look.get("turban_col", (240, 235, 220))
+        p = skia.Path()
+        p.moveTo(-R * 1.0, R * 0.05)
+        p.cubicTo(-R * 1.15, -R * 1.1, R * 1.15, -R * 1.1, R * 1.0, R * 0.05)
+        p.cubicTo(R * 0.5, -R * 0.12, -R * 0.5, -R * 0.12, -R * 1.0, R * 0.05)
+        p.close()
+        blob(c, p, tc, 1.2, 0.75)
+        for k in range(3):  # wraps
+            c.drawArc(skia.Rect(-R * 0.95, -R * (0.95 - k * 0.22), R * 0.95, -R * (0.2 - k * 0.22)), 200, 140, False,
+                      S(C(*[v * 0.8 for v in tc]), 5))
+        c.drawCircle(0, -R * 0.45, 14, P(C(220, 40, 70)))
+        c.drawCircle(0, -R * 0.45, 14, S(C(240, 200, 80), 4))
     elif kind == "laurel":
         for side in (-1, 1):
             for k in range(6):
