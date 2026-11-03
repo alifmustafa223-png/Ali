@@ -44,7 +44,7 @@ base.HOOK_SKIP = 0.0
 base.CRF = 16
 CUE = {}
 VOICE_DIR = "../chess"
-TAIL = 1.75
+TAIL = 2.1  # room for the SUBSCRIBED + bell after the last word
 
 RAJA = dict(skin=(195, 135, 95), hair="neat", hair_col=(30, 22, 20), coat=(190, 50, 60), trim=(240, 190, 80), pants=(240, 230, 210),
             hat="turban", turban_col=(245, 200, 90), mustache=True, nose="long")
@@ -485,6 +485,28 @@ def art_army(c, t):
             if (k + j) % 2:
                 c.drawRect(skia.Rect(k * 135, 1450 + j * 118, k * 135 + 135, 1568 + j * 118), P(C(0, 0, 0, 40)))
     e, h, ch, so = CUE["eleph"], CUE["horses"], CUE["chariots"], CUE["soldiers"]
+
+    def poof(x, y, at, r=160):
+        k = (t - at + 0.1) / 0.5
+        if 0 < k < 1:
+            for j in range(10):
+                a = j / 10 * 2 * math.pi
+                rr = 40 + r * ease(k)
+                c.drawCircle(x + math.cos(a) * rr, y + math.sin(a) * rr * 0.6, 34 * (1 - k) + 8,
+                             P(C(255, 245, 230, int(200 * (1 - k))), MaskFilter=blur(10)))
+
+    def standing(kind, x, y, s_, at, ph):
+        """The chess piece waits in place, then shrinks away as its army unit pops in."""
+        gone = ease((t - at + 0.05) / 0.2)
+        if gone < 1:
+            piece(c, kind, x, y - abs(math.sin(t * 3 + ph)) * 6, s_ * (1 - gone), True, t,
+                  dict(eyes="open", mouth="smile", look=(0, -0.3), blink=blinking(t, ph)))
+
+    standing("bishop", 330, 1620, 1.05, e, 0.1)
+    standing("knight", 800, 1620, 1.05, h, 0.7)
+    standing("rook", 330, 1890, 0.95, ch, 1.3)
+    for i in range(4):
+        standing("pawn", 600 + i * 110, 1890, 0.7, so + i * 0.08, 2 + i)
     elephant(c, 330, 1620, 1.2, t, pop_in(t, e))
     horse(c, 800, 1620, 1.2, t, pop_in(t, h))
     march = t - ch
@@ -511,7 +533,10 @@ def art_army(c, t):
         tip.close()
         c.drawPath(tip, P(C(200, 200, 210)))
         c.restore()
-
+    poof(330, 1520, e)
+    poof(800, 1520, h)
+    poof(330, 1800, ch, 130)
+    poof(760, 1800, so, 200)
 
 def art_persia(c, t):
     stage_bg(c, (15, 20, 45), (40, 60, 110), (15, 20, 40))
@@ -695,8 +720,10 @@ def art_spain(c, t):
                 tx = p1[0] + (p2[0] - p1[0]) * aa
                 ty = p1[1] + (p2[1] - p1[1]) * aa - 180 * math.sin(math.pi * aa)
             c.drawCircle(tx, ty - 230 * k, 90 * k * (1 - j / 8), P(C(255, 220, 120, int(160 * (1 - j / 8))), MaskFilter=blur(10)))
-    piece(c, "queen", x, y, (1.15 + 0.2 * power) * k, True, t,
-          dict(eyes="angry" if power > 0.5 else "open", mouth="grin" if power > 0.5 else "smile", look=(1, -0.3), blink=blinking(t, 0.9)),
+    wait = 1 - power
+    piece(c, "queen", x, y - abs(math.sin(t * 4)) * 10 * wait, (1.15 + 0.2 * power) * k, True, t,
+          dict(eyes="angry" if power > 0.5 else "sad", mouth="grin" if power > 0.5 else "frown", look=(1, -0.3), sweat=wait > 0.5,
+               blink=blinking(t, 0.9)), rot=4 * math.sin(t * 6) * wait,
           glow_col=(255, 210, 120) if power > 0.3 else None)
     if power > 0:
         for j in range(5):  # crackling energy
@@ -786,7 +813,12 @@ def art_today(c, t):
         piece(c, kind, xx, yy, 0.95 * kk, wh, t, dict(eyes="closed" if rise > 0.5 else "open", mouth="smile", look=(1 if xx < 540 else -1, 0)), rot=bow)
     x, y, k = b.sq(3.5, 5)
     piece(c, "queen", x, y - 40 * rise, (1.3 + 0.25 * rise) * k, True, t, dict(eyes="open", mouth="grin", look=(0, -0.3), blink=blinking(t, 0.6)))
-    burst(c, t, st, x, y - 420 * k, n=16, reach=320)
+    if t > st:
+        kk = min(1, (t - st) / 0.8)
+        for j in range(12):
+            a = j / 12 * 2 * math.pi + t * 0.8
+            r = 120 + 260 * ease(kk)
+            sparkle(c, x + math.cos(a) * r, y - 330 * k + math.sin(a) * r * 0.7, 8, int(170 * (1 - 0.5 * kk)))
 
 
 def queen_mascot(c, t):

@@ -200,3 +200,9 @@
     Horses need a forward-leaning thick neck, a long head angled down, ears and a mane.
 78. Don't stack glow sources (piece glow + burst sparkles + bloom) on one object — it turns white.
 79. The recognizer heard "like" as "within": always list alternatives for the CTA anchor too.
+80. **Never leave a scene empty while waiting for a cue word.** The army scene showed bare ground for 2 s
+    before "elephants". Fill the wait with the "before" state (chess pieces standing in place) and
+    transform it on the word (piece shrinks + poof + army unit pops in).
+81. Give waiting characters life (sad wobble, sweat, bob) — a still hero for 4 s reads as a frozen frame.
+82. CTA must show SUBSCRIBED + the bell for ≥ 0.5 s: check `cta_off + 3.6` against the CTA scene length
+    and raise `TAIL` (not the voice) if needed — frame truncation eats ~0.15 s at the end.
