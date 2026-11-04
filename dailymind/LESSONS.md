@@ -219,3 +219,8 @@
 88. With the voice untouched and ≥ 63 s, start the CTA a beat early (`cta_off - 0.4`) instead of a long
     tail, so SUBSCRIBED + bell still get ≥ 0.5 s and the total stays ≤ 65 s.
 89. No brand logos or trademark shapes in the art: plain apothecary bottles and glasses only.
+90. **Retention: no character stands still for 2+ s.** Intro scenes start with a walk-in (`walk=` phase from
+    distance, ~2–3 s), and waits get an action (a glass sliding down the counter). The half-second contact
+    sheet of the FINAL file is where static stretches show up — check it for motion, not just glitches.
+91. Moving props must not pass behind/through hanging signs or heads: check their end position against
+    tags and `head_top()` of nearby characters.

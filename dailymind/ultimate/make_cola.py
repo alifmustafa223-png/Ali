@@ -245,10 +245,14 @@ def art_atlanta(c, t):
     pharmacy_bg(c, t, 200)
     pain, morph = CUE["pain"], CUE["morphine"]
     wince = ease((t - pain + 0.2) / 0.4)
-    pose = dict(hands=[(70, 60), (-30, 150) if t < morph else (60, -40)], eyes="squint" if wince > 0.5 else "open",
-                brows="sad" if wince > 0.5 else "flat", mouth="frown" if wince > 0.5 else "smile", look=(0, 0.3),
-                tilt=-6 * wince + 2 * math.sin(t * 1.5), lean=-4 * wince, blink=blinking(t, 0.7) and wince < 0.5)
-    x, y, s = 540, 1880, 1.55
+    arrive = 2.4
+    x = -150 + 690 * ease(min(1, t / arrive))
+    walk = (x + 150) / 40 if t < arrive else None
+    pose = dict(walk=walk, hands=[(70, 60), (-30, 150) if t < morph else (60, -40)], eyes="squint" if wince > 0.5 else "open",
+                brows="sad" if wince > 0.5 else "flat", mouth="frown" if wince > 0.5 else "smile", look=(1 if walk else 0, 0.3),
+                tilt=-6 * wince + 2 * math.sin(t * 1.5) + (3 * math.sin(walk * 2) if walk else 0), lean=-4 * wince,
+                blink=blinking(t, 0.7) and wince < 0.5)
+    y, s = 1880, 1.55
     person(c, x, y, s, PEMBERTON, pose, t)
     if wince > 0:  # pain lines at his side
         for k in range(3):
@@ -468,10 +472,13 @@ def art_fountain(c, t):
     blob(c, rrect(0, 1500, W, 1620, 10), (235, 230, 225), 1.05, 0.85)  # marble counter
     c.drawRect(skia.Rect(0, 1620, W, H), P(Shader=lin((0, 1620), (0, H), [C(120, 40, 45), C(70, 20, 25)])))
     soda_glass(c, 625, 1510, 1.0, t, fill=0.3 + 0.5 * ((t % 3.0) / 3.0))
+    sl = ease((t - soda - 0.2) / 0.7)
+    if sl > 0:  # a full glass slides down the counter to the customer
+        soda_glass(c, 625 + 205 * sl, 1512, 0.9, t, 0.75)
     pt = pop_in(t, five - 0.05)
     if pt > 0:  # the 5 cent price tag
         c.save()
-        c.translate(800, 1300)
+        c.translate(900, 1150)  # hangs above the sliding glass and the customer
         c.rotate(8 * math.sin(t * 2))
         c.scale(pt, pt)
         c.drawLine(0, -130, 0, -60, S(C(80, 60, 40), 4))
@@ -483,7 +490,7 @@ def art_fountain(c, t):
     # one bored customer, then a tally of 9 glasses
     pose = dict(hands=[(-20, 150), (-40, 60)], eyes="squint" if t > nine else "open", brows="flat", mouth="frown" if t > nine else "smile",
                 look=(-1, 0), tilt=-3 + 2 * math.sin(t * 1.3), blink=blinking(t, 1.2))
-    person(c, 900, 1900, 1.0, crowd_look(2), pose, t)
+    person(c, 975, 1900, 1.0, crowd_look(2), pose, t)
     if t > nine - 0.3:
         for k in range(9):
             g = ease((t - nine + 0.3 - k * 0.07) / 0.2)
@@ -499,9 +506,12 @@ def art_broke(c, t):
     c.drawRect(skia.Rect(0, 1620, W, H), P(Shader=lin((0, 1620), (0, H), [C(45, 45, 55), C(20, 20, 28)])))
     died, broke = CUE["died"], CUE["broke"]
     slump = ease(t / 1.2)
-    pose = dict(hands=[(-40, 130), (40, 130)], eyes="sad", brows="sad", mouth="frown", look=(0, 0.8),
+    arrive = 3.2
+    x = 1250 - 710 * ease(min(1, t / arrive))
+    walk = (1250 - x) / 30 if t < arrive else None
+    pose = dict(walk=walk, hands=[(-40, 130), (40, 130)], eyes="sad", brows="sad", mouth="frown", look=(-1 if walk else 0, 0.8),
                 tilt=-6 * slump + 1.5 * math.sin(t * 1.3), lean=2 * slump, blink=blinking(t, 0.4))
-    x, y, s = 540, 1840, 1.55
+    y, s = 1840, 1.55
     person(c, x, y, s, PEMBERTON_OLD, pose, t)
     for side in (-1, 1):  # empty pockets
         px, py = x + side * 70 * s, y - 120 * s
@@ -532,9 +542,12 @@ def art_candler(c, t):
     glow(c, 540, 1050, 450, (255, 210, 140), int(110 * flicker(t, 4)))
     form, money = CUE["formula"], CUE["money"]
     grab = ease((t - form + 0.2) / 0.5)
-    pose = dict(hands=[(-30, 150), (70 + 40 * grab, 60 - 120 * grab)], eyes="open", brows="smug", mouth="grin", look=(1, 0),
-                tilt=2 * math.sin(t * 1.6), blink=blinking(t, 0.9))
-    x, y, s = 330, 1880, 1.45
+    arrive = 2.0
+    x = -150 + 480 * ease(min(1, t / arrive))
+    walk = (x + 150) / 40 if t < arrive else None
+    pose = dict(walk=walk, hands=[(-30, 150), (70 + 40 * grab, 60 - 120 * grab)], eyes="open", brows="smug", mouth="grin", look=(1, 0),
+                tilt=2 * math.sin(t * 1.6), blink=blinking(t, 0.9), hat_bounce=(4 * math.sin(walk * 2) if walk else 0))
+    y, s = 1880, 1.45
     person(c, x, y, s, CANDLER, pose, t)
     blob(c, rrect(520, 1500, 1080, 1580, 10), (130, 85, 50))  # desk
     c.drawRect(skia.Rect(560, 1580, 600, 1900), P(C(90, 55, 30)))
