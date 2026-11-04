@@ -474,7 +474,7 @@ def art_fountain(c, t):
     soda_glass(c, 625, 1510, 1.0, t, fill=0.3 + 0.5 * ((t % 3.0) / 3.0))
     sl = ease((t - soda - 0.2) / 0.7)
     if sl > 0:  # a full glass slides down the counter to the customer
-        soda_glass(c, 625 + 205 * sl, 1512, 0.9, t, 0.75)
+        soda_glass(c, 625 + 145 * sl, 1512, 0.8, t, 0.75)
     pt = pop_in(t, five - 0.05)
     if pt > 0:  # the 5 cent price tag
         c.save()
@@ -490,7 +490,7 @@ def art_fountain(c, t):
     # one bored customer, then a tally of 9 glasses
     pose = dict(hands=[(-20, 150), (-40, 60)], eyes="squint" if t > nine else "open", brows="flat", mouth="frown" if t > nine else "smile",
                 look=(-1, 0), tilt=-3 + 2 * math.sin(t * 1.3), blink=blinking(t, 1.2))
-    person(c, 975, 1900, 1.0, crowd_look(2), pose, t)
+    person(c, 900, 1900, 1.0, crowd_look(2), pose, t)
     if t > nine - 0.3:
         for k in range(9):
             g = ease((t - nine + 0.3 - k * 0.07) / 0.2)
