@@ -36,5 +36,5 @@ Format: surprising history of everyday things, English, natural male narrator.
 ## Videos made so far
 cooking, bread, tea, ice cream, salt, coffee, pizza, chocolate, ketchup, carrot, honey, lobster, potato,
 nutmeg, popcorn, banana, toothpaste, fork, pineapple (Gemini version + code-drawn Skia version + Chris re-voice),
-chewing gum (Skia toon, `ultimate/make_gum.py`), ice / Frederic Tudor (Skia toon, `ultimate/make_ice.py`), chess / the queen (Skia toon, `ultimate/make_chess.py`).
+chewing gum (Skia toon, `ultimate/make_gum.py`), ice / Frederic Tudor (Skia toon, `ultimate/make_ice.py`), chess / the queen (Skia toon, `ultimate/make_chess.py`), Coca-Cola as medicine (Skia toon, `ultimate/make_cola.py`).
 Don't repeat topics.

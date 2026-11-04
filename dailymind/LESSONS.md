@@ -206,3 +206,16 @@
 81. Give waiting characters life (sad wobble, sweat, bob) — a still hero for 4 s reads as a frozen frame.
 82. CTA must show SUBSCRIBED + the bell for ≥ 0.5 s: check `cta_off + 3.6` against the CTA scene length
     and raise `TAIL` (not the voice) if needed — frame truncation eats ~0.15 s at the end.
+
+## Added after the Coca-Cola video (invented as medicine)
+83. **Pick topics with proven demand**: one `vidiq_outliers` call (5 credits, contentType short) on the
+    channel's niche showed "products invented for a different purpose" (41x) and "who invented famous
+    drinks" (25x) breaking out — the Coca-Cola-was-medicine story combines both.
+84. **Anchor matching is prefix-based**: "cocaine" matched the earlier word "coca" (first 4 letters), so a cue
+    fired before frame 0. Use a 2-word anchor ("had cocaine") with a negative lead to land on the word.
+85. Text inside props (bottle labels) must be measured and shrunk to fit — "BRAIN TONIC" was clipped.
+86. Words that slide together must not overlap: keep them apart and fade in the joining hyphen.
+87. Long titles: if `fit_font` can't fit at 56 px the title wraps with an orphan — shorten the wording.
+88. With the voice untouched and ≥ 63 s, start the CTA a beat early (`cta_off - 0.4`) instead of a long
+    tail, so SUBSCRIBED + bell still get ≥ 0.5 s and the total stays ≤ 65 s.
+89. No brand logos or trademark shapes in the art: plain apothecary bottles and glasses only.
