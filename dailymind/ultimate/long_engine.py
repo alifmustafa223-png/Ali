@@ -112,10 +112,14 @@ def text(c, s, x, y, size, col=(255, 255, 255), a=255, align="center", bold=True
     return w
 
 
+TEXT_MIN_Y = 175  # never above this line: keeps titles clear of the balance counter and the notification card
+
+
 def pop_text(c, s, x, y, size, t, at, col=(255, 255, 255), stroke=10, dur=0.32):
     """Text that pops in on a word: scale overshoot, then holds."""
     if t < at:
         return
+    y = max(y, TEXT_MIN_Y)
     k = out_back((t - at) / dur, 2.0)
     a = int(255 * min(1, (t - at) / 0.12))
     c.save()
@@ -129,6 +133,7 @@ def slam_text(c, s, x, y, size, t, at, col=(255, 200, 60), stroke=12):
     """Huge slam: falls from 2.4x scale to 1x in 0.2 s with a little shake."""
     if t < at:
         return
+    y = max(y, TEXT_MIN_Y)
     p = min(1, (t - at) / 0.2)
     sc = 1 + 1.4 * (1 - ease(p))
     shake = math.sin(t * 90) * 10 * max(0.0, 1 - (t - at) / 0.4)
