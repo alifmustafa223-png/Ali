@@ -240,3 +240,9 @@
     titles overlapping chalkboard text, arms crossing faces, and a thumbnail word cut off at the edge.
 97. Thumbnail for long-form: shocked face + glowing object + max 4 words + one red money banner; measure text
     and shrink to fit (first try cut "THOUGHT?!" off the frame).
+98. **Long-form needs live captions** (current word in gold, outlined text over a soft bottom shadow, no box):
+    the first full render had 3-6 s stretches with no text while titles waited for late cue words — the exact
+    spots where long-form viewers leave. Captions also carry muted viewers. Colour-only highlight: scaling the
+    active word made neighbouring words touch.
+99. Final files over 100 MB (a 10-minute 1080p video is ~180 MB) can't go to GitHub: keep them in .gitignore
+    and deliver with SendUserFile; the code + voice + align.json in git can rebuild them.
