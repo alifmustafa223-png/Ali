@@ -224,3 +224,19 @@
     sheet of the FINAL file is where static stretches show up — check it for motion, not just glitches.
 91. Moving props must not pass behind/through hanging signs or heads: check their end position against
     tags and `head_top()` of nearby characters.
+
+## Added after the first 10-minute video ("What If You Got $1 Every Time Someone Thought About You?")
+92. **Long-form = 16:9, one shot per script paragraph** (74 shots for 9:43). Use `align_script.py` (forced
+    alignment of the WHOLE script, DP over the recognizer's words) instead of single anchors: 87% of words match
+    directly, the rest are interpolated, and every cue is `Q.at(word, n)` inside a paragraph.
+93. vidIQ voiceover max 5,000 chars: split the script at a chapter start (not mid-scene), record two parts,
+    join with 0.9 s of padding. The download host changed to `assets.vidiq.com`, which this environment's
+    network policy blocks: ask the owner to allow it, or to download the MP3s and upload them.
+94. **Guards against the two worst glitches, built in**: `safe_hands()` moves any hand that would land on the face
+    to the chest; `TEXT_MIN_Y` keeps every title below the balance counter / notification card (one card at a time).
+95. Run `make_thoughts.py check` first: it renders 4 frames per shot and catches every missing cue word and code
+    error in ~90 s before a 30-minute render (it caught 43 problems in the first pass).
+96. Review a mid-shot contact sheet for ALL shots (3 sheets of 25), fix, re-render the sheet — two rounds found
+    titles overlapping chalkboard text, arms crossing faces, and a thumbnail word cut off at the edge.
+97. Thumbnail for long-form: shocked face + glowing object + max 4 words + one red money banner; measure text
+    and shrink to fit (first try cut "THOUGHT?!" off the frame).
