@@ -902,7 +902,8 @@ def s28(c, t, Q):  # sing on the lunch table: +$300, detention, principal +1
 def s29(c, t, Q):  # not enough... need the whole internet
     studio(c, t, (15, 25, 50))
     glob = pop(t, Q.at("internet"))
-    town_map(c, t, world=True, glow_on=0.4 * glob) if glob > 0 else None
+    town_map(c, t, world=True, glow_on=0.25 + 0.5 * glob)
+    c.drawPaint(P(C(10, 15, 35, 110)))
     stand(c, YOU_BLUE, 480, 1050, 1.3, t, eyes="squint", mouth="grin", brows="angry", hands=[(120, -60), (-30, 150)], look=(1, -0.3))
     slam_text(c, "THE WHOLE INTERNET", 1200, 220, 100, t, Q.at("internet"), GOLD)
 
@@ -1042,12 +1043,12 @@ def s38(c, t, Q):  # try to buy a sports car; leave with a golf cart
 
 def s39(c, t, Q):  # news reporters: "Who is the duck kid?"
     street(c, t)
-    for j, x in enumerate((300, 560, 1360, 1620)):
+    for j, x in enumerate((190, 580, 1340, 1730)):  # spaced so no mic crosses a neighbour's face
         left = x < 960
-        hands = [(-30, 150), (170, -40)] if left else [(-170, -40), (30, 150)]
+        hands = [(-30, 150), (105, -10)] if left else [(-105, -10), (30, 150)]
         stand(c, REPORTER, x, 1060, 1.0, t, eyes="open", mouth="O", brows="up", hands=hands, look=(1 if left else -1, -0.4))
         hx, hy = hand_pos(x, 1060, 1.0, dict(hands=hands), 1 if left else -1)
-        mic(c, hx + (20 if left else -20), hy - 70)
+        mic(c, hx + (12 if left else -12), hy - 60)
     for j in range(3):  # camera flashes
         if (t * 3 + j) % 1 < 0.08:
             glow(c, 300 + j * 650, 500, 400, (255, 255, 255), 200)
@@ -1595,6 +1596,70 @@ def draw_hud(c, gt):
         notif_card(c, 300 - 360 * (1 - slide), 80, 0.82, amt, a)
 
 
+# ---------- live captions (current word in gold; no box, soft shadow band) ----------
+
+def build_chunks():
+    ws = ST.words
+    chunks, i = [], 0
+    while i < len(ws):
+        j = i
+        while j < len(ws) and j - i < 6 and ws[j][2] == ws[i][2]:
+            j += 1
+            if ws[j - 1][1].endswith((".", "?", "!")) and j - i >= 2:
+                break
+        chunks.append((i, j))
+        i = j
+    return chunks
+
+
+CHUNKS = build_chunks()
+NO_CAPS = {39}  # the news ticker already sits at the bottom
+
+
+def draw_captions(c, gt, k):
+    if k in NO_CAPS or any(a <= gt < b for a, b in HIDE_HUD if k in CHAPTERS):
+        return
+    ws = ST.words
+    cur = None
+    for a, b in CHUNKS:
+        start = ws[a][0] - 0.12
+        end = ws[b][0] - 0.12 if b < len(ws) and ws[b][2] == ws[a][2] else ST.paras[ws[a][2]][1] + 0.2
+        if start <= gt < end:
+            cur = (a, b, start)
+    if cur is None:
+        return
+    a, b, start = cur
+    words = [w for _, w, _ in ws[a:b]]
+    size = 54
+    f = font(size)
+    space = f.measureText(" ")
+    widths = [f.measureText(w) for w in words]
+    total = sum(widths) + space * (len(words) - 1)
+    while total > W - 200 and size > 36:
+        size -= 2
+        f = font(size)
+        space = f.measureText(" ")
+        widths = [f.measureText(w) for w in words]
+        total = sum(widths) + space * (len(words) - 1)
+    c.drawRect(skia.Rect(0, H - 190, W, H), P(Shader=lin((0, H - 190), (0, H), [C(0, 0, 0, 0), C(0, 0, 0, 150)])))
+    pop_k = out_back(min(1, (gt - start) / 0.18), 1.4)
+    y = H - 62
+    x = (W - total) / 2
+    for idx, (w, wd) in enumerate(zip(words, widths)):
+        t_w = ws[a + idx][0] - 0.08
+        on = gt >= t_w and (a + idx + 1 >= len(ws) or gt < ws[a + idx + 1][0] - 0.08 or idx == len(words) - 1)
+        spoken = gt >= t_w
+        col = (255, 205, 60) if on else ((255, 255, 255) if spoken else (210, 210, 220))
+        sc = 1.0  # colour-only highlight (scaling made neighbouring words touch)
+        c.save()
+        c.translate(x + wd / 2, y)
+        c.scale(sc * pop_k, sc * pop_k)
+        c.drawString(w, -wd / 2, 0, f, P(C(15, 10, 20), Style=skia.Paint.kStroke_Style, StrokeWidth=9, StrokeJoin=skia.Paint.kRound_Join))
+        c.drawString(w, -wd / 2, 0, f, P(C(*col)))
+        c.restore()
+        x += wd + space
+
+
 # ---------- frame ----------
 
 def frame(gt):
@@ -1613,6 +1678,7 @@ def frame(gt):
     c.restore()
     post(surf, c, gt)
     draw_hud(c, gt)
+    draw_captions(c, gt, k)
     # transitions: gold splat into each chapter card, quick white flash between other shots
     if k in CHAPTERS and t < 0.35 and k != 0:
         splat(c, 1 - ease(t / 0.35))
