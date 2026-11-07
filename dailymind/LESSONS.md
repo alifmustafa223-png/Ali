@@ -246,3 +246,15 @@
     active word made neighbouring words touch.
 99. Final files over 100 MB (a 10-minute 1080p video is ~180 MB) can't go to GitHub: keep them in .gitignore
     and deliver with SendUserFile; the code + voice + align.json in git can rebuild them.
+
+## Added after the bubble wrap video (invented as wallpaper)
+100. **Satisfying = hard to scroll past.** A reusable POP system (`popfx` ring + shards, `comic_pop` starburst,
+     `bubble_wall` with per-bubble pop times, finger press-squish 0.12 s before each pop) and every pop is collected
+     into `POPS` so the SFX track gets a real pop sound on the exact frame. The hook pops from frame 0.
+101. Reaching hands: keep targets within arm's reach (~250 px at scale 1.55 from the shoulder) — the IK clamps the
+     elbow but the sleeve is still drawn to the target, so far targets make rubber arms.
+102. Big repeated-pattern backgrounds (bubble walls) + bloom wash out to white: use a dark tint, low bubble alpha and a
+     dark top gradient so titles stay readable (classic dark style).
+103. Light skies behind white titles fail contrast — use evening/sunset skies in daytime scenes.
+104. vidIQ now serves voiceovers from assets.vidiq.com: the "Ali (DailyMind videos)" environment allows it, so new
+     sessions can download voices directly. Note: this 953-char voiceover was charged 28 credits (not 14).
