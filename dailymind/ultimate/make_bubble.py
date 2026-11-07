@@ -362,6 +362,9 @@ def art_hook(c, t):
     POPS[0] = [(tp, pts[j][0], pts[j][1], 28, k % 2 == 0) for k, (tp, j) in enumerate(pops)]
 
 
+ST1 = 0.0
+
+
 def art_lab(c, t):
     c.drawPaint(P(Shader=lin((0, 0), (0, H), [C(40, 45, 55), C(80, 85, 95), C(35, 38, 45)])))
     for k in range(10):  # brick wall
@@ -376,38 +379,42 @@ def art_lab(c, t):
     sealed, air, bub = CUE["sealed"], CUE["air"], CUE["bubbles1"]
     # two curtains feed into the machine from the left
     feed = ease((t - sealed + 0.3) / 0.6)
-    curtain_sheet(c, 0, 1240, 430, 1330, (240, 140, 170), t, (255, 255, 255))
-    curtain_sheet(c, 0, 1390, 430, 1480, (120, 190, 230), t, (255, 255, 255))
-    machine(c, 540, 1500, t, 1.2)
-    # bubble sheet comes out on the right, bubbles inflating as they leave the rollers
-    if t > sealed - 0.2:
-        out_len = min(520, 160 * (t - sealed + 0.2))
-        c.drawRect(skia.Rect(744, 1330, 744 + out_len, 1470), P(C(200, 225, 240, 200)))
-        k = 0
-        x = 760
-        while x < 744 + out_len - 10:
-            for row in range(3):
-                bx = x + (22 if row % 2 else 0)
-                if bx > 744 + out_len - 10:
-                    continue
-                grow = min(1, (bx - 744) / 120) * (0.6 + 0.4 * ease((t - air) / 0.6))
-                bubble(c, bx, 1352 + row * 46, 20 * grow + 3)
-            x += 44
-            k += 1
+    curtain_sheet(c, 0, 1290, 300, 1360, (240, 140, 170), t, (255, 255, 255))
+    curtain_sheet(c, 0, 1410, 300, 1480, (120, 190, 230), t, (255, 255, 255))
+    machine(c, 420, 1520, t, 1.0)
     for k in range(3):  # air puffs
         ph = (t * 1.1 + k / 3) % 1
         if t > air:
-            c.drawCircle(760 + ph * 120, 1300 - ph * 120, 14 + 20 * ph, P(C(255, 255, 255, int(150 * (1 - ph))), MaskFilter=blur(6)))
-    burst(c, t, bub, 900, 1400, n=12, reach=240)
+            c.drawCircle(600 + ph * 100, 1330 - ph * 120, 14 + 20 * ph, P(C(255, 255, 255, int(150 * (1 - ph))), MaskFilter=blur(6)))
     arrive = 1.6
-    x1 = -160 + 360 * ease(min(1, t / arrive))
+    x1 = -160 + 350 * ease(min(1, t / arrive))
     w1 = (x1 + 160) / 40 if t < arrive else None
     stand(c, ENG1, x1, 1880, 1.3, t, walk=w1, eyes="wide" if t > air else "open", mouth="O" if t > bub else "smile", brows="up",
           look=(1, 0), hands=[(-30, 150), (80, 40)])
-    x2 = 1240 - 360 * ease(min(1, t / arrive))
-    w2 = (1240 - x2) / 40 if t < arrive else None
-    stand(c, ENG2, x2, 1880, 1.3, t, walk=w2, eyes="open", mouth="grin" if t > bub else "smile", brows="up", look=(-1, 0.2),
-          hands=[(-90, 30), (30, 150)])
+    x2 = 1250 - 350 * ease(min(1, t / arrive))
+    w2 = (1250 - x2) / 40 if t < arrive else None
+    press = t > bub - 0.6
+    stand(c, ENG2, x2, 1880, 1.3, t, walk=w2, eyes="wide" if press else "open", mouth="grin" if t > bub else "smile", brows="up",
+          look=(-1, 0.6), hands=[(-28, 236) if press else (-90, 30), (30, 150)])
+    # work table in front; the bubble sheet slides out of the machine onto it, bubbles inflating as they leave the rollers
+    blob(c, rrect(560, 1600, 1060, 1660, 8), (150, 110, 70))
+    c.drawRect(skia.Rect(590, 1660, 1030, 1760), P(C(110, 80, 50)))
+    if t > sealed - 0.2:
+        out_len = min(440, 170 * (t - sealed + 0.2))
+        c.drawRect(skia.Rect(590, 1540, 590 + out_len, 1606), P(C(150, 200, 235, 170)))
+        x = 606
+        n = 0
+        while x < 700 + out_len - 10:
+            grow = min(1, (x - 590) / 110) * (0.6 + 0.4 * ease((t - air) / 0.6))
+            r = 22 * grow + 3
+            if n == 4 and t >= bub:  # x = 806: right under the engineer's finger
+                popped(c, x, 1573, r)
+                popfx(c, x, 1573, r, t - bub)
+                comic_pop(c, 660, 1400, t - bub, 1.0)  # up-left, clear of every face
+            else:
+                bubble(c, x, 1573, r)
+            x += 50
+            n += 1
 
 
 def art_design(c, t):
@@ -609,7 +616,7 @@ def art_twist(c, t):
         p.close()
         c.drawPath(p, P(C(255, 200, 255, 18)))
     # one giant bubble that refuses to pop: presses squish it and it springs back
-    presses = [CUE["sells"] + 0.2 + i * 0.55 for i in range(6)]
+    presses = [0.35 + i * 0.6 for i in range(int(CUE["d"][9] / 0.6))]  # pressing all scene long
     sq = 0.0
     for tp in presses:
         if tp <= t < tp + 0.45:
@@ -621,11 +628,11 @@ def art_twist(c, t):
     bubble(c, bx, by + 230 * 0.45 * sq * 0.5, br, 1.0, sq * 0.8)
     c.drawCircle(bx, by, br, P(C(160, 120, 255, 30)))
     # the kid's finger pressing from the right (hand never on the face)
-    press_x = bx + br * (1 + 0.35 * sq * 0.8) + 10
-    x, y, s = 900, 1880, 1.25
+    press_x = bx + br * 0.93 * (1 + 0.35 * sq * 0.8) + 10
+    x, y, s = 930, 1760, 1.1  # close enough to reach the bubble; the arm stays clear of his face
     angry = t > CUE["pop9"]
     stand(c, KIDY, x, y, s, t, eyes="squint" if angry else "open", mouth="frown" if angry else "grin", brows="angry" if angry else "up",
-          look=(-1, 0), hands=[((press_x - x) / s + 60, (by - y) / s + 235), (30, 150)], tilt=-4 * sq)
+          look=(-1, 0.3), hands=[((press_x - x) / s + 60, (by + 100 - y) / s + 235), (30, 150)], tilt=-4 * sq)
     if angry:
         for k in range(3):
             ph = ((t - CUE["pop9"]) * 1.6 + k / 3) % 1
@@ -851,7 +858,8 @@ if __name__ == "__main__":
            ("thud", ST[8] + C_["billion"]), ("ding", ST[8] + C_["billion"] + 0.05),
            ("thud", ST[9] + C_["pop9"] + 0.15),
            ("click", ST[11] + C_["cta_off"] + 1.6), ("pop", ST[11] + C_["cta_off"] + 3.6), ("ding", ST[11] + C_["cta_off"] + 3.65)]
-    ev += [("click", ST[9] + C_["sells"] + 0.2 + i * 0.55) for i in range(6)]  # presses on the unpoppable bubble
+    ev += [("click", ST[9] + 0.35 + i * 0.6) for i in range(int(durs[9] / 0.6))]  # presses on the unpoppable bubble
+    ev += [("pop", ST[1] + C_["bubbles1"])]  # the very first bubble pop in the lab
     ev += [("click", ST[8] + C_["billion"] - 0.6 + 0.35 + i * 0.09 + (i % 3) * 0.03) for i in range(10)]  # coins
     ev = [(k, round(v, 3)) for k, v in ev if 0 <= v < total]
     audio.music("music.wav", total, bpm=108, seed=29)
