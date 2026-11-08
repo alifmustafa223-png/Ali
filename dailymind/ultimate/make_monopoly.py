@@ -387,10 +387,37 @@ def art_rules(c, t):
     c.drawLine(540, 880, 540, H, S(C(255, 255, 255, 160), 6))
     c.drawRect(skia.Rect(0, 1700, W, H), P(C(50, 45, 60)))
     sh, cr = CUE["shares"], CUE["crushes"]
+    for side, (bx, col, lab) in enumerate(((270, (60, 150, 90), "RULES #1"), (810, (200, 50, 50), "RULES #2"))):
+        k = pop_in(t, 0.4 + side * 0.35)
+        if k <= 0:
+            continue
+        c.save()
+        c.translate(bx, 1180 + 8 * math.sin(t * 2 + side))
+        c.scale(k, k)
+        c.drawRect(skia.Rect(-150, -100, 150, 110), P(C(0, 0, 0, 100), MaskFilter=blur(12)))
+        blob(c, rrect(-150, -100, 0, 100, 8), (245, 240, 225), 1.03, 0.88)
+        blob(c, rrect(0, -100, 150, 100, 8), (245, 240, 225), 1.03, 0.88)
+        flip = (t * 1.6 + side * 0.5) % 1
+        pg = skia.Path()  # a page turning
+        w = 150 * math.cos(math.pi * flip)
+        pg.moveTo(0, -100)
+        pg.lineTo(w, -100 - 12 * math.sin(math.pi * flip))
+        pg.lineTo(w, 100 - 12 * math.sin(math.pi * flip))
+        pg.lineTo(0, 100)
+        pg.close()
+        c.drawPath(pg, P(C(255, 252, 240)))
+        c.drawPath(pg, S(C(150, 140, 120), 3))
+        for j in range(5):
+            c.drawLine(-130, -60 + j * 30, -20, -60 + j * 30, S(C(140, 125, 105), 4))
+        c.drawRect(skia.Rect(-150, -140, 150, -100), P(C(*col)))
+        f = skia.Font(FB, 30)
+        w2 = f.measureText(lab)
+        c.drawString(lab, -w2 / 2, -110, f, P(C(255, 255, 255)))
+        c.restore()
     # left: everybody shares
     for i, x in enumerate((110, 270, 430)):
         happy = t > sh
-        stand(c, crowd_look(i), x, 1900, 0.8, t, eyes="closed" if happy else "open", mouth="laugh" if happy else "smile", brows="up",
+        stand(c, crowd_look(i), x, 1900, 0.92, t, eyes="closed" if happy else "open", mouth="laugh" if happy else "smile", brows="up",
               look=(0, 0), hands=[(-50, -150), (50, -150)] if happy else [(-30, 150), (30, 150)])
         if happy:
             for k in range(2):
@@ -462,6 +489,10 @@ def art_homemade(c, t):
         cx_, cy_ = px, py
     c.drawPath(p, S(C(60, 40, 30), 8))
     c.restore()
+    for j, (hx, hy) in enumerate(((420, 1420), (540, 1370), (660, 1420), (540, 1480))):
+        k = pop_in(t, 1.2 + j * 0.55)
+        if k > 0:
+            house(c, hx, hy, 0.5 * k, t, "smile", hop=abs(math.sin(t * 5 + j)) * 6, ph=j)
     ac = CUE["atlantic"]
     if t > ac - 0.2:  # boardwalk signpost
         k = pop_in(t, ac - 0.2)
@@ -484,7 +515,8 @@ def art_darrow(c, t):
     cp = CUE["copied"]
     x, walk = walk_in(t, 1250, 760, 1.8)
     sneaky = t < cp + 0.3
-    stand(c, DARROW, x, 1900, 1.3, t, walk=walk, eyes="squint" if sneaky else "open", mouth="grin", brows="smug", look=(-1, 0.4),
+    peek = math.sin(t * 3.2) if sneaky and walk is None else -1
+    stand(c, DARROW, x, 1900, 1.3, t, walk=walk, eyes="squint" if sneaky else "open", mouth="grin", brows="smug", look=(peek, 0.2),
           hands=[(-120, 30), (30, 150)] if sneaky else [(-30, 150), (110, -40)])
     paper(c, 340, 1500, 420, 300, 4, "HOMEMADE GAME", 6)
     if t > cp:  # a copy slides off the original
@@ -521,6 +553,19 @@ def art_lizzie(c, t):
     paid = CUE["five"]
     slump = ease((t - paid) / 0.8)
     stand(c, LIZZIE, 540, 1900, 1.4, t, eyes="sad", mouth="frown", brows="sad", look=(0.6, 0.6), hands=[(30, 70), (130, 20)], tilt=-4 * slump)
+    if t < paid:  # an envelope drifts down toward her hand
+        u = ease(min(1, t / max(0.5, paid - 0.1)))
+        ex, ey = 820 - 40 * math.sin(t * 3) * (1 - u), 900 + 640 * u
+        c.save()
+        c.translate(ex, ey)
+        c.rotate(25 * math.sin(t * 2.5) * (1 - u))
+        blob(c, rrect(-90, -55, 90, 55, 6), (240, 230, 205), 1.05, 0.85)
+        fl = skia.Path()
+        fl.moveTo(-90, -55)
+        fl.lineTo(0, 10)
+        fl.lineTo(90, -55)
+        c.drawPath(fl, S(C(170, 150, 120), 4))
+        c.restore()
     k = pop_in(t, paid - 0.1)
     if k > 0:  # a tiny check
         c.save()

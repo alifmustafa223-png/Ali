@@ -269,3 +269,13 @@
      (servants walk in carrying silk, the chemist stirs with steam, barrels roll out of the factory, the snail crawls
      in from frame 0 instead of popping in late).
 107. Saturated bright costumes (pink/lilac dresses) + bloom = white blob: use deeper tones (mauve 140,75,175).
+
+## Added after the Monopoly video (follow-up to the best performer: chess)
+108. **Why chess won and how to repeat it:** a famous GAME (huge audience) + a hidden-origin twist + game pieces as
+     characters with faces. Monopoly reuses the recipe: houses/hotels with faces, a villain top-hat token that chomps
+     houses on the hook word, a generic board (no trademarked logo/mascot/board art).
+109. vidIQ voiceovers now cost 28 credits per ~1,000 chars (they were 14). Check `vidiq_balance` before recording.
+     A short take (58.3 s) can be fixed with a barely audible `atempo=0.985` + a slightly longer end card (TAIL 2.2).
+110. skia ColorFilters.Matrix offsets are in 0..1, not 0..255 — an offset of 20 turned a bronze statue neon yellow.
+111. Motion check on the final file again found 4 still stretches (rules, homemade boards, $500 wait, Darrow): fixed with
+     flipping rule books, houses popping onto the drawn board, an envelope drifting down, and a sneaky look-around.
