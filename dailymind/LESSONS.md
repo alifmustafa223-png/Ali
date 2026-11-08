@@ -287,3 +287,11 @@
      on players — all caught on stills. Measure label text (`Font.measureText`) and size the card around it.
 115. A gavel must pivot at the hand end with the head striking the block (rotating around the head base looked wrong).
 116. Draw the floor BEFORE the characters standing on it, or it cuts them in half (vote scene).
+117. Channel analytics (Nov 8): 93% of views come from the Shorts feed and daily views went ~10x in 2 weeks, but only
+     ~1 sub per 800 views and 40-55% avg viewed. So: famous subject + unknown twist (chess recipe), a mid-video
+     "Follow for a surprising fact every day" line, and a new visual surprise every ~5 s. Mona Lisa video applies all three.
+118. `Timeline.find` splits on spaces FIRST, then "|" per word: "nine|nineteen|in nineteen" is two words. Alternatives
+     must be single words ("nine|nineteen").
+119. toon.shade() returns a skia Color, not a tuple — use a local tuple helper (sh) when you need RGB for C(*...).
+120. Anything lifted toward a character's hands must travel DOWN first, then across (else it sweeps over the face);
+     safe_hands may move a hand, so draw held props from the hand position you actually asked for only if it is safe.
