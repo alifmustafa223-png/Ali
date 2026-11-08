@@ -279,3 +279,11 @@
 110. skia ColorFilters.Matrix offsets are in 0..1, not 0..255 — an offset of 20 turned a bronze statue neon yellow.
 111. Motion check on the final file again found 4 still stretches (rules, homemade boards, $500 wait, Darrow): fixed with
      flipping rule books, houses popping onto the drawn board, an envelope drifting down, and a sneaky look-around.
+112. `ultimate/physics.py` = deterministic physics (every function is pure in t, so parallel/still renders agree):
+     ball_path/draw_ball (gravity, restitution, spin, squash), cloth (Verlet napkin + ink in sheet uv), confetti
+     (drag + 3D flip), spring_v/jiggle, dust. SFX "pop"s can be computed from ball_path impact times -> perfect sync.
+113. Don't reuse `crowd_look()` for children: it gives powdered wigs and dresses (looked like grandparents). Use kid dicts.
+114. Props must avoid faces: napkin over Leo's head, a heart on a mouth, a name card over the dad's face, trophies landing
+     on players — all caught on stills. Measure label text (`Font.measureText`) and size the card around it.
+115. A gavel must pivot at the hand end with the head striking the block (rotating around the head base looked wrong).
+116. Draw the floor BEFORE the characters standing on it, or it cuts them in half (vote scene).
