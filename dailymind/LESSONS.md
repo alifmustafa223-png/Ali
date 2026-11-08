@@ -258,3 +258,14 @@
 103. Light skies behind white titles fail contrast — use evening/sunset skies in daytime scenes.
 104. vidIQ now serves voiceovers from assets.vidiq.com: the "Ali (DailyMind videos)" environment allows it, so new
      sessions can download voices directly. Note: this 953-char voiceover was charged 28 credits (not 14).
+
+## Added after the purple video (worth more than gold, made from snail slime)
+105. **New end card (owner disliked the old LIKE/SUBSCRIBE): `cta2.draw_cta2`** — everything is Skia vectors drawn on
+     the final frame (no bloom/grain over it, no PIL bitmaps): glass card with a gradient border, avatar + handle,
+     thumbs-up path that fills blue with a spring + burst, SUBSCRIBE pill with ripple that morphs to grey SUBSCRIBED
+     with a drawn check, a ringing bell, and a pointer hand that glides on a curve and dips on each tap. Taps land on
+     the spoken "like" and 0.75 s later; SUBSCRIBED + bell stay ≥ 1.2 s.
+106. Retention check on the FINAL file's half-second sheet: any character standing still for ≥ 3 s gets an action
+     (servants walk in carrying silk, the chemist stirs with steam, barrels roll out of the factory, the snail crawls
+     in from frame 0 instead of popping in late).
+107. Saturated bright costumes (pink/lilac dresses) + bloom = white blob: use deeper tones (mauve 140,75,175).

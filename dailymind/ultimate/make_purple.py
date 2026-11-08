@@ -54,7 +54,7 @@ GUARD = dict(skin=(225, 180, 145), hair="neat", hair_col=(40, 30, 25), coat=(180
 COMMONER = dict(skin=(240, 200, 170), hair="neat", hair_col=(110, 70, 40), coat=PURP, pants=(110, 90, 70), nose="small")
 PERKIN = dict(skin=(245, 210, 180), hair="neat", hair_col=(70, 45, 30), coat=(245, 245, 248), vest=(60, 60, 80), pants=(55, 55, 70),
               collar=(255, 255, 255), nose="small")
-VICTORIA = dict(skin=(245, 215, 195), hair="neat", hair_col=(80, 55, 40), coat=(185, 120, 220), dress=(185, 120, 220), crown=True, pearls=True,
+VICTORIA = dict(skin=(245, 215, 195), hair="neat", hair_col=(80, 55, 40), coat=(140, 75, 175), dress=(140, 75, 175), crown=True, pearls=True,
                 lips=True, nose="small")
 KIDP = dict(KID, coat=(160, 70, 220))
 
@@ -352,8 +352,17 @@ def art_kings(c, t):
     blob(c, rrect(330, 1300, 750, 1720, 30), (230, 180, 60), 1.4, 0.7)  # throne
     blob(c, rrect(380, 1450, 700, 1600, 20), (*PURP,), 1.3, 0.7)
     kg = CUE["kings"]
+    wave = math.sin(t * 5)
     stand(c, EMPEROR, 540, 1700, 1.25, t, eyes="open", mouth="grin" if t > kg else "smile", brows="smug", look=(0, -0.2),
-          hands=[(-120, 60), (90, -60)])
+          hands=[(-120, 60), (120 + 20 * wave, -60 - 25 * wave)])
+    for side in (-1, 1):  # servants bring purple silk to the throne
+        sx, walk = walk_in(t, 540 + side * 760, 540 + side * 330, 2.6)
+        sv = dict(crowd_look(2 if side < 0 else 4), dress=None, coat=(230, 220, 200))
+        stand(c, sv, sx, 1900, 0.9, t, walk=walk, eyes="open", mouth="smile", brows="flat", look=(-side, 0), hands=[(-side * 30 - 40, 40), (-side * 30 + 40, 40)])
+        c.save()
+        c.translate(sx, 1900 - 0.9 * 200)
+        silk(c, 120, 70, t)
+        c.restore()
     if t > kg:
         for j in range(8):
             a = t * 1.3 + j * 0.78
@@ -404,10 +413,16 @@ def art_perkin(c, t):
     lab_bg(c, t)
     x, walk = walk_in(t, 1250, 760, 1.8)
     ml = CUE["malaria"]
+    stir = math.sin(t * 6) if walk is None else 0
     stand(c, PERKIN, x, 1900, 1.3, t, walk=walk, eyes="open", mouth="grin", brows="up", look=(-1, 0.4),
-          hands=[(-150, 60), (30, 150)])
+          hands=[(-150 + 18 * stir, 60), (30, 150)])
     flask(c, 380, 1560, 1.0, (210, 200, 120), t)
-    if t > ml - 0.3:  # mosquito buzzing around the "malaria" medicine
+    if walk is None:  # glass rod stirring + steam
+        c.drawLine(380 + 30 * stir, 1340, 380 - 10 * stir, 1520, S(C(220, 240, 255, 220), 8))
+        for j in range(3):
+            ph = (t * 0.6 + j / 3) % 1
+            c.drawCircle(380 + 20 * math.sin(t + j), 1330 - ph * 200, 18 + 26 * ph, P(C(240, 240, 220, int(110 * (1 - ph))), MaskFilter=blur(10)))
+    if t > 1.5:  # mosquito buzzing around the "malaria" medicine
         mx, my = 380 + math.cos(t * 4) * 150, 1180 + math.sin(t * 6) * 60
         wing = 12 + 8 * math.sin(t * 60)
         c.drawOval(skia.Rect(mx - wing - 8, my - 14, mx, my + 2), P(C(230, 240, 250, 170)))
@@ -470,6 +485,15 @@ def art_factory(c, t):
             ph = (t * 0.5 + j / 5) % 1
             c.drawCircle(cx + 40 * ph + 10 * math.sin(t + j), 800 - ph * 260, 30 + 50 * ph, P(C(200, 120, 240, int(170 * (1 - ph))), MaskFilter=blur(12)))
     c.drawRect(skia.Rect(0, 1650, W, H), P(C(70, 60, 70)))
+    for k in range(3):  # barrels of purple dye rolling out of the factory
+        bx = -140 + ((t * 220 + k * 400) % 1360)
+        c.save()
+        c.translate(bx, 1700)
+        c.rotate(math.degrees(t * 220 / 70))
+        blob(c, oval(0, 0, 70, 70), (*PURP,), 1.4, 0.65)
+        c.drawLine(-70, 0, 70, 0, S(C(220, 180, 70), 8))
+        c.drawLine(0, -70, 0, 70, S(C(220, 180, 70), 8))
+        c.restore()
     for x, y, r, face, speed in U.coins_at(t):  # coins behind him
         U.draw_coin(c, x, y, r, face, speed)
     rich = t > CUE["rich"]
@@ -515,10 +539,13 @@ def art_today(c, t):
         p.close()
         c.drawPath(p, P(C(230, 170, 255, 16)))
     c.drawRect(skia.Rect(0, 1700, W, H), P(C(50, 20, 60)))
-    stand(c, KIDP, 420, 1880, 1.45, t, eyes="open", mouth="grin", brows="up", look=(1, 0.3), hands=[(-30, 150), (150, 40)])
     sn = CUE["snail10"]
-    if t > sn - 0.2:
-        snail(c, 800, 1700, 0.9 * pop_in(t, sn - 0.2), t)
+    snx = 1250 - 450 * ease(min(1, t / max(0.5, sn)))
+    stand(c, KIDP, 420, 1880, 1.45, t, eyes="wide" if t > sn else "open", mouth="grin", brows="up", look=(1, 0.5),
+          hands=[(-30, 150), (150, 40)])
+    snail(c, snx, 1700, 0.9 * (1 + 0.15 * spring(t, sn, 3, 4)), t)
+    if t > sn:
+        glow(c, snx, 1640, 200, (200, 120, 255), 70)
     md = CUE["medicine"]
     if t > md - 0.2:
         flask(c, 820, 1420, 0.7 * pop_in(t, md - 0.2), (190, 90, 240), t)

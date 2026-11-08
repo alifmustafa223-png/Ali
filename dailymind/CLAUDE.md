@@ -36,6 +36,7 @@ Format: surprising history of everyday things, English, natural male narrator.
 ## Videos made so far
 cooking, bread, tea, ice cream, salt, coffee, pizza, chocolate, ketchup, carrot, honey, lobster, potato,
 nutmeg, popcorn, banana, toothpaste, fork, pineapple (Gemini version + code-drawn Skia version + Chris re-voice),
-chewing gum (Skia toon, `ultimate/make_gum.py`), ice / Frederic Tudor (Skia toon, `ultimate/make_ice.py`), chess / the queen (Skia toon, `ultimate/make_chess.py`), Coca-Cola as medicine (Skia toon, `ultimate/make_cola.py`), bubble wrap as wallpaper (Skia toon, `ultimate/make_bubble.py`).
+chewing gum (Skia toon, `ultimate/make_gum.py`), ice / Frederic Tudor (Skia toon, `ultimate/make_ice.py`), chess / the queen (Skia toon, `ultimate/make_chess.py`), Coca-Cola as medicine (Skia toon, `ultimate/make_cola.py`), bubble wrap as wallpaper (Skia toon, `ultimate/make_bubble.py`), purple / snail dye / Perkin (Skia toon + CTA v2, `ultimate/make_purple.py`).
+END CARD: use `ultimate/cta2.py` (draw_cta2) for every new video — the owner did not like the old one.
 LONG-FORM (16:9, 10 min): "What If You Got $1 Every Time Someone Thought About You?" (`ultimate/make_thoughts.py` + `long_engine.py`).
 Don't repeat topics.

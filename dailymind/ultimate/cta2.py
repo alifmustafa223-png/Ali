@@ -222,5 +222,5 @@ def draw_cta2(c, t, t_like, t_sub, title="Learned something new?", handle="@thed
     for tt in (t_like, t_sub):
         if tt - 0.08 <= t < tt + 0.2:
             tap = math.sin(math.pi * (t - (tt - 0.08)) / 0.28)
-    if t > t_like - 0.7 and not (t > t_sub + 1.1):
+    if t > t_like - 0.7 and t < t_sub + 0.75:  # leaves before it reaches the edge
         hand(c, hx, hy, 0.95, tap)
