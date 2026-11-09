@@ -349,7 +349,9 @@ def art_comet(c, t):
     w.panel([(-9000, 0, 1200), (9000, 0, 1200), (9000, 0, 2600), (-9000, 0, 2600)], (55, 58, 66))  # runway (along X)
     for k in range(-30, 30):
         w.panel([(k * 300, -1, 1880), (k * 300 + 160, -1, 1880), (k * 300 + 160, -1, 1920), (k * 300, -1, 1920)], (235, 235, 230))
-    w.panel([(-9000, 1, -2000), (9000, 1, -2000), (9000, 1, 1200), (-9000, 1, 1200)], (60, 110, 60))
+    for gz in range(-2000, 1200, 400):  # near grass in tiles so sprites standing on it sort correctly
+        for gx in range(-9000, 9000, 1500):
+            w.panel([(gx - 8, 1, gz - 8), (gx + 1508, 1, gz - 8), (gx + 1508, 1, gz + 408), (gx - 8, 1, gz + 408)], (60, 110, 60))
     w.panel([(-9000, 1, 2600), (9000, 1, 2600), (9000, 1, 9000), (-9000, 1, 9000)], (55, 100, 58))
     w.box((-3200, -600, 5200), (-1400, 0, 5900), (150, 140, 130))  # terminal
     w.box((-2600, -1000, 5300), (-2300, -600, 5600), (130, 120, 110))  # control tower
@@ -360,7 +362,7 @@ def art_comet(c, t):
                      hands=CHEER if (t > lv and k % 2) else DOWN))
     # the jet: rolls, accelerates on "fast", rotates and lifts off
     k = max(0.0, t - fs + 0.6)
-    px = -900 + 0.5 * 320 * k * k
+    px = -1100 + 90 * t + 0.5 * 320 * k * k
     vel = 320 * k
     lift = max(0.0, vel - 650) / 650
     py = -150 - 420 * lift * lift
@@ -371,7 +373,7 @@ def art_comet(c, t):
         c.rotate(rot)
         comet(c, 0, 0, s * 1.0, t, 4, gear=lift < 0.5)
         c.restore()
-    w.sprite((px, py, 1900), jet)
+    w.sprite((px, py, 1450), jet)
     # near crowd on the left of the frame with hats that fly up (gravity + spin) on "loved it"
     for k2 in range(3):
         x, z = 260 + k2 * 230, 600 + k2 * 70
@@ -379,7 +381,7 @@ def art_comet(c, t):
         def near(c, sx, sy, s, fk, k2=k2):
             stand(c, OLD[k2], sx, sy, s * 1.0, t, eyes="closed" if t > lv else "open", mouth="laugh" if t > lv else "smile", brows="up",
                   look=(-1, -0.3), hands=CHEER if t > lv else DOWN)
-        w.sprite((x, 0, z), near)
+        w.sprite((x, 0, z), near, bias=250)
         if t > lv and OLD[k2].get("hat"):
             h = t - lv - k2 * 0.1
             if h > 0:
@@ -394,8 +396,8 @@ def art_comet(c, t):
                     c.restore()
                 if hy < 0:
                     w.sprite((hx, hy, z - 5), hat_fn, bias=10)
-    yaw = 0.55 * math.atan2(px + 300, 2600) + 0.02 * t
-    cam = Cam((-100 + 60 * t, -950 + 30 * t, -900), yaw, 0.2 + 0.01 * t, -2 + 2 * math.sin(t * 0.6), 950, cy=H / 2 + 330)
+    yaw = 0.6 * math.atan2(px + 300, 2200) + 0.02 * t
+    cam = Cam((-100 + 60 * t, -1500 + 30 * t, -900), yaw, 0.36 + 0.005 * t, -2 + 2 * math.sin(t * 0.6), 950, cy=H / 2 + 330)
     w.render(c, cam, fog=(180, 130, 120), fog_near=2500, fog_far=12000, fog_max=0.6)
 
 
@@ -516,7 +518,7 @@ def art_tank(c, t):
         c.drawString(lab, sx - f1.measureText(lab) / 2, sy - 505 * s, f1, P(C(200, 200, 210)))
         txt = f"{n:,}"
         c.drawString(txt, sx - f2.measureText(txt) / 2, sy - 400 * s, f2, P(C(120, 255, 140)))
-    w.sprite((-950, 0, 1150), board)
+    w.sprite((-700, 0, 1000), board)
     w.sprite((-650, 0, 900), guy(ENG[0], t, 1.0, eyes="wide", mouth="O", brows="up", look=(0.6, -0.3), hands=[(-30, 150), (60, 40)]))
     w.sprite((650, 0, 950), guy(ENG[1], t, 1.0, eyes="open", mouth="smile", brows="flat", look=(-0.6, -0.3), hands=DOWN))
     cam = Cam.orbit((0, -350, 1900), 2700 - 300 * ease(t / 9), -0.55 + 0.75 * ease(t / 9.5), height=-500 + 150 * ease(t / 9), roll=-2,
