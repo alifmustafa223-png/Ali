@@ -306,3 +306,13 @@
 125. Cabin framing that reads: camera in the aisle looking back at faces over seat backs (hook); for "a person at a
      window" drop the seats and frame window + person; text signs inside a 3D room get hidden by the ceiling.
 126. A 64.1 s take needs atempo 1.02 (inaudible) to fit 61-65 s with the end card; check duration before building.
+127. Owner rejected the homemade fake-3D (cam3d.py) as glitchy next to real 3D Shorts. Real 3D = Blender:
+     `blender/window3d.py` builds each scene (procedural Comet model, cabin, runway with physical sky, hangar, glass tank,
+     stress plates) and keyframes all motion per frame from closed-form physics; toon characters are animated PNG
+     sequences (`ultimate/sprites_window.py`) on camera-facing planes (LOCKED_TRACK -Y, lock Z) = flat toon in a lit world.
+     `ultimate/make_window3d.py` composites the classic layer (titles/slams/stamps/splats/CTA/audio) over the plates.
+128. Cloud box has no GPU: Cycles 1080p ~2 min/frame, EEVEE (software GL) ~47 s/frame -> render on the owner's RTX 4050
+     (EEVEE ~1 s/frame), plugged in. Plates come back as one MP4 per scene (PLATE_FMT=MP4) — small enough for git.
+129. Blender gotchas: pip `bpy` 5.x has OIDN (Ubuntu's blender 4.0 does not); 5.x actions have no `.fcurves`
+     (keyframe every frame instead); parent with identity inverse when children are built in the parent's local
+     space; bake rotation before object-space paint bands; keep windows in front of a curved cabin wall's INNER radius.
