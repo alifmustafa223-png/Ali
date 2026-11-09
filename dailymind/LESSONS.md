@@ -295,3 +295,14 @@
 119. toon.shade() returns a skia Color, not a tuple — use a local tuple helper (sh) when you need RGB for C(*...).
 120. Anything lifted toward a character's hands must travel DOWN first, then across (else it sweeps over the face);
      safe_hands may move a hand, so draw held props from the hand position you actually asked for only if it is safe.
+121. NEW `ultimate/cam3d.py`: the toon world in real 3D (Cam with yaw/pitch/roll/f, Cam.orbit, World.panel/box/floor/
+     sprite/custom, painter's sort, fog, bg depth blur, shake). Toon characters are flat sprites in a deep set, like the
+     "2D character in 3D world" Shorts the owner liked, but in our own style (owner: keep my style, add camera + physics).
+122. Polygons crossing the camera plane MUST be clipped (Sutherland-Hodgman against z>=near), never dropped — dropping
+     made whole walls/floors vanish (windows floated on black, the runway ground was missing).
+123. Painter's sort needs local geometry: split long walls/floors into short segments, and give coplanar details
+     (windows on a wall) a depth bias so they draw after their own wall segment.
+124. Box face culling: with Y-down screen coords, a face is visible when its projected shoelace area is POSITIVE.
+125. Cabin framing that reads: camera in the aisle looking back at faces over seat backs (hook); for "a person at a
+     window" drop the seats and frame window + person; text signs inside a 3D room get hidden by the ceiling.
+126. A 64.1 s take needs atempo 1.02 (inaudible) to fit 61-65 s with the end card; check duration before building.
