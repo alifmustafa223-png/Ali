@@ -85,6 +85,26 @@ def pbr(name, col, rough=0.5, metal=0.0, emit=None, estr=0.0, alpha=1.0, transmi
     return m
 
 
+def see_through(name, col, alpha, rough=0.05, glow=0.0):
+    """Alpha-blended glass/water: renders the same in EEVEE and Cycles (EEVEE turned transmission into a black box)."""
+    m, nt, out = new_mat(name)
+    p = nt.nodes.new("ShaderNodeBsdfPrincipled")
+    p.inputs["Base Color"].default_value = (*col, 1)
+    p.inputs["Roughness"].default_value = rough
+    p.inputs["Alpha"].default_value = alpha
+    if glow:
+        p.inputs["Emission Color"].default_value = (*col, 1)
+        p.inputs["Emission Strength"].default_value = glow
+    nt.links.new(p.outputs[0], out.inputs["Surface"])
+    for attr, val in (("blend_method", "BLEND"), ("surface_render_method", "BLENDED"), ("use_backface_culling", False),
+                      ("show_transparent_back", True)):
+        try:
+            setattr(m, attr, val)
+        except Exception:
+            pass
+    return m
+
+
 def emission(name, col, strength):
     m, nt, out = new_mat(name)
     e = nt.nodes.new("ShaderNodeEmission")
@@ -782,7 +802,7 @@ def s4_tank():
     world_color((0.01, 0.01, 0.015), (0.03, 0.03, 0.04))
     hangar(0, 0, 120, 80)
     tk, up = CUE["tank"], CUE["up"]
-    glass = pbr("tankglass", (0.85, 0.95, 1.0), 0.03, transmission=1.0, ior=1.45)
+    glass = see_through("tankglass", (0.75, 0.88, 1.0), 0.12, 0.05)
     W2, D2, Hh = 19, 3.4, 7.0
     for nm, c, sz in (("gF", (0, -D2, Hh / 2), (2 * W2, 0.12, Hh)), ("gB", (0, D2, Hh / 2), (2 * W2, 0.12, Hh)),
                       ("gL", (-W2, 0, Hh / 2), (0.12, 2 * D2, Hh)), ("gR", (W2, 0, Hh / 2), (0.12, 2 * D2, Hh))):
@@ -790,7 +810,7 @@ def s4_tank():
     for x in (-W2, W2):
         for y in (-D2, D2):
             box(f"tp{x}{y}", (x, y, Hh / 2), (0.25, 0.25, Hh), MAT["steel"])
-    water = pbr("water", (0.08, 0.35, 0.7), 0.08, transmission=0.65, ior=1.33, emit=(0.05, 0.25, 0.6), estr=0.4)
+    water = see_through("water", (0.1, 0.45, 0.85), 0.5, 0.06, glow=0.6)
     wat = box("water", (0, 0, 0.01), (2 * W2 - 0.2, 2 * D2 - 0.2, 0.02), water)
     root, fr, bk, _ = comet("jet", (1.5, 0, 3.4), gear=False)
     pump = prim(bpy.ops.mesh.primitive_cylinder_add, "pump", (W2 + 4, -2, 2.2), (0.9, 0.9, 2.2), mat=MAT["red"], vertices=32)
