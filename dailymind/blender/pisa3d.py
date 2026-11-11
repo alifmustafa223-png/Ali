@@ -1380,7 +1380,7 @@ def sc8_lead():
             show(c, f, t >= rel - 0.04)
         rb(c, mass=2, bounce=0.1, release=rel, shape="SPHERE")
     en = engineers()
-    spots = [(-15, -7, 0), (8, -16, 0), (19, -10, 0)]
+    spots = [(-15, -7, 0), (5, -12.5, 0), (19, -10, 0)]
     for e, p, y in zip(en, spots, (-40, 10, 40)):
         place(e, p, y, 1.5)
     bucket = cyl("bucket", (0, 0, 0), 0.35, 0.5, M["red"], verts=16)
