@@ -175,7 +175,7 @@ def line(img, text, y, f, t=None, at=None):
 
 def tx0(img, t):
     line(img, "This tower should have", 220, font(FONT_B, 70))
-    slam(img, "COLLAPSED!", 330, t, cue("collapsed", 0) - 0.15, RED, 150)
+    slam(img, "COLLAPSED!", 330, t, cue("collapsed", 0) - 0.15, RED, 138)
     line(img, "...and a", 545, font(FONT_B, 64), t, cue("war0", 0) - 0.55)
     slam(img, "WAR SAVED IT", 630, t, cue("war0", 0) - 0.1, GOLD, 120)
     impact(img, t, cue("collapsed", 0) + 0.05, 16)
@@ -238,7 +238,7 @@ def tx10(img, t):
 
 
 def tx11(img, t):
-    slam(img, "WOULD YOU CLIMB IT?", 300, t, cue("climb", 11) - 0.6, (255, 255, 255), 86)
+    slam(img, "WOULD YOU CLIMB IT?", 300, t, cue("climb", 11) - 0.6, (255, 255, 255), 76)
     text_block(img, "Tell me in the comments!", font(FONT_B, 60), 500, t, GOLD, cue("comments", 11) - 0.3)
     impact(img, t, cue("climb", 11) - 0.5, 12)
 

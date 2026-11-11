@@ -321,3 +321,24 @@
 131. Cloud EEVEE took ~2 min/frame (not 47 s) and the container restarted mid-render (process gone, frames kept).
      Always render with F0/F1 so it can resume, poll that the process is alive, and prefer the PC: 296 frames
      took ~5 min on the RTX 4050 vs ~10 h in the cloud.
+
+## Added after the Leaning Tower of Pisa video (real 3D v2)
+132. **Real 3D toons, not flat sprites** (`blender/toon3d.py`): chibi meshes on a pivot hierarchy (hips/chest/neck/shoulders/
+     hip joints), big eyes with pupils + emissive highlights, blink, brows, smile/frown arc + open mouth, hats, beards. The
+     inverted-hull outline (Solidify, flipped normals, backface-culled black emission) gives the 2D toon look — and the hull
+     material MUST set `use_backface_culling_shadow`, or it shadows its own character into a speckled "fuzzy" skin.
+     Solidify thickness is in local units: divide by the part's scale.
+133. Owner wants it fun and smooth: bouncy hop walk (bob + squash on contact), head lagging the bounce, idle sway so nobody
+     freezes, springy pop-ins (back_out) and spring settles, motion blur on in the final render.
+134. Real physics = Blender rigid bodies (Bullet), baked per scene before rendering (`ptcache.bake` with temp_override).
+     Never teleport a kinematic body right before releasing it (lead ingots/soil chunks shot off at 1000 m/s): keep it in
+     place, hidden (`hide_render` keys), and flip `kinematic` off on its drop frame. Thrown things = kinematic along an analytic
+     arc, released on impact; they still knock dynamic crates over.
+135. World gradient from `Generated` Z: the horizon colour must stop near 0.0-0.12, or the whole sky turns one flat
+     beige. Daytime scenes also need exposure -0.4..-0.6 under AgX or they wash out.
+136. "Rich" set dressing that sells a scene cheaply: stars + moon, lit house windows, crenellated wall, cypresses, warm lamp
+     posts, a background crowd, volumetric dust (Principled Volume with noise minus distance falloff), flickering fire
+     cones with an orange point light, emissive trails behind flaming projectiles, confetti flutter, fireworks.
+137. Previews in the cloud at 20-25 % and 12-16 samples (4 stills per scene, two scenes in parallel) catch framing problems
+     (backs to camera, characters too far, heads blocking the lens) before the owner's PC renders the 64-sample full version.
+138. Slam text must be measured at its final size: "WOULD YOU CLIMB IT?" at 86 px = 982 px wide touched the edges (now 76).
