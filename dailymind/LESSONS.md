@@ -316,3 +316,8 @@
 129. Blender gotchas: pip `bpy` 5.x has OIDN (Ubuntu's blender 4.0 does not); 5.x actions have no `.fcurves`
      (keyframe every frame instead); parent with identity inverse when children are built in the parent's local
      space; bake rotation before object-space paint bands; keep windows in front of a curved cabin wall's INNER radius.
+130. EEVEE (PC GPU) renders Principled transmission glass/water as a solid BLACK box (Cycles hides this). Use an
+     alpha-blended "see-through" material (Alpha < 1, BLENDED) for glass/water and test ONE EEVEE frame first.
+131. Cloud EEVEE took ~2 min/frame (not 47 s) and the container restarted mid-render (process gone, frames kept).
+     Always render with F0/F1 so it can resume, poll that the process is alive, and prefer the PC: 296 frames
+     took ~5 min on the RTX 4050 vs ~10 h in the cloud.
