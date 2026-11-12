@@ -38,3 +38,16 @@ for %s in (0 1 2 3 4 5 6 7 8 9 11) do "C:\Program Files\Blender Foundation\Blend
 
 Then commit and push only the 11 files `dailymind/eiffel3d/plates/s*.mp4`; Claude composites the classic layer
 (`ultimate/make_eiffel3d.py`), runs qa.py and reviews every frame.
+
+# Render the THREE STUDIO SAMPLES (A Object Portal, B Living Blueprint, C Time Seam) on the RTX PC
+
+Pull the branch first (`git pull origin claude/new-session-ati950`). In `dailymind/blender` run:
+
+```
+set PLATE_FMT=MP4
+for %s in (A0 A1 A2 A3 A4 A5 B0 B1 B2 B3 B4 B5 C0 C1 C2 C3 C4 C5) do "C:\Program Files\Blender Foundation\Blender 4.2\blender.exe" -b -P samples_eiffel.py -- %s ..\samples\plates 100 64 EEVEE
+```
+
+18 short scenes (~105 s of footage, roughly 45-60 minutes). Then commit and push only the 18 files
+`dailymind/samples/plates/s*.mp4`; Claude composites the three MP4s (`ultimate/make_samples.py A|B|C`), runs QC
+and compares them.

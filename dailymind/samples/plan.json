@@ -1,0 +1,44 @@
+{
+ "starts": [
+  0.0,
+  4.4,
+  11.15,
+  16.95,
+  20.8,
+  27.37
+ ],
+ "durs": [
+  4.4,
+  6.75,
+  5.8,
+  3.85,
+  6.57,
+  7.45
+ ],
+ "abs": {
+  "torn": 1.39,
+  "radio0": 2.94,
+  "saved": 3.35,
+  "paris": 4.5,
+  "eighteen": 5.4,
+  "gustave": 6.97,
+  "tallest": 8.27,
+  "fair": 10.34,
+  "permit": 12.2,
+  "twenty": 12.73,
+  "nineteen": 14.35,
+  "comes": 15.82,
+  "pays": 17.31,
+  "antenna": 18.64,
+  "money": 20.0,
+  "war": 21.03,
+  "catches": 23.24,
+  "radio": 23.96,
+  "spy": 26.57,
+  "nobody": 27.63,
+  "tear": 28.37,
+  "today": 29.58,
+  "visited": 30.9,
+  "monument": 31.94
+ }
+}
