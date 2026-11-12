@@ -952,7 +952,7 @@ def s2b_giant_watch():
         wglow.data.energy = 0.35 * night
         wglow.data.keyframe_insert("energy", frame=f)
     # street lamps, lit one by one by the lamplighter
-    lamp_pos = [(-0.06, -0.035), (0.03, -0.075), (0.085, -0.02), (-0.1, 0.03)]
+    lamp_pos = [(-0.06, -0.035), (-0.015, -0.085), (0.085, -0.02), (-0.1, 0.03)]
     lamp_on = [T_NIGHT + 1.2, T_NIGHT + 2.6, T_NIGHT + 3.6, T_NIGHT + 4.3]
     for i, ((x, y), ton) in enumerate(zip(lamp_pos, lamp_on)):
         AS.model("street_lamp_02", "1k", loc=(x, y, 0.0), scale=TS, name=f"slamp{i}")
@@ -1012,7 +1012,7 @@ def s2b_giant_watch():
             key(fg.root, f, loc=(x, y, 0.0), rot=(0, 0, math.radians(yaw)))
             night = t > T_NIGHT + 0.5
             fg.pose(f, t, walk=abs(sp) * t / (0.35 * FH), look=(30 * math.sin(t * 0.5 + a0), 20 if night else 10))
-        kid.pose(f, t, point=t > T_SPIN, look=(0, 30), wave=False)
+        kid.pose(f, t, wave=True, look=(0, 30 if t > T_SPIN else 10))
         reader.pose(f, t, carry=t < T_SPIN + 0.4, look=(0, -15) if t < T_SPIN + 0.4 else (-30, 25))
         cleaner.pose(f, t, wave=True, look=(0, 0))
         # lamplighter: walk lamp to lamp; raise the pole to each lamp just before it comes on
@@ -1031,10 +1031,11 @@ def s2b_giant_watch():
         key(lighter.root, f, loc=(pos[0], pos[1], 0.0), rot=(0, 0, math.radians(yaw_l if t >= seg_t[0][0] else 160)))
         lighter.pose(f, t, walk=walking, point=raise_, look=(0, 30 if raise_ else 5))
         # balloon floats above the kid's hand
-        hx, hy = 0.022 + 0.004, -0.05
-        bz = 0.6 * FH + 0.006 + 0.0004 * math.sin(t * 2)
-        key(balloon, f, loc=(hx + 0.001 * math.sin(t * 1.3), hy, bz))
-        key(string, f, loc=(hx, hy, (0.5 * FH + bz) / 2), scale=(0.00006, 0.00006, (bz - 0.5 * FH) / 2))
+        # raised right hand of the child (local +X, the kid faces away at yaw 200 deg -> world offset (-0.94, -0.34))
+        hx, hy, hz = 0.022 - 0.0013, -0.05 - 0.0005, 0.6 * FH * 1.09
+        bz = hz + 0.0045 + 0.0003 * math.sin(t * 2)
+        key(balloon, f, loc=(hx + 0.0004 * math.sin(t * 1.3), hy, bz))
+        key(string, f, loc=(hx, hy, (hz + bz) / 2), scale=(0.00006, 0.00006, (bz - hz) / 2))
     # camera: Catmull-Rom through story beats, then zero-lag smoothing (macro rig)
     cam_k = [(0.0, (0.03, -0.035, 0.05)), (3.2, (0.045, -0.075, 0.03)), (6.6, (0.02, -0.105, 0.007)), (9.6, (-0.02, -0.12, 0.016)),
              (12.0, (-0.01, -0.2, 0.08)), (15.0, (0.0, -0.33, 0.21))]
