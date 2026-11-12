@@ -354,3 +354,6 @@
      temp files (race fixed in dm_assets._get).
 143. Real-render verdict: S2 (giant everyday object in a miniature town) is the strongest direction; plain box buildings and
      block machines read as placeholders — detailed modular kits are the next requirement.
+144. Macro-scale glitch: anything within a few cm of the lens (an unlit lamp-glow ball, a lamp post) renders as a big blurry
+     disc/blob. Hide practical-light glow meshes until they are lit, and before rendering compute the minimum distance from
+     the camera path to every prop (S2B: >= 38 mm) — moving one prop can put it in the path at a LATER moment.

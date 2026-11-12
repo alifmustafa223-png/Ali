@@ -952,7 +952,7 @@ def s2b_giant_watch():
         wglow.data.energy = 0.35 * night
         wglow.data.keyframe_insert("energy", frame=f)
     # street lamps, lit one by one by the lamplighter
-    lamp_pos = [(-0.06, -0.035), (-0.015, -0.085), (0.085, -0.02), (-0.1, 0.03)]
+    lamp_pos = [(-0.06, -0.035), (0.075, -0.05), (0.095, 0.0), (-0.1, 0.03)]
     lamp_on = [T_NIGHT + 1.2, T_NIGHT + 2.6, T_NIGHT + 3.6, T_NIGHT + 4.3]
     for i, ((x, y), ton) in enumerate(zip(lamp_pos, lamp_on)):
         AS.model("street_lamp_02", "1k", loc=(x, y, 0.0), scale=TS, name=f"slamp{i}")
@@ -965,6 +965,7 @@ def s2b_giant_watch():
             L.data.keyframe_insert("energy", frame=f)
             bm.inputs["Strength"].default_value = 0.2 + 12 * k
             bm.inputs["Strength"].keyframe_insert("default_value", frame=f)
+            show(bulb, f, t >= ton - 0.03)  # an unlit glow ball read as a dull olive disc when near the lens
     # benches
     for i, (x, y, yaw) in enumerate(((-0.045, 0.05, 0.6), (0.05, 0.055, -0.6))):
         b_ = box(f"bench{i}", (x, y, 0.45 * TS), (1.8 * TS, 0.5 * TS, 0.12 * TS), paint("benchwood", (0.32, 0.18, 0.08), 0.6), rot=(0, 0, yaw))
