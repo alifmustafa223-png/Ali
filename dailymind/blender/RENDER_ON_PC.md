@@ -51,3 +51,16 @@ for %s in (A0 A1 A2 A3 A4 A5 B0 B1 B2 B3 B4 B5 C0 C1 C2 C3 C4 C5) do "C:\Program
 18 short scenes (~105 s of footage, roughly 45-60 minutes). Then commit and push only the 18 files
 `dailymind/samples/plates/s*.mp4`; Claude composites the three MP4s (`ultimate/make_samples.py A|B|C`), runs QC
 and compares them.
+
+# Render the MINIATURE CINEMATIC UNIVERSE samples (S1 1889 diorama, S2 giant pocket watch, S3 miniature factory)
+
+Needs internet on the PC: the first run downloads the CC0 Poly Haven models/textures/HDRIs (~200 MB) into
+`dailymind/assets_cache/` (git-ignored, reused afterwards). Pull the branch first, then in `dailymind/blender`:
+
+```
+set PLATE_FMT=MP4
+for %s in (S1 S2 S3) do "C:\Program Files\Blender Foundation\Blender 4.2\blender.exe" -b -P mini3d.py -- %s ..\miniature\renders 100 64
+```
+
+Three 12-second shots (1,080 frames) with motion blur and macro depth of field: roughly 30-45 minutes.
+Then commit and push only `dailymind/miniature/renders/S1.mp4`, `S2.mp4`, `S3.mp4`.
