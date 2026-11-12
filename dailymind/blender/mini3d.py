@@ -27,7 +27,7 @@ F0 = int(argv[4]) if len(argv) > 4 else 1
 OUTFMT = os.environ.get("PLATE_FMT", "PNG")
 STILLS = [int(x) for x in os.environ.get("STILL_FRAMES", "").split(",") if x.strip()]
 FPS = 30
-DUR = 12.0
+DUR = {"S2B": 15.0}.get(SAMPLE, 12.0)
 NF = int(DUR * FPS)
 F1 = int(argv[5]) if len(argv) > 5 else NF
 
@@ -855,7 +855,200 @@ def s3_factory():
     return dict(exposure=0.4)
 
 
-SAMPLES_FN = {"S1": s1_paris1889, "S2": s2_giant_watch, "S3": s3_factory}
+# ================================================================= S2B — the polished giant watch (v2)
+def catmull(keys, t):
+    """Smooth path through (time, value-tuple) keys (Catmull-Rom with eased timing)."""
+    if t <= keys[0][0]:
+        return keys[0][1]
+    if t >= keys[-1][0]:
+        return keys[-1][1]
+    for i in range(len(keys) - 1):
+        t0, p1 = keys[i]
+        t1, p2 = keys[i + 1]
+        if t0 <= t <= t1:
+            u = ease_io((t - t0) / (t1 - t0)) if False else (t - t0) / (t1 - t0)
+            p0 = keys[i - 1][1] if i > 0 else p1
+            p3 = keys[i + 2][1] if i + 2 < len(keys) else p2
+            u2, u3 = u * u, u * u * u
+            return tuple(0.5 * ((2 * b) + (-a + c) * u + (2 * a - 5 * b + 4 * c - d) * u2 + (-a + 3 * b - 3 * c + d) * u3)
+                         for a, b, c, d in zip(p0, p1, p2, p3))
+
+
+def s2b_giant_watch():
+    """v2 — 15 s. Macro on a real pocket watch standing like a monument in a 1:220 Parisian square at golden hour; a
+    cleaner on a ladder polishes its glass. The camera sinks to street level: strollers, a child with a red balloon, a
+    newspaper reader, a lamplighter. The hands begin to SPIN — the sun drops, night falls in seconds, the lamplighter
+    lights the lamps one by one and every window glows. A crane shot reveals the whole square around the glowing watch."""
+    import town_kit as TK
+    TS = 0.0045                     # town scale (1:220)
+    FH = 1.75 * TS                  # figure height ~8 mm
+    T_SPIN, T_NIGHT = 7.0, 7.4
+    AS.hdri("belfast_sunset_puresky", "2k", 1.0, 200)
+    wnt = SC.world.node_tree
+    bg = wnt.nodes["Background"]
+    env_link = bg.inputs["Color"].links[0]
+    env_out = env_link.from_socket
+    mix = wnt.nodes.new("ShaderNodeMix")
+    mix.data_type = "RGBA"
+    mix.inputs[7].default_value = (0.012, 0.018, 0.05, 1)  # deep night blue
+    wnt.links.new(env_out, mix.inputs[6])
+    wnt.links.new(mix.outputs[2], bg.inputs["Color"])
+    # ground: cobbled square (tinted so the stones read), stone kerb, paved pavement ring
+    cob = AS.texture("cobblestone_floor_08", "2k", scale=1.0 / (2.0 * TS) * 0.9, tint=(0.62, 0.56, 0.5))
+    cyl("square", (0, 0, -0.001), 0.17, 0.002, cob, verts=128)
+    pave = AS.texture("rectangular_paving", "1k", scale=1.0 / (3.0 * TS), tint=(0.75, 0.72, 0.68))
+    ring = cyl("pavement", (0, 0, -0.0022), 0.34, 0.003, pave, verts=128)  # top sits 0.7 mm BELOW the square: no z-fighting
+    kerb = prim(bpy.ops.mesh.primitive_torus_add, "kerb", (0, 0, 0.0004), mat=AS.texture("precast_stone_paving", "1k", scale=600.0),
+                major_radius=0.172, minor_radius=0.0009, major_segments=160, minor_segments=6)
+    ground = box("outer_ground", (0, 0, -0.006), (2.0, 2.0, 0.004), AS.texture("concrete_floor_worn_001", "1k", scale=200.0, tint=(0.4, 0.4, 0.42)))
+    # the town: a crescent of detailed buildings, each with its own window glass (lit one after another at dusk)
+    TK.init(None, AS.texture("painted_plaster_wall", "1k", scale=1.0 / (4.0 * TS)), AS.texture("grey_roof_tiles", "1k", scale=1.0 / (2.0 * TS)), scale=TS)
+    glass_mats = []
+    rr = random.Random(5)
+    n_b = 13
+    for i in range(n_b):
+        gm = paint(f"glass{i}", (0.06, 0.07, 0.09), 0.08, emit=(1.0, 0.72, 0.38), estr=0.0)
+        TK.TEX["glass"] = gm
+        TK.TEX["shop_glass"] = gm
+        a = math.pi * (0.05 + 0.9 * i / (n_b - 1))
+        r_ = 0.2 + rr.uniform(0, 0.012)
+        TK.building(f"tb{i}", (r_ * math.cos(a), r_ * math.sin(a) + 0.01), a - math.pi / 2, floors=rr.choice([4, 5, 5, 6]),
+                    bays=rr.choice([2, 3, 3]), wall=TK.WALLS[i % len(TK.WALLS)], shutters=TK.SHUTTERS[rr.randrange(len(TK.SHUTTERS))],
+                    shop=rr.random() < 0.75, seed=40 + i)
+        glass_mats.append((gm, T_NIGHT + 0.6 + 0.22 * ((i * 7) % n_b)))
+    for gm, t_on in glass_mats:
+        p = gm.node_tree.nodes.get("Principled BSDF")
+        for f, t in frames():
+            p.inputs["Emission Strength"].default_value = 7.0 * ease((t - t_on) / 0.35)
+            p.inputs["Emission Strength"].keyframe_insert("default_value", frame=f)
+    # the giant: a real pocket watch standing on its edge
+    wr, wobjs = AS.model("vintage_pocket_watch", "2k", loc=(0, 0.035, 0.0405), rot=(math.radians(-6), 0, 0), scale=1.0, name="watch")
+    hands = {o.name.split("_")[-2]: o for o in wobjs if "hand" in o.name}
+    for f, t in frames():
+        k = max(0.0, t - T_SPIN)
+        spin = 14.0 * k * k / (1 + 1.2 * k)        # accelerates into a whirl
+        sec = -2 * math.pi * (int(t) / 60.0) - spin * 3
+        if "second" in hands:
+            key(hands["second"], f, rot=(0, sec, 0))
+        if "minute" in hands:
+            key(hands["minute"], f, rot=(0, -spin * 0.6, 0))
+        if "hour" in hands:
+            key(hands["hour"], f, rot=(0, -spin * 0.05, 0))
+        night = ease((t - T_NIGHT) / 2.2)
+        bg.inputs["Strength"].default_value = 1.0 - 0.75 * night
+        bg.inputs["Strength"].keyframe_insert("default_value", frame=f)
+        mix.inputs["Factor"].default_value = night
+        mix.inputs["Factor"].keyframe_insert("default_value", frame=f)
+    sun = light("SUN", (0, 0, 1), 4.0, (1.0, 0.68, 0.42), 1.5, rot=(math.radians(76), 0, math.radians(-35)))
+    moon = light("SUN", (0, 0, 1), 0.0, (0.5, 0.62, 1.0), 1.0, rot=(math.radians(45), 0, math.radians(150)))
+    wglow = light("POINT", (0, -0.03, 0.06), 0.0, (1.0, 0.75, 0.42), 0.02)
+    for f, t in frames():
+        night = ease((t - T_NIGHT) / 2.2)
+        key(sun, f, rot=(math.radians(76 + 14 * night), 0, math.radians(-35)))
+        sun.data.energy = 4.0 * (1 - night) ** 1.5
+        sun.data.keyframe_insert("energy", frame=f)
+        moon.data.energy = 0.35 * night
+        moon.data.keyframe_insert("energy", frame=f)
+        wglow.data.energy = 0.35 * night
+        wglow.data.keyframe_insert("energy", frame=f)
+    # street lamps, lit one by one by the lamplighter
+    lamp_pos = [(-0.06, -0.035), (0.03, -0.075), (0.085, -0.02), (-0.1, 0.03)]
+    lamp_on = [T_NIGHT + 1.2, T_NIGHT + 2.6, T_NIGHT + 3.6, T_NIGHT + 4.3]
+    for i, ((x, y), ton) in enumerate(zip(lamp_pos, lamp_on)):
+        AS.model("street_lamp_02", "1k", loc=(x, y, 0.0), scale=TS, name=f"slamp{i}")
+        L = light("POINT", (x, y, 4.0 * TS), 0.0, (1.0, 0.68, 0.38), 0.0008)
+        bulb = sphere(f"lampglow{i}", (x, y, 4.0 * TS), 0.0007, glow(f"lg{i}", (1.0, 0.75, 0.4), 1.0))
+        bm = bulb.data.materials[0].node_tree.nodes.get("Emission")
+        for f, t in frames():
+            k = ease((t - ton) / 0.25)
+            L.data.energy = 0.08 * k
+            L.data.keyframe_insert("energy", frame=f)
+            bm.inputs["Strength"].default_value = 0.2 + 12 * k
+            bm.inputs["Strength"].keyframe_insert("default_value", frame=f)
+    # benches
+    for i, (x, y, yaw) in enumerate(((-0.045, 0.05, 0.6), (0.05, 0.055, -0.6))):
+        b_ = box(f"bench{i}", (x, y, 0.45 * TS), (1.8 * TS, 0.5 * TS, 0.12 * TS), paint("benchwood", (0.32, 0.18, 0.08), 0.6), rot=(0, 0, yaw))
+    # townsfolk
+    cols = [(0.45, 0.18, 0.22), (0.2, 0.28, 0.45), (0.3, 0.35, 0.25), (0.5, 0.4, 0.2), (0.15, 0.15, 0.18), (0.55, 0.3, 0.15), (0.35, 0.22, 0.4)]
+    walkers = []
+    rr = random.Random(12)
+    for i in range(14):
+        fg = Figure(f"town{i}", FH * rr.uniform(0.93, 1.05), coat=cols[i % len(cols)], long_coat=i % 2 == 0,
+                    hat=rr.choice(["bowler", "cap", None, "tophat", "bowler"]), mustache=i % 3 == 0, seed=100 + i)
+        a0 = rr.uniform(0, 2 * math.pi)
+        rad = rr.uniform(0.07, 0.15)
+        sp = rr.choice([-1, 1]) * rr.uniform(0.012, 0.018)
+        walkers.append((fg, a0, rad, sp))
+    kid = Figure("kid", FH * 0.6, coat=(0.75, 0.55, 0.15), seed=7)
+    kid.place((0.022, -0.05, 0.0), 200)
+    string = cyl("balloon_string", (0, 0, 0), 0.00006, 1.0, paint("string", (0.9, 0.9, 0.9), 0.5))
+    balloon = sphere("balloon", (0, 0, 0), 1.0, paint("balloonred", (0.85, 0.05, 0.06), 0.15), scale=(0.0007, 0.0007, 0.00085))
+    reader = Figure("reader", FH, coat=(0.18, 0.2, 0.25), hat="bowler", long_coat=True, mustache=True, seed=8)
+    reader.place((-0.04, 0.046, 0.0), 150)
+    paper = box("newspaper", (0, 0, 0), (0.07, 0.003, 0.05), paint("paper", (0.9, 0.88, 0.82), 0.8))
+    parent(paper, reader.hands[1])
+    paper.location = (0.02, -0.04, 0.02)
+    cleaner = Figure("cleaner", FH, coat=(0.25, 0.3, 0.45), hat="cap", apron=(0.6, 0.55, 0.45), seed=9)
+    ladder = beams_mesh("ladder", [((-0.0013, 0, 0), (-0.0009, 0.0028, 0.03), 0.0004), ((0.0013, 0, 0), (0.0017, 0.0028, 0.03), 0.0004)] +
+                        [((-0.0013 + 0.00013 * k, 0.00028 * k, 0.003 * k), (0.0013 + 0.00013 * k, 0.00028 * k, 0.003 * k), 0.00025) for k in range(1, 10)],
+                        paint("ladderwood", (0.45, 0.3, 0.15), 0.6))
+    ladder.location = (0.022, 0.025, 0.0)
+    cleaner.place((0.0235, 0.0265, 0.026), 180)
+    rag = box("rag", (0, 0, 0), (0.04, 0.03, 0.03), paint("rag", (0.9, 0.85, 0.7), 0.9))
+    parent(rag, cleaner.hands[1])
+    lighter = Figure("lamplighter", FH, coat=(0.12, 0.15, 0.25), hat="cap", mustache=True, seed=10)
+    pole = cyl("lpole", (0, 0, 0), 0.006, 0.45, paint("lpolem", (0.25, 0.18, 0.1), 0.6))
+    parent(pole, lighter.hands[1])
+    pole.location = (0, 0, 0.2)
+    flame = sphere("lflame", (0, 0, 0), 0.012, glow("lflamem", (1.0, 0.6, 0.2), 30.0))
+    parent(flame, lighter.hands[1])
+    flame.location = (0, 0, 0.43)
+    lpath = [(-0.09, -0.055), lamp_pos[0], lamp_pos[1], lamp_pos[2]]
+    for f, t in frames():
+        for fg, a0, rad, sp in walkers:
+            a = a0 + sp * t / rad
+            x, y = rad * math.cos(a), rad * math.sin(a) - 0.01
+            yaw = math.degrees(a) + (180 if sp > 0 else 0)
+            key(fg.root, f, loc=(x, y, 0.0), rot=(0, 0, math.radians(yaw)))
+            night = t > T_NIGHT + 0.5
+            fg.pose(f, t, walk=abs(sp) * t / (0.35 * FH), look=(30 * math.sin(t * 0.5 + a0), 20 if night else 10))
+        kid.pose(f, t, point=t > T_SPIN, look=(0, 30), wave=False)
+        reader.pose(f, t, carry=t < T_SPIN + 0.4, look=(0, -15) if t < T_SPIN + 0.4 else (-30, 25))
+        cleaner.pose(f, t, wave=True, look=(0, 0))
+        # lamplighter: walk lamp to lamp; raise the pole to each lamp just before it comes on
+        seg_t = [(T_NIGHT - 0.4, lamp_on[0]), (lamp_on[0] + 0.3, lamp_on[1]), (lamp_on[1] + 0.3, lamp_on[2])]
+        pos, walking, raise_ = lpath[0], None, False
+        for k_, (ts, te) in enumerate(seg_t):
+            if t >= ts:
+                kk = ease((t - ts) / max(0.1, te - ts - 0.35))
+                a_, b_ = lpath[k_], lpath[k_ + 1]
+                b_ = (b_[0] - 0.004, b_[1] - 0.004)
+                a_ = a_ if k_ == 0 else (a_[0] - 0.004, a_[1] - 0.004)
+                pos = lerp(a_, b_, kk)
+                walking = None if kk >= 1 else math.dist(a_, pos) / (0.35 * FH)
+                raise_ = te - 0.4 < t < te + 0.25
+                yaw_l = math.degrees(math.atan2(-(b_[0] - a_[0]), (b_[1] - a_[1]))) + 180
+        key(lighter.root, f, loc=(pos[0], pos[1], 0.0), rot=(0, 0, math.radians(yaw_l if t >= seg_t[0][0] else 160)))
+        lighter.pose(f, t, walk=walking, point=raise_, look=(0, 30 if raise_ else 5))
+        # balloon floats above the kid's hand
+        hx, hy = 0.022 + 0.004, -0.05
+        bz = 0.6 * FH + 0.006 + 0.0004 * math.sin(t * 2)
+        key(balloon, f, loc=(hx + 0.001 * math.sin(t * 1.3), hy, bz))
+        key(string, f, loc=(hx, hy, (0.5 * FH + bz) / 2), scale=(0.00006, 0.00006, (bz - 0.5 * FH) / 2))
+    # camera: Catmull-Rom through story beats, then zero-lag smoothing (macro rig)
+    cam_k = [(0.0, (0.03, -0.035, 0.05)), (3.2, (0.045, -0.075, 0.03)), (6.6, (0.02, -0.105, 0.007)), (9.6, (-0.02, -0.12, 0.016)),
+             (12.0, (-0.01, -0.2, 0.08)), (15.0, (0.0, -0.33, 0.21))]
+    aim_k = [(0.0, (0.0, 0.035, 0.048)), (3.2, (0.015, -0.02, 0.02)), (6.6, (0.015, -0.03, 0.009)), (9.6, (-0.03, -0.03, 0.02)),
+             (12.0, (0.0, 0.02, 0.03)), (15.0, (0.0, 0.03, 0.02))]
+    foc_k = [(0.0, (0.0, 0.033, 0.045)), (2.0, (0.0235, 0.026, 0.033)), (3.4, (0.0235, 0.026, 0.03)), (4.6, (0.022, -0.05, 0.005)),
+             (6.6, (0.022, -0.05, 0.005)), (7.4, (0.0, 0.03, 0.04)), (8.9, (0.0, 0.03, 0.04)), (9.8, (-0.06, -0.035, 0.008)),
+             (11.5, (0.0, 0.03, 0.04)), (15.0, (0.0, 0.03, 0.03))]
+    macro_camera(lambda t: (add(catmull(cam_k, t), drift(t, 0.0003)), catmull(aim_k, t)), lambda t: catmull(foc_k, t), lens=50, fstop=22.0,
+                 smooth=0.1)
+    return dict(exposure=-0.2)
+
+
+SAMPLES_FN = {"S1": s1_paris1889, "S2": s2_giant_watch, "S3": s3_factory, "S2B": s2b_giant_watch}
 
 if __name__ == "__main__":
     cfg = SAMPLES_FN[SAMPLE]() or {}

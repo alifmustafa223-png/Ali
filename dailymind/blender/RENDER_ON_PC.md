@@ -64,3 +64,15 @@ for %s in (S1 S2 S3) do "C:\Program Files\Blender Foundation\Blender 4.2\blender
 
 Three 12-second shots (1,080 frames) with motion blur and macro depth of field: roughly 30-45 minutes.
 Then commit and push only `dailymind/miniature/renders/S1.mp4`, `S2.mp4`, `S3.mp4`.
+
+# Render the POLISHED giant-watch sample (S2B, 15 s) on the RTX PC
+
+Use Blender 4.5 LTS (some Poly Haven files don't open in 4.2). Pull the branch first, then in `dailymind/blender`:
+
+```
+set PLATE_FMT=MP4
+"C:\Program Files\Blender Foundation\Blender 4.5\blender.exe" -b -P mini3d.py -- S2B ..\miniature\renders 100 64
+```
+
+450 frames (15 s). Commit and push only `dailymind/miniature/renders/S2B.mp4`. Claude adds the sound
+(`ultimate/make_mini.py S2B`), reviews every frame and sends the finished sample.
