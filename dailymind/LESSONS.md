@@ -342,3 +342,15 @@
 137. Previews in the cloud at 20-25 % and 12-16 samples (4 stills per scene, two scenes in parallel) catch framing problems
      (backs to camera, characters too far, heads blocking the lens) before the owner's PC renders the 64-sample full version.
 138. Slam text must be measured at its final size: "WOULD YOU CLIMB IT?" at 86 px = 982 px wide touched the edges (now 76).
+
+## Added after the Miniature Cinematic Universe samples
+139. Owner chose "Miniature Cinematic Universe + Surreal Macro 3D". Build at TRUE miniature scale (figures 1.75 cm) so DOF is real
+     macro optics; use Poly Haven CC0 assets via `blender/dm_assets.py` (models keep their own textures; texture repeats are
+     per metre, so 1:100 cobbles need ~60-70 repeats/m and lattice objects built in model units need their own scale).
+140. Painted figurines (`blender/figurine.py`) read far better than cartoon toons at miniature scale. Macro f/3 focus was
+     so shallow that ~25 % of S1 was blurry: use f/8-f/11 at figure height and bind focus to the subject.
+141. World volume scatter must be tiny at miniature scale (0.2-0.3/m); 1.5 turned the factory black.
+142. Poly Haven .blend files may need Blender 4.5+ (4.2 failed on two assets); parallel renders must download to unique
+     temp files (race fixed in dm_assets._get).
+143. Real-render verdict: S2 (giant everyday object in a miniature town) is the strongest direction; plain box buildings and
+     block machines read as placeholders — detailed modular kits are the next requirement.

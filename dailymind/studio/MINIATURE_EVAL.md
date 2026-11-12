@@ -1,6 +1,29 @@
 # Miniature Cinematic Universe + Surreal Macro 3D — sample evaluation
 
-Status (honest):
+## UPDATE — real renders reviewed (RTX 4050, full HD, 64 samples, motion blur; half-second frame review)
+
+Files: `miniature/renders/S1.mp4`, `S2.mp4`, `S3.mp4` (12 s each, no sound yet).
+The PC needed Blender 4.5 LTS for S1 and S3: Blender 4.2 can't open two of the Poly Haven .blend files (wrench, oil tin).
+
+| | Verdict | What works | What's weak |
+|---|---|---|---|
+| **S2 giant pocket watch** | **Strongest: the direction to build on** | The engraved watch close-ups look like real macro photography. A passer-by drifts through the foreground bokeh. The reveal (giant watch in a tiny square, windows lighting up, tiny people walking, a cleaner on a ladder) is a genuinely surprising image. | The houses are plain boxes: the plaster textures don't show at this scale, there are no window frames or balconies. The square's ground reads as flat sand. The day-to-night change is too subtle. |
+| S1 1889 diorama | Good idea, uneven execution | The tower legs now read as rusty iron. The end reveal (a model on a workbench beside a giant wrench and hand drill) lands. The walking carrier reads as a figurine. | About 3 of the 12 s are out of focus (the focus is too shallow at figure height). The cobblestones read as white paper. The scaffold poles look like white sticks. Odd red arcs (the candleholder) sit behind the tower. Too few workers in frame. |
+| S3 miniature factory | Weakest: not good enough | The lamps, sway and gears work. | The machines are plain red and grey blocks, so it looks like a placeholder. The palette is flat. It's not a rich world. |
+
+Updated recommendation: **build on S2**, the everyday object as a giant in a miniature world. Use S1-style dioramas only after the focus and material fixes. Shelve S3 until a real machinery kit exists.
+
+Priority fixes before the full system:
+1. **Detailed modular town kit.** Facades with window frames, shutters, balconies, cornices, chimneys and awnings. Textures scaled to show at 1:100. Varied heights.
+2. **Ground at miniature scale.** Cobbles and kerbs that actually show (displacement or modelled stones near the camera). Scattered props.
+3. **Focus discipline.** f/8-f/11 at figure height. The focus target always on the subject, checked with one full-quality still per second before rendering.
+4. **Lighting moments that read.** The night transition needs a darker sky, a moon key and practicals blooming.
+5. **Figurines.** More of them in shot, props in their hands, more expressive acting.
+6. **Sound.** Miniature foley and music before the samples count as finished videos.
+
+---
+
+Earlier status (before the renders):
 - **Built and working:**
   - asset library (`blender/dm_assets.py`)
   - figurine characters (`blender/figurine.py`)
