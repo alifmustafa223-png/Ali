@@ -36,7 +36,7 @@ F0 = int(argv[5]) if len(argv) > 5 else 1
 F1 = int(argv[6]) if len(argv) > 6 else NF
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
-from toon3d import Toon  # noqa: E402  (after the factory reset)
+from toon3d import Toon, bake_all  # noqa: E402  (after the factory reset)
 
 SC = bpy.context.scene
 SC.render.fps = FPS
@@ -1585,6 +1585,7 @@ EXPOSURE = {1: -0.6, 2: -0.6, 3: -0.3, 4: -0.4, 5: -0.6, 6: -0.4, 8: -0.5, 9: -0
 if __name__ == "__main__":
     mats()
     SCENES[SCENE]()
+    bake_all()
     setup_render()
     rb_bake()
     if STILLS:

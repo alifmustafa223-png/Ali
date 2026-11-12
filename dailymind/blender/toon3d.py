@@ -106,6 +106,27 @@ def _sphere(name, par, loc, scale, mat, outline=0.0, segs=32, rot=(0, 0, 0)):
     return o
 
 
+def _cyl(name, par, loc, scale, mat, outline=0.0, rot=(0, 0, 0)):
+    me = bpy.data.meshes.get("_toon_cyl")
+    if me is None:
+        bpy.ops.mesh.primitive_cylinder_add(vertices=32, radius=1.0, depth=2.0)
+        tmp = bpy.context.active_object
+        me = tmp.data
+        me.name = "_toon_cyl"
+        bpy.data.objects.remove(tmp, do_unlink=True)
+    o = bpy.data.objects.new(name, me)
+    _link(o)
+    o.parent = par
+    o.matrix_parent_inverse.identity()
+    o.location = loc
+    o.scale = scale
+    o.rotation_euler = rot
+    _set_mat(o, mat)
+    if outline and min(scale) > 0.05:  # thin discs (brims) get no hull: it would blow up to a giant black disc
+        _add_outline(o, outline / max(1e-4, min(scale)))
+    return o
+
+
 def _set_mat(o, mat):
     # object-linked material so the shared sphere mesh can carry different colours per part
     while len(o.data.materials) < 2:
@@ -163,6 +184,28 @@ def _key(o, f, loc=None, rot=None, scale=None):
         o.keyframe_insert("scale", frame=f)
 
 
+_ALL = []
+
+
+def _smooth(vals, alpha):
+    """Forward-backward exponential smoothing (zero lag): removes snaps/jerks between poses."""
+    if alpha >= 1.0 or len(vals) < 3:
+        return vals
+    fw = [vals[0]]
+    for v in vals[1:]:
+        fw.append(tuple(p + alpha * (x - p) for p, x in zip(fw[-1], v)))
+    bw = [fw[-1]]
+    for v in reversed(fw[:-1]):
+        bw.append(tuple(p + alpha * (x - p) for p, x in zip(bw[-1], v)))
+    return list(reversed(bw))
+
+
+def bake_all():
+    """Write every toon's buffered pose channels as smoothed keyframes. Call once after all pose() calls."""
+    for tn in _ALL:
+        tn.bake()
+
+
 class Toon:
     """A chibi 3D character. Facing -Y (towards a camera placed at negative Y) when root rotation is 0."""
 
@@ -170,6 +213,8 @@ class Toon:
                  hair=(0.25, 0.15, 0.08), hat=None, hat_col=(0.6, 0.15, 0.12), shoes=(0.12, 0.08, 0.06),
                  hairstyle="short", beard=False, mustache=False, belly=1.0, scale=1.0, outline=0.012, glasses=False):
         self.name = name
+        self._buf = {}
+        _ALL.append(self)
         S = _sphere
         ol = outline
         m_skin = _mat(name + "_skin", skin, 0.5)
@@ -186,21 +231,32 @@ class Toon:
         self.hips = _empty(name + "_hips", self.root, (0, 0, 0.42))
         # legs: pivot at the hip joint, capsule down, shoe at the bottom
         self.legs = []
+        self.knees = []
         for side in (-1, 1):
             hj = _empty(f"{name}_hip{side}", self.hips, (0.11 * side, 0, 0))
-            S(f"{name}_leg{side}", hj, (0, 0, -0.17), (0.075, 0.075, 0.19), m_pants, ol)
-            S(f"{name}_shoe{side}", hj, (0, -0.05, -0.37), (0.09, 0.14, 0.06), m_shoe, ol)
+            S(f"{name}_thigh{side}", hj, (0, 0, -0.09), (0.08, 0.08, 0.11), m_pants, ol)
+            kn = _empty(f"{name}_knee{side}", hj, (0, 0, -0.18))
+            S(f"{name}_shin{side}", kn, (0, 0, -0.08), (0.07, 0.07, 0.11), m_pants, ol)
+            S(f"{name}_shoe{side}", kn, (0, -0.05, -0.19), (0.09, 0.14, 0.06), m_shoe, ol)
             self.legs.append(hj)
+            self.knees.append(kn)
         # torso (egg) + chest pivot
         self.chest = _empty(name + "_chest", self.hips, (0, 0, 0.02))
         S(name + "_body", self.chest, (0, 0, 0.2), (0.24 * belly, 0.2 * belly, 0.27), m_coat, ol)
         # arms: pivot at the shoulder; a capsule hanging down + round hand
-        self.arms = []
+        self.arms, self.elbows, self.hands = [], [], []
         for side in (-1, 1):
             sh = _empty(f"{name}_sh{side}", self.chest, (0.22 * side, 0, 0.36))
-            S(f"{name}_arm{side}", sh, (0.0, 0, -0.15), (0.055, 0.055, 0.17), m_coat, ol)
-            S(f"{name}_hand{side}", sh, (0.0, 0, -0.33), (0.065, 0.065, 0.065), m_skin, ol)
+            S(f"{name}_upper{side}", sh, (0.0, 0, -0.08), (0.058, 0.058, 0.1), m_coat, ol)
+            el = _empty(f"{name}_elbow{side}", sh, (0, 0, -0.16))
+            S(f"{name}_fore{side}", el, (0.0, 0, -0.07), (0.052, 0.052, 0.095), m_coat, ol)
+            hd = _empty(f"{name}_handp{side}", el, (0, 0, -0.17))
+            S(f"{name}_hand{side}", hd, (0.0, 0, 0), (0.06, 0.05, 0.068), m_skin, ol)
+            S(f"{name}_thumb{side}", hd, (-0.035 * side, -0.035, 0.015), (0.024, 0.024, 0.034), m_skin, ol * 0.5,
+              rot=(0, math.radians(30 * side), 0))
             self.arms.append(sh)
+            self.elbows.append(el)
+            self.hands.append(hd)
         # head
         self.neck = _empty(name + "_neck", self.chest, (0, 0, 0.47))
         self.head = _empty(name + "_head", self.neck, (0, 0, 0.3))
@@ -256,13 +312,40 @@ class Toon:
         elif hat == "helmet":
             S(name + "_hat", self.head, (0, 0.0, 0.12), (0.36, 0.35, 0.26), m_hat, ol)
             S(name + "_nasal", self.head, (0, -0.33, 0.02), (0.025, 0.02, 0.1), m_hat, ol * 0.5)
+        elif hat == "tophat":
+            _cyl(name + "_hat", self.head, (0, 0.03, 0.42), (0.22, 0.22, 0.17), m_hat, ol)
+            _cyl(name + "_brim", self.head, (0, 0.03, 0.26), (0.32, 0.32, 0.014), m_hat)
+            _cyl(name + "_band", self.head, (0, 0.03, 0.295), (0.225, 0.225, 0.03), _mat("toon_band", (0.55, 0.1, 0.1), 0.5))
+        elif hat == "kepi":
+            _cyl(name + "_hat", self.head, (0, 0.03, 0.27), (0.27, 0.27, 0.1), m_hat, ol, rot=(math.radians(-8), 0, 0))
+            _cyl(name + "_band", self.head, (0, 0.03, 0.2), (0.3, 0.3, 0.04), _mat("toon_kepiband", (0.1, 0.12, 0.3), 0.5))
+            S(name + "_visor", self.head, (0, -0.24, 0.17), (0.2, 0.12, 0.02), _mat("toon_visor", (0.05, 0.05, 0.05), 0.3), ol,
+              rot=(math.radians(-15), 0, 0))
+        elif hat == "fedora":
+            S(name + "_hat", self.head, (0, 0.02, 0.27), (0.27, 0.27, 0.14), m_hat, ol)
+            _cyl(name + "_brim", self.head, (0, 0.0, 0.21), (0.4, 0.4, 0.014), m_hat, rot=(math.radians(-8), 0, 0))
         elif hat == "beret":
             S(name + "_hat", self.head, (0.05, 0.02, 0.24), (0.36, 0.34, 0.1), m_hat, ol, rot=(0, math.radians(10), 0))
         self.mats = dict(skin=m_skin, coat=m_coat)
 
     # ------------------------------------------------------------------ animation
+    def _k(self, o, f, loc=None, rot=None, scale=None, alpha=0.35):
+        for prop, v in (("location", loc), ("rotation_euler", rot), ("scale", scale)):
+            if v is not None:
+                self._buf.setdefault((o.name, prop), [alpha, {}])[1][f] = tuple(v)
+
+    def bake(self):
+        for (oname, prop), (alpha, d) in self._buf.items():
+            o = bpy.data.objects[oname]
+            fs = sorted(d)
+            vals = _smooth([d[f] for f in fs], alpha)
+            for f, v in zip(fs, vals):
+                setattr(o, prop, v)
+                o.keyframe_insert(prop, frame=f)
+        self._buf = {}
+
     def pose(self, f, t, walk=None, arms=None, arm_side=None, look=(0.0, 0.0), head=(0.0, 0.0, 0.0), eyes="open",
-             brows=0.0, mouth="smile", talk=0.0, bounce=0.0, lean=0.0, squash=1.0, blink=None, jump=0.0):
+             brows=0.0, mouth="smile", talk=0.0, bounce=0.0, lean=0.0, squash=1.0, blink=None, jump=0.0, elbows=None):
         """walk: phase in cycles (None = standing); arms: (left_deg, right_deg) forward swing,
         arm_side: (left_deg, right_deg) raise sideways (+ = up); look: pupil offset (-1..1); head: (yaw, pitch, tilt) deg;
         brows: + raised / - angry; mouth: smile/grin/O/frown/talk/flat; talk 0..1 opens the mouth; bounce/jump in metres."""
@@ -279,18 +362,29 @@ class Toon:
         sway = 1.5 * math.sin(t * 1.7 + len(self.name))  # idle life: nobody stands frozen
         squash = squash * sq_walk
         z = 0.42 + bob + bounce + jump
-        _key(self.hips, f, loc=(0, 0, z), rot=(math.radians(lean), math.radians(sway * 0.5), 0),
+        self._k(self.hips, f, loc=(0, 0, z), rot=(math.radians(lean), math.radians(sway * 0.5), 0),
              scale=(1 / math.sqrt(squash), 1 / math.sqrt(squash), squash))
-        _key(self.legs[0], f, rot=(math.radians(sw), 0, 0))
-        _key(self.legs[1], f, rot=(math.radians(-sw), 0, 0))
+        self._k(self.legs[0], f, rot=(math.radians(-sw), 0, 0))
+        self._k(self.legs[1], f, rot=(math.radians(sw), 0, 0))
+        if walk is not None:  # knees bend on the swing (lifting) leg
+            kb = [max(0.0, math.sin(ph + 0.6)) * 50, max(0.0, math.sin(ph + 0.6 + math.pi)) * 50]
+        else:
+            kb = [4 + 180 * max(0.0, 1 - squash), 4 + 180 * max(0.0, 1 - squash)]
+        self._k(self.knees[0], f, rot=(math.radians(kb[0]), 0, 0))
+        self._k(self.knees[1], f, rot=(math.radians(kb[1]), 0, 0))
         a = arms if arms is not None else (-sw * 0.8, sw * 0.8)
         sd = arm_side if arm_side is not None else (8, 8)
-        _key(self.arms[0], f, rot=(math.radians(a[0]), math.radians(sd[0]), 0))
-        _key(self.arms[1], f, rot=(math.radians(a[1]), math.radians(-sd[1]), 0))
-        _key(self.chest, f, rot=(0, 0, math.radians(sw * 0.15)))
+        # +forward swing = towards the face direction (-Y): negative X rotation
+        self._k(self.arms[0], f, rot=(math.radians(-a[0]), math.radians(sd[0]), 0))
+        self._k(self.arms[1], f, rot=(math.radians(-a[1]), math.radians(-sd[1]), 0))
+        if elbows is None:  # natural bend: more when the arm is raised or swinging
+            elbows = tuple(15 + 0.25 * abs(x) + 0.15 * max(0, y) for x, y in zip(a, sd))
+        self._k(self.elbows[0], f, rot=(math.radians(-elbows[0]), 0, 0))
+        self._k(self.elbows[1], f, rot=(math.radians(-elbows[1]), 0, 0))
+        self._k(self.chest, f, rot=(0, 0, math.radians(sw * 0.15)))
         yaw, pitch, tilt = head
         breathe = 0.01 * math.sin(t * 2.2)
-        _key(self.neck, f, loc=(0, 0, 0.47 + breathe),
+        self._k(self.neck, f, loc=(0, 0, 0.47 + breathe),
              rot=(math.radians(pitch + lag), math.radians(tilt + sway), math.radians(yaw)))
         if blink is None:
             blink = ((t + hash(self.name) % 7 * 0.37) % 3.3) < 0.1 and eyes != "closed"
@@ -309,5 +403,5 @@ class Toon:
         op = {"O": 1.0, "grin": 0.0, "talk": talk}.get(mouth, 0.0)
         if mouth == "talk":
             sm = (0.9 * (1 - talk) + 0.01, 0.6)
-        _key(self.smile, f, scale=(sm[0], 1, sm[1] if sm[1] != 0 else 0.01) if sm[0] > 0 else (0.001, 0.001, 0.001))
-        _key(self.open, f, scale=(0.06 * (0.8 + 0.2 * op), 0.025, 0.05 * op + 0.0005) if op > 0 else (0.0001, 0.0001, 0.0001))
+        self._k(self.smile, f, scale=(sm[0], 1, sm[1] if sm[1] != 0 else 0.01) if sm[0] > 0 else (0.001, 0.001, 0.001))
+        self._k(self.open, f, scale=(0.06 * (0.8 + 0.2 * op), 0.025, 0.05 * op + 0.0005) if op > 0 else (0.0001, 0.0001, 0.0001))

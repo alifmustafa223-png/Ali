@@ -26,3 +26,15 @@ Each scene first bakes its rigid-body physics (a few seconds), then renders with
 4.2+ version is installed (adjust the path). Check one frame of scene 0 looks right before waiting for the rest.
 Then commit and push the 11 files `dailymind/pisa3d/plates/s*.mp4` (nothing else); Claude composites the classic
 layer (`ultimate/make_pisa3d.py`), runs qa.py and reviews every frame.
+
+# Render the Eiffel Tower video (real 3D v3) on the RTX PC
+
+Pull the branch first (`git pull origin claude/new-session-ati950`). In `dailymind/blender` run:
+
+```
+set PLATE_FMT=MP4
+for %s in (0 1 2 3 4 5 6 7 8 9 11) do "C:\Program Files\Blender Foundation\Blender 4.2\blender.exe" -b -P eiffel3d.py -- %s ..\eiffel3d\plates 100 64 EEVEE
+```
+
+Then commit and push only the 11 files `dailymind/eiffel3d/plates/s*.mp4`; Claude composites the classic layer
+(`ultimate/make_eiffel3d.py`), runs qa.py and reviews every frame.
