@@ -1799,7 +1799,7 @@ def scA2_permit():
         parent(tx, pg_piv)
         tx.location = (0, -0.5, -60)
         pages.append((y, pg_piv))
-    ttl = text3d("pgperm", "PERMIT: 20 YEARS", (-60, 58.4, 128), 9.0, M["red_ink"])
+    ttl = empty("pgperm_none")  # the subtitle says it; a 3D label here collided with the title layer
     for f, t in frames():
         k = min(1.0, max(0.0, (t - ttw - 0.1) / max(0.4, t19 - ttw - 0.1)))
         flipped = int(20 * ease(k))
@@ -1813,7 +1813,6 @@ def scA2_permit():
                 frac = (20 * ease(k)) - flipped
                 a = 180.0 * ease(frac)
             key(pp, f, loc=(-60, 59 - 0.05 * (20 - idx), 150), rot=(math.radians(-a), 0, 0))
-        show(ttl, f, t > tp - 0.1)
     C = crane_wreck("wc", base=(-46, -16, 0), boom_tip=(-20, -16, 64))
     for f, t in frames():
         dx = -80 * (1 - ease_io((t - tc + 1.3) / 1.3))
@@ -2140,7 +2139,6 @@ def scB2_timeline():
         for o, c in zip(redE, copies):
             show(c, f, flick)
             show(o, f, not flick)
-    label("lbdem", "1909: DEMOLISH", (0, -30, 60), 6.0, tc, red)
     focus = empty("focus", (0, -40, 5))
     cam, aim = camera(24, 5.0, focus)
 
