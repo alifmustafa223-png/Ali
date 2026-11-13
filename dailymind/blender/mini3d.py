@@ -961,8 +961,9 @@ class Clearance:
     """Keeps set dressing out of the lens and out of the main shots' lines of sight.
     cam(t)/focus(t) are the raw story paths; a prop is a vertical column (x, y, radius r, height h)."""
 
-    def __init__(self, cam, focus, t_end, lens_mm=20.0, reserved=()):
+    def __init__(self, cam, focus, t_end, lens_mm=20.0, reserved=(), aim=None):
         self.ts = [k * 0.1 for k in range(int(t_end * 10) + 1)]
+        self.cam_fn, self.aim_fn = cam, aim
         self.cam = [cam(t) for t in self.ts]
         self.foc = [focus(t) for t in self.ts]
         self.lens = lens_mm / 1000.0
@@ -998,12 +999,30 @@ class Clearance:
     def take(self, x, y, r):
         self.reserved.append((x, y, r))
 
+    def in_view(self, p, t, margin=0.9):
+        """Is world point p inside the 9:16 frame at time t? (50 mm lens, 36 mm sensor fitted to the 1920 px height)"""
+        c, a = self.cam_fn(t), self.aim_fn(t)
+        fw = [a[i] - c[i] for i in range(3)]
+        n = math.sqrt(sum(v * v for v in fw))
+        fw = [v / n for v in fw]
+        rt = [fw[1], -fw[0], 0.0]
+        n = math.hypot(rt[0], rt[1])
+        rt = [rt[0] / n, rt[1] / n, 0.0]
+        up = [rt[1] * fw[2] - rt[2] * fw[1], rt[2] * fw[0] - rt[0] * fw[2], rt[0] * fw[1] - rt[1] * fw[0]]
+        v = [p[i] - c[i] for i in range(3)]
+        zc = sum(v[i] * fw[i] for i in range(3))
+        if zc <= 0:
+            return False
+        xc = sum(v[i] * rt[i] for i in range(3)) / zc
+        yc = sum(v[i] * up[i] for i in range(3)) / zc
+        return abs(xc) < margin * 18.0 * 1080 / 1920 / 50.0 and abs(yc) < margin * 18.0 / 50.0
+
 
 def dress_square(TS, FH, T_SPIN, T_NIGHT, CL, watch_c=(0.0, 0.035)):
     """Fill the square: crowd at the watch, market stalls, trees, cafe terraces, poster columns, festoon lights."""
     import town_kit as TK
     rr = random.Random(77)
-    placed = {"crowd": 0, "stall": 0, "tree": 0, "cafe": 0, "column": 0}
+    placed = {"crowd": 0, "stall": 0, "tree": 0, "cafe": 0, "column": 0, "carousel": 0}
     leaf = [paint(f"leaf{i}", c, 0.75) for i, c in enumerate(((0.16, 0.26, 0.1), (0.2, 0.3, 0.12), (0.13, 0.22, 0.09)))]
     bark = paint("bark", (0.16, 0.11, 0.07), 0.8)
     # ---- trees + festoon lights along the back of the square (in front of the buildings)
@@ -1116,37 +1135,122 @@ def dress_square(TS, FH, T_SPIN, T_NIGHT, CL, watch_c=(0.0, 0.035)):
         placed["column"] += 1
         if placed["column"] >= 3:
             break
-    # ---- the crowd at the foot of the giant watch: they look up, and point when the hands start to spin
+    # ---- a carousel in the part of the square the wide shots actually see (turning, its bulbs light up at night)
+    WIDE_T = (12.6, 13.6, 14.4, 15.0)
+    car = None
+    for k in range(400):
+        x, y = rr.uniform(-0.09, 0.09), rr.uniform(-0.12, 0.0)
+        R_ = 3.0 * TS
+        if not all(CL.in_view((x, y, 0.0), t, 0.8) for t in WIDE_T[1:]):
+            continue
+        if abs(x) < 0.05 and y > -0.01 or not CL.ok(x, y, R_ + 0.002, 5.2 * TS):  # not hiding the watch
+            continue
+        car = (x, y)
+        break
+    if car:
+        x, y = car
+        CL.take(x, y, R_ + 0.002)
+        c_root = empty("carousel", (x, y, 0))
+        spinner = empty("carousel_spin", (0, 0, 0), c_root)
+        gold = paint("car_gold", (0.8, 0.6, 0.25), 0.3, 0.9)
+        def cpart(o, loc, par=spinner):
+            parent(o, par)
+            o.location = loc
+            return o
+        cpart(cyl("car_base", (0, 0, 0), R_, 0.35 * TS, paint("car_red", (0.55, 0.08, 0.08), 0.5), verts=48), (0, 0, 0.17 * TS), c_root)
+        cpart(cyl("car_floor", (0, 0, 0), R_ * 0.97, 0.08 * TS, paint("car_wood", (0.6, 0.45, 0.3), 0.6), verts=48), (0, 0, 0.38 * TS))
+        cpart(cyl("car_pole", (0, 0, 0), 0.35 * TS, 3.6 * TS, paint("car_mirror", (0.9, 0.85, 0.7), 0.15, 0.6), verts=16), (0, 0, 2.2 * TS))
+        roof = prim(bpy.ops.mesh.primitive_cone_add, "car_roof", mat=TK._striped("car_canvas", (0.75, 0.1, 0.12), (0.95, 0.92, 0.85)),
+                    vertices=48, radius1=R_ * 1.08, radius2=0.2 * TS, depth=1.5 * TS)
+        cpart(roof, (0, 0, 4.4 * TS))
+        cpart(cyl("car_valance", (0, 0, 0), R_ * 1.08, 0.35 * TS, gold, verts=48), (0, 0, 3.55 * TS))
+        cpart(sphere("car_finial", (0, 0, 0), 0.3 * TS, gold), (0, 0, 5.25 * TS))
+        hm = [paint(f"horse{i}", c, 0.4) for i, c in enumerate(((0.92, 0.9, 0.85), (0.15, 0.1, 0.08), (0.75, 0.55, 0.3)))]
+        horses = []
+        for h in range(8):
+            ang = 2 * math.pi * h / 8
+            hx, hy = 0.72 * R_ * math.cos(ang), 0.72 * R_ * math.sin(ang)
+            cpart(cyl(f"car_rod{h}", (0, 0, 0), 0.04 * TS, 3.1 * TS, gold, verts=6), (hx, hy, 2.0 * TS))
+            hb = empty(f"car_h{h}", (hx, hy, 1.4 * TS), spinner)
+            hb.rotation_euler = (0, 0, ang)
+            body = sphere(f"car_hbody{h}", (0, 0, 0), 1.0, hm[h % 3], segs=12, scale=(0.22 * TS, 0.6 * TS, 0.25 * TS))
+            cpart(body, (0, 0, 0), hb)
+            cpart(sphere(f"car_hhead{h}", (0, 0, 0), 1.0, hm[h % 3], segs=10, scale=(0.13 * TS, 0.25 * TS, 0.15 * TS)), (0, 0.55 * TS, 0.3 * TS), hb)
+            horses.append((hb, ang))
+        cb = glow("car_bulb", (1.0, 0.8, 0.5), 0.0)
+        cbe = cb.node_tree.nodes.get("Emission")
+        for h in range(24):
+            ang = 2 * math.pi * h / 24
+            cpart(sphere(f"car_b{h}", (0, 0, 0), 0.09 * TS, cb, segs=6), (R_ * 1.09 * math.cos(ang), R_ * 1.09 * math.sin(ang), 3.4 * TS))
+        cl = light("POINT", (x, y, 2.6 * TS), 0.0, (1.0, 0.75, 0.45), 0.004)
+        for f, t in frames():
+            key(spinner, f, rot=(0, 0, 2 * math.pi * 0.09 * t))   # 5.4 rpm — a real carousel's pace
+            for hb, ang in horses:
+                key(hb, f, loc=(0.72 * R_ * math.cos(ang), 0.72 * R_ * math.sin(ang), (1.4 + 0.35 * math.sin(2 * math.pi * 0.18 * t + ang * 2)) * TS))
+            k_ = ease((t - (T_NIGHT + 1.6)) / 0.4)
+            cbe.inputs["Strength"].default_value = 0.4 + 20 * k_
+            cbe.inputs["Strength"].keyframe_insert("default_value", frame=f)
+            cl.data.energy = 0.05 * k_
+            cl.data.keyframe_insert("energy", frame=f)
+        placed["carousel"] = 1
+    # ---- people in natural groups: chatting with each other, they turn to stare at the watch when its hands spin
     cols = [(0.45, 0.18, 0.22), (0.2, 0.28, 0.45), (0.3, 0.35, 0.25), (0.5, 0.4, 0.2), (0.15, 0.15, 0.18), (0.55, 0.3, 0.15),
-            (0.35, 0.22, 0.4), (0.6, 0.55, 0.45), (0.25, 0.12, 0.1)]
-    crowd = []
-    tries = 0
-    while len(crowd) < 26 and tries < 900:
-        tries += 1
-        a = math.radians(rr.uniform(-178, -2))
-        rad = rr.uniform(0.05, 0.075)
-        x, y = watch_c[0] + rad * math.cos(a), watch_c[1] + rad * math.sin(a)
-        if math.hypot(x, y + 0.01) > 0.064:      # stay inside the walkers' inner lane
-            continue
+            (0.35, 0.22, 0.4), (0.6, 0.55, 0.45), (0.25, 0.12, 0.1), (0.62, 0.2, 0.15), (0.18, 0.35, 0.38)]
+    people = []   # (figure, x, y, yaw_chat, yaw_watch, react_delay, pointer)
+
+    def add_person(x, y, chat_yaw, tag):
         if not CL.ok(x, y, 0.0022, FH * 1.05):
+            return False
+        CL.take(x, y, 0.0024)
+        kidsize = rr.random() < 0.12
+        fg = Figure(f"{tag}{len(people)}", FH * (0.62 if kidsize else rr.uniform(0.88, 1.05)), coat=cols[rr.randrange(len(cols))],
+                    long_coat=rr.random() < 0.45, hat=rr.choice(["bowler", "cap", None, "tophat", None, "bowler"]), mustache=rr.random() < 0.3,
+                    seed=300 + len(people))
+        yw = math.degrees(math.atan2(watch_c[0] - x, -(watch_c[1] - y)))
+        people.append((fg, x, y, chat_yaw, yw, rr.uniform(0.0, 0.9), rr.random() < 0.3))
+        return True
+
+    def group(cx, cy, n, tag):
+        got = 0
+        for j in range(n * 6):
+            if got >= n:
+                break
+            a_ = 2 * math.pi * (got / n) + rr.uniform(-0.3, 0.3)
+            r_ = rr.uniform(0.0034, 0.0046) if n > 1 else 0.0
+            x, y = cx + r_ * math.cos(a_), cy + r_ * math.sin(a_)
+            chat = math.degrees(math.atan2(cx - x, -(cy - y))) if n > 1 else rr.uniform(-180, 180)
+            got += add_person(x, y, chat, tag)
+        return got
+
+    n_groups = 0
+    for k in range(600):            # groups near the watch and across the visible foreground
+        if n_groups >= 22:
+            break
+        if k % 2 == 0:
+            a_ = math.radians(rr.uniform(-175, -5))
+            r_ = rr.uniform(0.05, 0.085)
+            cx, cy = watch_c[0] + r_ * math.cos(a_), watch_c[1] + r_ * math.sin(a_)
+        else:
+            cx, cy = rr.uniform(-0.08, 0.08), rr.uniform(-0.12, -0.02)
+            if not any(CL.in_view((cx, cy, 0.0), t, 0.85) for t in WIDE_T):
+                continue
+        if math.hypot(cx, cy + 0.01) > 0.165:
             continue
-        CL.take(x, y, 0.0026)
-        fg = Figure(f"crowd{len(crowd)}", FH * rr.uniform(0.85, 1.05), coat=cols[rr.randrange(len(cols))], long_coat=rr.random() < 0.4,
-                    hat=rr.choice(["bowler", "cap", None, "tophat", None, "bowler"]), mustache=rr.random() < 0.3,
-                    apron=(0.85, 0.8, 0.7) if rr.random() < 0.1 else None, seed=300 + len(crowd))
-        yaw = math.degrees(math.atan2(watch_c[0] - x, -(watch_c[1] - y)))
-        fg.place((x, y, 0.0), yaw + rr.uniform(-12, 12))
-        crowd.append((fg, rr.random() < 0.35, rr.uniform(0, 0.6)))
+        if group(cx, cy, rr.choice([1, 2, 2, 3, 3, 4, 5]), "crowd"):
+            n_groups += 1
     for (vx, vy), yaw in vendors:
-        fg = Figure(f"vendor{vx:.3f}", FH, coat=cols[rr.randrange(len(cols))], apron=(0.9, 0.88, 0.8), hat="cap", seed=int(abs(vx) * 1e5))
-        fg.place((vx, vy, 0.0), yaw + 180)
-        crowd.append((fg, False, rr.uniform(0, 0.6)))
-    placed["crowd"] = len(crowd)
+        fg = Figure(f"vendor{len(people)}", FH, coat=cols[rr.randrange(len(cols))], apron=(0.9, 0.88, 0.8), hat="cap", seed=900 + len(people))
+        people.append((fg, vx, vy, yaw + 180, yaw + 180, 9.0, False))
+    placed["crowd"] = len(people)
     for f, t in frames():
-        for fg, pointer, d in crowd:
-            spun = t > T_SPIN + 0.25 + d
-            fg.pose(f, t, look=(8 * math.sin(t * 0.7 + d * 9), 34 if spun else 22 + 6 * math.sin(t * 0.4 + d * 5)),
-                    point=pointer and spun, wave=(not pointer) and spun and d > 0.45)
+        for fg, x, y, ychat, ywatch, d, pointer in people:
+            k_ = ease_io((t - (T_SPIN + 0.3 + d)) / 0.7)   # a natural head-then-body turn toward the spinning watch
+            dy = math.remainder(ywatch - ychat, 360.0)
+            key(fg.root, f, loc=(x, y, 0.0), rot=(0, 0, math.radians(ychat + dy * k_)))
+            spun = k_ > 0.6
+            talk = 10 * math.sin(t * 1.7 + d * 7) * (1 - k_)
+            fg.pose(f, t, look=(talk + (1 - k_) * 0.0, 30 * k_ + 4 * (1 - k_)), point=pointer and spun and t < T_SPIN + 4.5 + d,
+                    wave=(not pointer) and spun and d > 0.7 and t < T_SPIN + 3.0 + d)
     print("DRESSING", placed, "bulbs", n_bulbs)
     return placed
 
@@ -1279,13 +1383,14 @@ def s2b_giant_watch(dense=False):
     rr = random.Random(12)
     if dense:
         lamp_pos_ = [(-0.06, -0.035), (0.075, -0.05), (0.095, 0.0), (-0.1, 0.03)]
-        CL = Clearance(lambda t: catmull(cam_k, t), lambda t: catmull(foc_k, t), DUR, lens_mm=20.0,
+        CL = Clearance(lambda t: catmull(cam_k, t), lambda t: catmull(foc_k, t), DUR, lens_mm=20.0, aim=lambda t: catmull(aim_k, t),
                        reserved=[(0.022, -0.05, 0.006), (-0.04, 0.046, 0.005), (0.022, 0.025, 0.006), (-0.045, 0.05, 0.006), (0.05, 0.055, 0.006),
                                  (0.0, 0.035, 0.047)] + [(x, y, 0.004) for x, y in lamp_pos_])
         lp = [(-0.09, -0.055)] + lamp_pos_[:3]
         for (ax, ay), (bx, by) in zip(lp, lp[1:]):  # the lamplighter's route stays clear
             n = int(math.hypot(bx - ax, by - ay) / 0.004) + 1
             CL.reserved += [(ax + (bx - ax) * k / n, ay + (by - ay) * k / n, 0.004) for k in range(n + 1)]
+        dress_square(TS, FH, T_SPIN, T_NIGHT, CL)
         avoid_r = [math.hypot(x, y + 0.01) for x, y in lamp_pos_] + [math.hypot(-0.045, 0.06), math.hypot(0.05, 0.065), math.hypot(-0.04, 0.056)]
         lane = 0
         for li in range(16):
@@ -1298,7 +1403,7 @@ def s2b_giant_watch(dense=False):
                 a0 = li * 0.9 + cand * (2 * math.pi / 24)
                 if len(got) >= 2 or any(abs(math.remainder(a0 - g, 2 * math.pi)) < 0.9 for g in got):
                     continue
-                ok = all(CL.lens_ok(rad * math.cos(a0 + sp * t / rad), rad * math.sin(a0 + sp * t / rad) - 0.01, 0.0015, FH, t_idx=i)
+                ok = all(CL.free(rad * math.cos(a0 + sp * t / rad), rad * math.sin(a0 + sp * t / rad) - 0.01, 0.0018) and CL.lens_ok(rad * math.cos(a0 + sp * t / rad), rad * math.sin(a0 + sp * t / rad) - 0.01, 0.0015, FH, t_idx=i)
                          and (i % 3 or not 4.4 <= t <= 6.8 or CL.los_ok(rad * math.cos(a0 + sp * t / rad), rad * math.sin(a0 + sp * t / rad) - 0.01,
                                                                           0.0015, FH, t_idx=i))  # never hide the balloon kid
                          for i, t in enumerate(CL.ts))
@@ -1374,8 +1479,6 @@ def s2b_giant_watch(dense=False):
         bz = hz + 0.0045 + 0.0003 * math.sin(t * 2)
         key(balloon, f, loc=(hx + 0.0004 * math.sin(t * 1.3), hy, bz))
         key(string, f, loc=(hx, hy, (hz + bz) / 2), scale=(0.00006, 0.00006, (bz - hz) / 2))
-    if dense:
-        dress_square(TS, FH, T_SPIN, T_NIGHT, CL)
     macro_camera(lambda t: (add(catmull(cam_k, t), drift(t, 0.0003)), catmull(aim_k, t)), lambda t: catmull(foc_k, t), lens=50, fstop=22.0,
                  smooth=0.1)
     return dict(exposure=-0.2)
