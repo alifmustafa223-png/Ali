@@ -48,3 +48,6 @@ dailymind/eiffel_mini/render.log
 
 # voice generation logs
 dailymind/cove_test/*_log.txt
+dailymind/cove_test/_*
+dailymind/cove_test/seg*.wav
+dailymind/cove_test/vo16.wav

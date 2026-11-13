@@ -1,4 +1,3 @@
-[{"key": "gold", "text": "This chest is full of gold...", "gap_before": 0.25},
- {"key": "throw", "text": "and she's about to throw it into the sea.", "gap_before": 0.3},
- {"key": "because", "text": "Because every coin in it...", "gap_before": 0.55},
- {"key": "fake", "text": "is fake.", "gap_before": 0.45, "exaggeration": 0.85}]
+[{"key": "gold", "text": "This chest is full of gold...", "gap_before": 0.4},
+ {"key": "throw", "text": "and she's about to throw it into the sea.", "gap_before": 0.45},
+ {"key": "because", "text": "Because every single coin in it... is fake.", "gap_before": 0.9, "exaggeration": 0.8}]
