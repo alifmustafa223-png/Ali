@@ -23,6 +23,8 @@ os.makedirs(WORK, exist_ok=True)
 dur = float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", IN]).decode())
 
 EVENTS = {
+    "S3": lambda: ([("thud", k * 1.25 + 0.74) for k in range(10)] + [("click", k * 1.25 + 0.6) for k in range(10)] +
+                   [("pop", k * 1.25 + 0.78) for k in range(10)] + [("whoosh", 7.7), ("ding", dur - 1.0)]),
     "S2B": lambda: ([("click", float(s)) for s in range(0, 7)] +
                     [("click", 7.0 + 0.9 * (1 - 0.82 ** k) / 0.18 * 0.25) for k in range(26)] +
                     [("whoosh", 7.2), ("whoosh", 7.9), ("thud", 7.4)] +
