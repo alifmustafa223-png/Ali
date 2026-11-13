@@ -15,8 +15,24 @@ import toon as T
 
 OUT = sys.argv[1] if len(sys.argv) > 1 else "/tmp/style2d.png"
 W, H = 1080, 1920
+import os
+LAYER = os.environ.get("LAYER", "full")
 surf = skia.Surface(W, H)
 c = surf.getCanvas()
+_real = c
+_null = skia.Surface(W, H).getCanvas()
+if LAYER != "full":
+    c.clear(skia.ColorTRANSPARENT)
+
+
+def sec(name):
+    """Paper-theatre layers: LAYER=sky|sea|deck|chars draws only that slice; bg = sky+sea+deck; full = everything."""
+    if LAYER in ("full", name) or (LAYER == "bg" and name != "chars"):
+        return _real
+    return _null
+
+
+c = sec("sky")
 C, P, S = T.C, T.P, T.S
 rr = random.Random(4)
 
@@ -30,6 +46,7 @@ for k in range(7):
     for j in range(5):
         cl.addOval(skia.Rect(x + j * w / 6, y - rr.uniform(10, 50), x + j * w / 6 + w / 3, y + 40))
     c.drawPath(cl, P(C(255, 190, 170, 70), MaskFilter=skia.MaskFilter.MakeBlur(skia.kNormal_BlurStyle, 6)))
+c = sec("sea")
 # ---- distant cliffs + sea with sun glitter + ship
 cliff = skia.Path()
 cliff.moveTo(0, 900)
@@ -44,6 +61,7 @@ for k in range(60):
     w = (60 - k) * 2.2 + rr.uniform(0, 30)
     c.drawRect(skia.Rect(760 - w / 2 + rr.uniform(-30, 30), y, 760 + w / 2, y + 3), P(C(255, 210, 150, 160 - k * 2)))
 T.ship(c, 260, 935, 0.9, 0.0, dark=True)
+c = sec("deck")
 # ---- pier deck in perspective (planks converge toward the horizon)
 deck = skia.Path()
 deck.moveTo(-200, H)
@@ -101,6 +119,7 @@ for k in range(8):   # spilled coins
 for k in range(10):
     T.sparkle(c, cx + rr.uniform(-200, 200), cy - 120 - rr.uniform(0, 140), rr.uniform(12, 22))
 # ---- characters: big, readable acting
+c = sec("chars")
 HER = dict(skin=(150, 95, 65), hair="curly", hair_col=(40, 25, 20), coat=(245, 245, 240), pants=(60, 90, 150), nose="small",
            collar=(70, 170, 190))
 HIM = dict(skin=(200, 140, 100), hair="neat", hair_col=(40, 28, 22), coat=(80, 80, 90), pants=(90, 95, 110), nose="long", mustache=False)
@@ -113,6 +132,10 @@ T.person(c, 800, 1800, 1.75, HER, PS, 0.3)
 hx, hy = T.hand_pos(800, 1800, 1.75, PS, 1)
 T.coin(c, hx + 6, hy - 52, 36)
 T.sparkle(c, hx + 40, hy - 95, 34)
+if LAYER != "full":
+    img = surf.makeImageSnapshot().toarray(colorType=skia.kRGBA_8888_ColorType)
+    Image.fromarray(img).save(OUT)
+    raise SystemExit
 # ---- title in the channel's classic look (title + subtitle, no caption box)
 f1, f2 = skia.Font(T.FB, 92), skia.Font(T.FB, 50)
 for txt, f, y, col in (("EVERY COIN...", f1, 300, C(255, 255, 255)), ("WAS FAKE", skia.Font(T.FB, 150), 450, C(255, 200, 60)),
