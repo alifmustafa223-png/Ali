@@ -930,13 +930,14 @@ def sc_china(t, f):
     t_flop = word_t("flop", "flopped")
     t_too = word_t("flop", "to")
     # shoppers glance and walk on; one shrugs on "flopped"
-    for i, (look, x0, dirn) in enumerate(((LOOK_SHOPPER, -120, 1), (LOOK_SHOPPER2, 1200, -1))):
+    for i, (look, x0, dirn, yb, sc_) in enumerate(((LOOK_SHOPPER2, 1200, -1, 1700, 1.15), (LOOK_SHOPPER, -120, 1, 1830, 1.5))):
+        i = 1 - i   # keep the shrug on the near shopper
         x = x0 + dirn * 190 * k
         sh = snap(t, t_flop, 6, 1.3) if i == 0 else 0
         pose = dict(eyes="open", brows="flat" if sh < 0.3 else "up", mouth="smile" if sh < 0.3 else "frown", look=(0.8 * dirn, 0), lean=0,
                     tilt=-4 * sh, walk=k * 6 + i, hands=[lerp2((-20, 150), (-90, -30), sh), lerp2((20, 150), (90, -30), sh)], bends=(1, -1))
-        ch = E.draw_person(look, x, 1820, 1.5, pose, t)
-        img = E.light_char(ch, img, 1820, shadow=0.35, rim=0.4)
+        ch = E.draw_person(look, x, yb, sc_, pose, t)
+        img = E.light_char(ch, img, yb, shadow=0.35, rim=0.4)
     s, c = E.surf()
     # boxes on the shelves; on "flopped" one tips over the shelf edge: rigid body rotation about the edge, then a fall
     for row in range(3):
@@ -956,7 +957,7 @@ def sc_china(t, f):
     E.over(img, E.arr(s))
     cam = E.catmull([(t0, 1.0, 540, 1050), (t0 + 4, 1.05, 560, 1060)], t)
     lay = [E.title_layer(t, [("CHINA, 1992", 110, 330, E.WHITE, word_t("flop", "china"))]),
-           E.stamp_layer(t, "TOO AMERICAN", t_too, 540, 560, 120, (220, 35, 45), -7)]
+           E.stamp_layer(t, "TOO AMERICAN", t_too, 540, 505, 100, (220, 35, 45), -5)]
     return img, cam, lay
 
 
@@ -980,12 +981,19 @@ RENDER = dict(restaurant=sc_restaurant, sunrise=sc_sunrise, kyoto=sc_kyoto, tray
 
 
 # =================================================================================== transitions (gold splat)
+# cuts inside a scene (tea garden -> bakery tray, factory -> restaurant table): they get the splat too
+INNER_CUTS = [word_t("teagarden", "family") - 0.1, word_t("factories", "put") - 0.1]
+
+
+def splat_cuts():
+    out = [CUTS[i] for i in range(1, len(SCENES))
+           if not (SCENES[i][0] in ("bakery42", "cta") or SCENES[i - 1][0] == "bakery42")]
+    return sorted(out + INNER_CUTS)
+
+
 def splat_layer(t):
     """Gold ink splat wipe: grows over 4 frames to cover the cut, then clears over 5 frames. Not used into/out of 1942."""
-    for i in range(1, len(SCENES)):
-        tc = CUTS[i]
-        if SCENES[i][0] in ("bakery42",) or SCENES[i - 1][0] in ("bakery42",) or SCENES[i][0] == "cta":
-            continue
+    for i, tc in enumerate(splat_cuts(), start=1):
         k = t - tc
         if -4 / FPS <= k < 5 / FPS:
             u = (k + 4 / FPS) / (4 / FPS) if k < 0 else 1 - k / (5 / FPS)

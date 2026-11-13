@@ -67,3 +67,5 @@ dailymind/fortune/frames/
 dailymind/fortune/stills/
 dailymind/fortune/_audio/
 dailymind/fortune/*.log
+dailymind/fortune/fortune.mp4
+dailymind/fortune/qc/*.wav

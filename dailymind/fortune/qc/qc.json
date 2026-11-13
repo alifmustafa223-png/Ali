@@ -1,0 +1,52 @@
+[
+ {
+  "check": "frame count",
+  "ok": true,
+  "detail": "1845 / 1845"
+ },
+ {
+  "check": "length 61-65 s",
+  "ok": true,
+  "detail": "61.50 s"
+ },
+ {
+  "check": "no 1-frame pops",
+  "ok": true,
+  "detail": "0 suspects []"
+ },
+ {
+  "check": "falling bodies settle on the floor (no hover / sink)",
+  "ok": true,
+  "detail": "crumbs + bakery cookies after settling"
+ },
+ {
+  "check": "CLOSED sign = real pendulum",
+  "ok": true,
+  "detail": "period 1.003 s for a 25 cm string"
+ },
+ {
+  "check": "loudness -14 +-0.5 LUFS",
+  "ok": true,
+  "detail": "-14.2 LUFS"
+ },
+ {
+  "check": "true peak <= -1.5 dBTP",
+  "ok": true,
+  "detail": "-1.9 dBTP"
+ },
+ {
+  "check": "no clipped samples",
+  "ok": true,
+  "detail": "0 samples"
+ },
+ {
+  "check": "every SFX within 1 frame",
+  "ok": true,
+  "detail": "31 cues, off: []"
+ },
+ {
+  "check": "final mix transcript == script",
+  "ok": true,
+  "detail": "heard: \"You've cracked open hundreds of these, and not one of them was Chinese.  Fortune cookies are Japanese.  An 1878 print from Kyoto shows a baker grilling these exact cookies.  Bigger, darker, made with sesame and miso, with the fortune tucked into the fold.  Japanese bakers brought them to California.  A tea garden in San Francisco served them with green tea, and a family bakery made them  by the thousands.  Then in 1942, Japanese Americans on the west coast were sent to internment camps, and the  bakeries closed.  More than 100,000 people lost their homes and their businesses.  Chinese American factories filled the gap and put a cookie at the end of every Chinese  meal.  Today, about 3 billion are made every year.  One factory in New York makes more than 4 million of them a day.  And when a company tried selling them in China, they flopped.  Why?  They were too American.  So the most Chinese thing on your table was Japanese all along.  Did you learn something new?  Like and subscribe!\""
+ }
+]

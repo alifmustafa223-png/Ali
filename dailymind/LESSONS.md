@@ -401,3 +401,20 @@
 161. Check each SFX onset on its own stem with the same onset rule used to place it (30 % of the clip's peak); slow-attack
      chimes measured in the mix read 46-86 ms off even though they were placed right.
 162. `dict.get(k, fallback)` evaluates the fallback even when k exists (`VO["fake"]` crashed the render). Use `x if k in d else y`.
+
+## Added after "Fortune Cookies Aren't Chinese" (first full Short in the approved 2D style, `ultimate/make_fortune.py`)
+163. Chatterbox reads fast: ~860 chars came to ~50 s. Budget ~1,000 chars + slightly longer gaps for 61-65 s, and check the
+     total right after the voice pass, before building scenes.
+164. faster-whisper writes numbers as digits ("1878", "100,000", "3 billion") and homophones its own way ("too" -> "to").
+     The take checker normalises years, cardinals, "a hundred" = "one hundred", to/too/two, learnt/learned before comparing.
+165. A take whose float peak is > 1.0 has NOT clipped (nothing is quantised yet): scale it to 0.95, don't reject it.
+166. Chatterbox drops the "-ed" of "Learned something new?" (14 of 14 takes heard "learn"). Voice the CTA as
+     "Did you learn something new? Like and subscribe." The end card still reads "Learned something new?".
+167. Cache every take (text + settings + seed): re-runs after a script tweak only generate the changed lines (minutes, not ~15).
+168. Iconic props need a design pass before the build: the first fortune cookie read as goggles / a bean. What made it read: the
+     deep centre fold, the visible inner surface and the paper slip.
+169. A content switch inside a scene (guest -> bakery tray, factory -> restaurant) is a jump cut: give it the same splat
+     transition as a scene cut, and let the QC skip it as a cut.
+170. Two characters walking across each other must be at different depths (smaller + higher + drawn first) or they walk
+     through each other.
+171. With grain on every frame, CRF 16 is ~330 MB per minute: keep the master local (GitHub's 100 MB limit); commit scripts + QC.

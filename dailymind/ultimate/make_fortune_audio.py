@@ -94,10 +94,8 @@ gasp = load("bsb_1103.wav", 2.12, 0.42, 0.004, 0.12)
 
 # hook: the crunch on "cracked" (the frame the halves start to part), a whoosh into each gold splat
 place("crunch", crunch, w("hook", "cracked"), -6)
-for i in range(1, len(F.SCENES)):
-    if F.SCENES[i][0] in ("bakery42", "cta") or F.SCENES[i - 1][0] == "bakery42":
-        continue
-    place("whoosh", whoosh, F.CUTS[i] - 4 / F.FPS, -16)
+for tc in F.splat_cuts():
+    place("whoosh", whoosh, tc - 4 / F.FPS, -16)
 place("chime_jp", chime1, w("japanese", "japanese"), -16)
 place("stamp_kyoto", pitch(door, 1.4), w("kyoto", "kyoto"), -12)
 place("ting_fold", pitch(ting, 1.2), w("darker", "fold"), -19)
