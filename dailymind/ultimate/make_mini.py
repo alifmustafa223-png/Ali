@@ -48,5 +48,10 @@ draw = (f"drawtext=fontfile={font}:text='The DailyMind.':fontcolor=0xFFC83C:font
 branded = os.path.join(WORK, f"{SAMPLE}_branded.mp4")
 subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", IN, "-vf", draw, "-c:v", "libx264", "-crf", "16", "-preset", "slow", "-pix_fmt", "yuv420p",
                 branded], check=True)
-audio.master(branded, silence, music, sfx, OUT)
+pre = os.path.join(WORK, f"{SAMPLE}_premaster.mp4")
+audio.master(branded, silence, music, sfx, pre)
+# with no voice, sharp foley peaks (press thuds) can stop the linear loudnorm short of -14 (S3 landed at -16.4):
+# limit the peaks, then normalise again
+subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", pre, "-af", "alimiter=limit=0.5:level=disabled,loudnorm=I=-14:TP=-1.5:LRA=11",
+                "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-ar", "44100", "-movflags", "+faststart", OUT], check=True)
 print("wrote", OUT)
