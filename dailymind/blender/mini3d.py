@@ -398,6 +398,34 @@ def lattice_tower(name, mat, top_z=96.0, bands=10):
 
 # ---------------------------------------------------------------- render setup
 def setup_render(exposure=0.0, vol=True):
+    if os.environ.get("DM_ENGINE") == "CYCLES":   # ray-traced: real bounce light, soft shadows, true metal/glass
+        SC.render.engine = "CYCLES"
+        SC.cycles.samples = SAMPLES
+        SC.cycles.use_denoising = True
+        try:
+            prefs = bpy.context.preferences.addons["cycles"].preferences
+            for dev in ("OPTIX", "CUDA"):
+                try:
+                    prefs.compute_device_type = dev
+                    prefs.get_devices()
+                    for d in prefs.devices:
+                        d.use = True
+                    SC.cycles.device = "GPU"
+                    break
+                except Exception:
+                    continue
+        except Exception:
+            pass
+        SC.render.use_motion_blur = True
+        SC.view_settings.view_transform = "AgX"
+        try:
+            SC.view_settings.look = "AgX - Medium High Contrast"
+        except Exception:
+            pass
+        SC.view_settings.exposure = exposure
+        _finish_output()
+        SC.frame_start, SC.frame_end = F0, min(F1, NF)
+        return
     SC.render.engine = "BLENDER_EEVEE" if "BLENDER_EEVEE" in [e.identifier for e in bpy.types.RenderSettings.bl_rna.properties["engine"].enum_items] else "BLENDER_EEVEE_NEXT"
     SC.eevee.taa_render_samples = SAMPLES
     for attr, val in (("use_raytracing", True), ("use_fast_gi", True), ("use_shadows", True), ("clamp_surface_indirect", 6.0),
@@ -417,6 +445,10 @@ def setup_render(exposure=0.0, vol=True):
     except Exception:
         pass
     SC.view_settings.exposure = exposure
+    _finish_output()
+
+
+def _finish_output():
     if OUTFMT == "MP4" and not STILLS:
         os.makedirs(OUTDIR, exist_ok=True)
         try:
