@@ -197,8 +197,9 @@ def tx2(img, t):
 
 
 def tx3(img, t):
-    title(img, t, "A permit for just 20 years", "in 1909... it comes down", cue("nineteen", 3) - 0.3, sub_color=(255, 235, 210))
-    stamp(ImageDraw.Draw(img, "RGBA"), W / 2, 700, "DEMOLISH", t, cue("comes", 3), col=RED, size=120)
+    # titles sit HIGH here: the giant permit sheet fills the middle of the frame (no text over its printed text)
+    title(img, t, "A permit for just 20 years", "in 1909... it comes down", cue("nineteen", 3) - 0.3, y=210, sub_color=(255, 235, 210))
+    stamp(ImageDraw.Draw(img, "RGBA"), W / 2, 420, "DEMOLISH", t, cue("comes", 3), col=RED, size=120)
     impact(img, t, cue("comes", 3) + 0.15, 14)
 
 
