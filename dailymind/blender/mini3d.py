@@ -27,7 +27,7 @@ F0 = int(argv[4]) if len(argv) > 4 else 1
 OUTFMT = os.environ.get("PLATE_FMT", "PNG")
 STILLS = [int(x) for x in os.environ.get("STILL_FRAMES", "").split(",") if x.strip()]
 FPS = 30
-DUR = {"S2B": 15.0}.get(SAMPLE, 12.0)
+DUR = {"S2B": 15.0, "S2C": 15.0}.get(SAMPLE, 12.0)
 NF = int(DUR * FPS)
 F1 = int(argv[5]) if len(argv) > 5 else NF
 
@@ -952,6 +952,205 @@ def s3_factory():
     return dict(exposure=0.4)
 
 
+# ================================================================= S2C — S2B with a LIVED-IN square (owner: "it feels empty")
+def _seg_pts(a, b, n=24):
+    return [tuple(a[i] + (b[i] - a[i]) * k / n for i in range(3)) for k in range(n + 1)]
+
+
+class Clearance:
+    """Keeps set dressing out of the lens and out of the main shots' lines of sight.
+    cam(t)/focus(t) are the raw story paths; a prop is a vertical column (x, y, radius r, height h)."""
+
+    def __init__(self, cam, focus, t_end, lens_mm=20.0, reserved=()):
+        self.ts = [k * 0.1 for k in range(int(t_end * 10) + 1)]
+        self.cam = [cam(t) for t in self.ts]
+        self.foc = [focus(t) for t in self.ts]
+        self.lens = lens_mm / 1000.0
+        self.reserved = list(reserved)   # (x, y, radius) spots that must stay free (hero figures, ladder, lamps)
+        self.worst = 1.0
+
+    def lens_ok(self, x, y, r, h, t_idx=None):
+        idx = range(len(self.ts)) if t_idx is None else [t_idx]
+        for i in idx:
+            cx, cy, cz = self.cam[i]
+            d = math.hypot(math.hypot(cx - x, cy - y) - r, max(0.0, cz - h)) if math.hypot(cx - x, cy - y) > r else max(0.0, cz - h)
+            if d < self.lens:
+                return False
+        return True
+
+    def los_ok(self, x, y, r, h, t_idx=None):
+        idx = range(0, len(self.ts), 2) if t_idx is None else [t_idx]
+        for i in idx:
+            c, tg = self.cam[i], self.foc[i]
+            for q in _seg_pts(c, tg)[2:-1]:
+                if math.dist(q, tg) < 0.012:
+                    continue
+                if q[2] < h + 0.0005 and math.hypot(q[0] - x, q[1] - y) < r + 0.0008:
+                    return False
+        return True
+
+    def free(self, x, y, r):
+        return all(math.hypot(x - a, y - b) > r + c for a, b, c in self.reserved)
+
+    def ok(self, x, y, r, h):
+        return self.free(x, y, r) and self.lens_ok(x, y, r, h) and self.los_ok(x, y, r, h)
+
+    def take(self, x, y, r):
+        self.reserved.append((x, y, r))
+
+
+def dress_square(TS, FH, T_SPIN, T_NIGHT, CL, watch_c=(0.0, 0.035)):
+    """Fill the square: crowd at the watch, market stalls, trees, cafe terraces, poster columns, festoon lights."""
+    import town_kit as TK
+    rr = random.Random(77)
+    placed = {"crowd": 0, "stall": 0, "tree": 0, "cafe": 0, "column": 0}
+    leaf = [paint(f"leaf{i}", c, 0.75) for i, c in enumerate(((0.16, 0.26, 0.1), (0.2, 0.3, 0.12), (0.13, 0.22, 0.09)))]
+    bark = paint("bark", (0.16, 0.11, 0.07), 0.8)
+    # ---- trees + festoon lights along the back of the square (in front of the buildings)
+    trees = []
+    for k in range(16):
+        a = math.pi * (-0.08 + 1.16 * k / 15)
+        x, y = 0.182 * math.cos(a), 0.182 * math.sin(a) + 0.01
+        if not CL.ok(x, y, 2.6 * TS, 7.5 * TS):
+            continue
+        cyl(f"trunk{k}", (x, y, 1.6 * TS), 0.22 * TS, 3.2 * TS, bark, verts=10)
+        for j in range(4):
+            rad = rr.uniform(1.3, 1.9) * TS
+            sphere(f"crown{k}_{j}", (x + rr.uniform(-0.8, 0.8) * TS, y + rr.uniform(-0.8, 0.8) * TS, rr.uniform(4.2, 6.0) * TS), rad,
+                   leaf[(k + j) % 3], segs=12, scale=(rad, rad, rad * 0.85))
+        CL.take(x, y, 2.4 * TS)
+        trees.append((x, y))
+        placed["tree"] += 1
+    fest = glow("festoon", (1.0, 0.78, 0.45), 0.0)
+    fe = fest.node_tree.nodes.get("Emission")
+    for f, t in frames():
+        fe.inputs["Strength"].default_value = 0.3 + 18.0 * ease((t - (T_NIGHT + 0.9)) / 0.5)
+        fe.inputs["Strength"].keyframe_insert("default_value", frame=f)
+    wire = paint("wire", (0.03, 0.03, 0.03), 0.5)
+    n_bulbs = 0
+    for (x0, y0), (x1, y1) in zip(trees, trees[1:]):
+        if math.hypot(x1 - x0, y1 - y0) > 0.06:
+            continue
+        z = 3.6 * TS
+        pts = []
+        for k in range(10):
+            u = (k + 0.5) / 10
+            pts.append((x0 + (x1 - x0) * u, y0 + (y1 - y0) * u, z - 0.9 * TS * 4 * u * (1 - u)))
+        if not all(CL.lens_ok(px, py, 0.0005, pz) for px, py, pz in pts[::3]):
+            continue
+        for k, q in enumerate(pts):
+            sphere(f"fb{n_bulbs}", q, 0.11 * TS, fest, segs=8)
+            n_bulbs += 1
+        beams_mesh(f"fwire{n_bulbs}", [(pts[k], pts[k + 1], 0.00006) for k in range(len(pts) - 1)], wire)
+    # ---- market stalls (front arc of the square)
+    canvas = [TK._striped(f"stall_aw{i}", a, b) for i, (a, b) in enumerate(TK.AWNINGS)]
+    wood = paint("stallwood", (0.36, 0.22, 0.12), 0.7)
+    goods = [paint(f"goods{i}", c, 0.5) for i, c in enumerate(((0.8, 0.15, 0.1), (0.9, 0.6, 0.1), (0.3, 0.55, 0.15), (0.85, 0.8, 0.6),
+                                                                (0.5, 0.15, 0.35)))]
+    vendors = []
+    for k in range(14):
+        a = math.radians(rr.uniform(-170, -10))
+        rad = rr.uniform(0.128, 0.158)
+        x, y = rad * math.cos(a), rad * math.sin(a) - 0.01
+        if not CL.ok(x, y, 2.2 * TS, 3.4 * TS):
+            continue
+        yaw = a + math.pi / 2  # counter faces the centre of the square
+        root = empty(f"stall{k}", (x, y, 0))
+        root.rotation_euler = (0, 0, yaw)
+        for name, c, sz, m in (("counter", (0, 0, 0.5 * TS), (3.0 * TS, 1.2 * TS, 1.0 * TS), wood),
+                               ("awning", (0, 0.2 * TS, 2.55 * TS), (3.4 * TS, 1.9 * TS, 0.1 * TS), canvas[k % len(canvas)])):
+            o = box(f"stall{k}_{name}", (0, 0, 0), sz, m)
+            parent(o, root)
+            o.location = c
+            if name == "awning":
+                o.rotation_euler = (math.radians(-12), 0, 0)
+        for px in (-1.4, 1.4):
+            for py in (-0.5, 0.8):
+                o = cyl(f"stall{k}_post{px}{py}", (0, 0, 0), 0.06 * TS, 2.6 * TS, wood, verts=6)
+                parent(o, root)
+                o.location = (px * TS, py * TS, 1.3 * TS)
+        for g in range(7):
+            o = sphere(f"stall{k}_g{g}", (0, 0, 0), 0.22 * TS, goods[rr.randrange(len(goods))], segs=8)
+            parent(o, root)
+            o.location = ((-1.2 + 0.4 * g) * TS, rr.uniform(-0.35, 0.25) * TS, 1.12 * TS)
+        vendors.append(((x + 1.1 * TS * math.cos(a), y + 1.1 * TS * math.sin(a)), math.degrees(yaw)))
+        CL.take(x, y, 2.4 * TS)
+        placed["stall"] += 1
+        if placed["stall"] >= 6:
+            break
+    # ---- cafe terraces: round tables with parasols
+    linen = paint("linen", (0.92, 0.9, 0.84), 0.7)
+    iron = paint("cafeiron", (0.05, 0.05, 0.06), 0.4, 0.7)
+    for k in range(30):
+        a = math.pi * rr.uniform(-0.15, 1.15)
+        rad = rr.uniform(0.16, 0.172)
+        x, y = rad * math.cos(a), rad * math.sin(a) + 0.01
+        if not CL.ok(x, y, 1.4 * TS, 2.6 * TS):
+            continue
+        cyl(f"tab{k}", (x, y, 0.75 * TS), 0.42 * TS, 0.05 * TS, linen, verts=16)
+        cyl(f"tleg{k}", (x, y, 0.37 * TS), 0.05 * TS, 0.75 * TS, iron, verts=6)
+        cyl(f"ppole{k}", (x, y, 1.3 * TS), 0.035 * TS, 2.5 * TS, iron, verts=6)
+        prim(bpy.ops.mesh.primitive_cone_add, f"parasol{k}", (x, y, 2.45 * TS), mat=canvas[(k + 1) % len(canvas)], vertices=12,
+             radius1=1.25 * TS, radius2=0.05 * TS, depth=0.5 * TS)
+        for s_ in (-1, 1):
+            box(f"chair{k}{s_}", (x + s_ * 0.6 * TS * math.cos(a + 1.2), y + s_ * 0.6 * TS * math.sin(a + 1.2), 0.45 * TS),
+                (0.42 * TS, 0.42 * TS, 0.06 * TS), iron)
+        CL.take(x, y, 1.5 * TS)
+        placed["cafe"] += 1
+        if placed["cafe"] >= 8:
+            break
+    # ---- Paris poster columns
+    posters = [paint(f"poster{i}", c, 0.7) for i, c in enumerate(((0.75, 0.55, 0.25), (0.55, 0.15, 0.12), (0.85, 0.8, 0.65), (0.2, 0.3, 0.45)))]
+    green = paint("colgreen", (0.06, 0.16, 0.1), 0.5, 0.3)
+    for k in range(20):
+        a = math.pi * rr.uniform(-1.0, 1.0)
+        rad = rr.uniform(0.12, 0.16)
+        x, y = rad * math.cos(a), rad * math.sin(a) - 0.01
+        if not CL.ok(x, y, 0.8 * TS, 4.2 * TS):
+            continue
+        for j in range(3):
+            cyl(f"col{k}_{j}", (x, y, (0.6 + 1.1 * j) * TS), 0.6 * TS, 1.1 * TS, posters[(k + j) % 4], verts=20)
+        cyl(f"col{k}_base", (x, y, 0.03 * TS), 0.7 * TS, 0.12 * TS, green, verts=20)
+        sphere(f"col{k}_dome", (x, y, 3.6 * TS), 0.68 * TS, green, segs=16, scale=(0.68 * TS, 0.68 * TS, 0.5 * TS))
+        CL.take(x, y, 1.0 * TS)
+        placed["column"] += 1
+        if placed["column"] >= 3:
+            break
+    # ---- the crowd at the foot of the giant watch: they look up, and point when the hands start to spin
+    cols = [(0.45, 0.18, 0.22), (0.2, 0.28, 0.45), (0.3, 0.35, 0.25), (0.5, 0.4, 0.2), (0.15, 0.15, 0.18), (0.55, 0.3, 0.15),
+            (0.35, 0.22, 0.4), (0.6, 0.55, 0.45), (0.25, 0.12, 0.1)]
+    crowd = []
+    tries = 0
+    while len(crowd) < 26 and tries < 900:
+        tries += 1
+        a = math.radians(rr.uniform(-178, -2))
+        rad = rr.uniform(0.05, 0.075)
+        x, y = watch_c[0] + rad * math.cos(a), watch_c[1] + rad * math.sin(a)
+        if math.hypot(x, y + 0.01) > 0.064:      # stay inside the walkers' inner lane
+            continue
+        if not CL.ok(x, y, 0.0022, FH * 1.05):
+            continue
+        CL.take(x, y, 0.0026)
+        fg = Figure(f"crowd{len(crowd)}", FH * rr.uniform(0.85, 1.05), coat=cols[rr.randrange(len(cols))], long_coat=rr.random() < 0.4,
+                    hat=rr.choice(["bowler", "cap", None, "tophat", None, "bowler"]), mustache=rr.random() < 0.3,
+                    apron=(0.85, 0.8, 0.7) if rr.random() < 0.1 else None, seed=300 + len(crowd))
+        yaw = math.degrees(math.atan2(watch_c[0] - x, -(watch_c[1] - y)))
+        fg.place((x, y, 0.0), yaw + rr.uniform(-12, 12))
+        crowd.append((fg, rr.random() < 0.35, rr.uniform(0, 0.6)))
+    for (vx, vy), yaw in vendors:
+        fg = Figure(f"vendor{vx:.3f}", FH, coat=cols[rr.randrange(len(cols))], apron=(0.9, 0.88, 0.8), hat="cap", seed=int(abs(vx) * 1e5))
+        fg.place((vx, vy, 0.0), yaw + 180)
+        crowd.append((fg, False, rr.uniform(0, 0.6)))
+    placed["crowd"] = len(crowd)
+    for f, t in frames():
+        for fg, pointer, d in crowd:
+            spun = t > T_SPIN + 0.25 + d
+            fg.pose(f, t, look=(8 * math.sin(t * 0.7 + d * 9), 34 if spun else 22 + 6 * math.sin(t * 0.4 + d * 5)),
+                    point=pointer and spun, wave=(not pointer) and spun and d > 0.45)
+    print("DRESSING", placed, "bulbs", n_bulbs)
+    return placed
+
+
 # ================================================================= S2B — the polished giant watch (v2)
 def catmull(keys, t):
     """Smooth path through (time, value-tuple) keys (Catmull-Rom with eased timing)."""
@@ -971,7 +1170,7 @@ def catmull(keys, t):
                          for a, b, c, d in zip(p0, p1, p2, p3))
 
 
-def s2b_giant_watch():
+def s2b_giant_watch(dense=False):
     """v2 — 15 s. Macro on a real pocket watch standing like a monument in a 1:220 Parisian square at golden hour; a
     cleaner on a ladder polishes its glass. The camera sinks to street level: strollers, a child with a red balloon, a
     newspaper reader, a lamplighter. The hands begin to SPIN — the sun drops, night falls in seconds, the lamplighter
@@ -980,6 +1179,14 @@ def s2b_giant_watch():
     TS = 0.0045                     # town scale (1:220)
     FH = 1.75 * TS                  # figure height ~8 mm
     T_SPIN, T_NIGHT = 7.0, 7.4
+    # camera: Catmull-Rom through story beats, then zero-lag smoothing (macro rig)
+    cam_k = [(0.0, (0.03, -0.035, 0.05)), (3.2, (0.045, -0.075, 0.03)), (6.6, (0.02, -0.105, 0.007)), (9.6, (-0.02, -0.12, 0.016)),
+             (12.0, (-0.01, -0.2, 0.08)), (15.0, (0.0, -0.33, 0.21))]
+    aim_k = [(0.0, (0.0, 0.035, 0.048)), (3.2, (0.015, -0.02, 0.02)), (6.6, (0.015, -0.03, 0.009)), (9.6, (-0.03, -0.03, 0.02)),
+             (12.0, (0.0, 0.02, 0.03)), (15.0, (0.0, 0.03, 0.02))]
+    foc_k = [(0.0, (0.0, 0.033, 0.045)), (2.0, (0.0235, 0.026, 0.033)), (3.4, (0.0235, 0.026, 0.03)), (4.6, (0.022, -0.05, 0.005)),
+             (6.6, (0.022, -0.05, 0.005)), (7.4, (0.0, 0.03, 0.04)), (8.9, (0.0, 0.03, 0.04)), (9.8, (-0.06, -0.035, 0.008)),
+             (11.5, (0.0, 0.03, 0.04)), (15.0, (0.0, 0.03, 0.03))]
     AS.hdri("belfast_sunset_puresky", "2k", 1.0, 200)
     wnt = SC.world.node_tree
     bg = wnt.nodes["Background"]
@@ -1070,7 +1277,40 @@ def s2b_giant_watch():
     cols = [(0.45, 0.18, 0.22), (0.2, 0.28, 0.45), (0.3, 0.35, 0.25), (0.5, 0.4, 0.2), (0.15, 0.15, 0.18), (0.55, 0.3, 0.15), (0.35, 0.22, 0.4)]
     walkers = []
     rr = random.Random(12)
-    for i in range(14):
+    if dense:
+        lamp_pos_ = [(-0.06, -0.035), (0.075, -0.05), (0.095, 0.0), (-0.1, 0.03)]
+        CL = Clearance(lambda t: catmull(cam_k, t), lambda t: catmull(foc_k, t), DUR, lens_mm=20.0,
+                       reserved=[(0.022, -0.05, 0.006), (-0.04, 0.046, 0.005), (0.022, 0.025, 0.006), (-0.045, 0.05, 0.006), (0.05, 0.055, 0.006),
+                                 (0.0, 0.035, 0.047)] + [(x, y, 0.004) for x, y in lamp_pos_])
+        lp = [(-0.09, -0.055)] + lamp_pos_[:3]
+        for (ax, ay), (bx, by) in zip(lp, lp[1:]):  # the lamplighter's route stays clear
+            n = int(math.hypot(bx - ax, by - ay) / 0.004) + 1
+            CL.reserved += [(ax + (bx - ax) * k / n, ay + (by - ay) * k / n, 0.004) for k in range(n + 1)]
+        avoid_r = [math.hypot(x, y + 0.01) for x, y in lamp_pos_] + [math.hypot(-0.045, 0.06), math.hypot(0.05, 0.065), math.hypot(-0.04, 0.056)]
+        lane = 0
+        for li in range(16):
+            rad = 0.07 + 0.003 * li
+            if any(abs(rad - q) < 0.0045 for q in avoid_r):
+                continue
+            sp = (1 if li % 2 else -1) * rr.uniform(0.012, 0.016)
+            got = []
+            for cand in range(24):  # try phases until two well-separated walkers fit this lane
+                a0 = li * 0.9 + cand * (2 * math.pi / 24)
+                if len(got) >= 2 or any(abs(math.remainder(a0 - g, 2 * math.pi)) < 0.9 for g in got):
+                    continue
+                ok = all(CL.lens_ok(rad * math.cos(a0 + sp * t / rad), rad * math.sin(a0 + sp * t / rad) - 0.01, 0.0015, FH, t_idx=i)
+                         and (i % 3 or not 4.4 <= t <= 6.8 or CL.los_ok(rad * math.cos(a0 + sp * t / rad), rad * math.sin(a0 + sp * t / rad) - 0.01,
+                                                                          0.0015, FH, t_idx=i))  # never hide the balloon kid
+                         for i, t in enumerate(CL.ts))
+                if not ok:
+                    continue
+                fg = Figure(f"town{lane}", FH * rr.uniform(0.93, 1.05), coat=cols[lane % len(cols)], long_coat=lane % 2 == 0,
+                            hat=rr.choice(["bowler", "cap", None, "tophat", "bowler"]), mustache=lane % 3 == 0, seed=100 + lane)
+                walkers.append((fg, a0, rad, sp))
+                got.append(a0)
+                lane += 1
+        print("WALKERS", len(walkers))
+    for i in range(0 if dense else 14):
         fg = Figure(f"town{i}", FH * rr.uniform(0.93, 1.05), coat=cols[i % len(cols)], long_coat=i % 2 == 0,
                     hat=rr.choice(["bowler", "cap", None, "tophat", "bowler"]), mustache=i % 3 == 0, seed=100 + i)
         a0 = rr.uniform(0, 2 * math.pi)
@@ -1134,25 +1374,35 @@ def s2b_giant_watch():
         bz = hz + 0.0045 + 0.0003 * math.sin(t * 2)
         key(balloon, f, loc=(hx + 0.0004 * math.sin(t * 1.3), hy, bz))
         key(string, f, loc=(hx, hy, (hz + bz) / 2), scale=(0.00006, 0.00006, (bz - hz) / 2))
-    # camera: Catmull-Rom through story beats, then zero-lag smoothing (macro rig)
-    cam_k = [(0.0, (0.03, -0.035, 0.05)), (3.2, (0.045, -0.075, 0.03)), (6.6, (0.02, -0.105, 0.007)), (9.6, (-0.02, -0.12, 0.016)),
-             (12.0, (-0.01, -0.2, 0.08)), (15.0, (0.0, -0.33, 0.21))]
-    aim_k = [(0.0, (0.0, 0.035, 0.048)), (3.2, (0.015, -0.02, 0.02)), (6.6, (0.015, -0.03, 0.009)), (9.6, (-0.03, -0.03, 0.02)),
-             (12.0, (0.0, 0.02, 0.03)), (15.0, (0.0, 0.03, 0.02))]
-    foc_k = [(0.0, (0.0, 0.033, 0.045)), (2.0, (0.0235, 0.026, 0.033)), (3.4, (0.0235, 0.026, 0.03)), (4.6, (0.022, -0.05, 0.005)),
-             (6.6, (0.022, -0.05, 0.005)), (7.4, (0.0, 0.03, 0.04)), (8.9, (0.0, 0.03, 0.04)), (9.8, (-0.06, -0.035, 0.008)),
-             (11.5, (0.0, 0.03, 0.04)), (15.0, (0.0, 0.03, 0.03))]
+    if dense:
+        dress_square(TS, FH, T_SPIN, T_NIGHT, CL)
     macro_camera(lambda t: (add(catmull(cam_k, t), drift(t, 0.0003)), catmull(aim_k, t)), lambda t: catmull(foc_k, t), lens=50, fstop=22.0,
                  smooth=0.1)
     return dict(exposure=-0.2)
 
 
 PRESS_HITS = []
-SAMPLES_FN = {"S1": s1_paris1889, "S2": s2_giant_watch, "S3": s3_factory, "S2B": s2b_giant_watch}
+SAMPLES_FN = {"S1": s1_paris1889, "S2": s2_giant_watch, "S3": s3_factory, "S2B": s2b_giant_watch,
+              "S2C": lambda: s2b_giant_watch(dense=True)}
 
 if __name__ == "__main__":
     cfg = SAMPLES_FN[SAMPLE]() or {}
     bake_all()
+    if SAMPLE == "S2C":  # QC: no two figurines may ever overlap (walk-through = glitch)
+        import figurine as FG_
+        roots = [(g.name, g.root) for g in FG_._ALL]
+        worst = (1.0, None, None, None)
+        for f in range(1, NF + 1, 3):
+            SC.frame_set(f)
+            pts = [(n, r.matrix_world.translation.copy()) for n, r in roots]
+            for i in range(len(pts)):
+                for j in range(i + 1, len(pts)):
+                    d = (pts[i][1].xy - pts[j][1].xy).length
+                    if d < worst[0]:
+                        worst = (d, pts[i][0], pts[j][0], f)
+        print(f"FIGURE CLEARANCE min {worst[0] * 1000:.2f} mm ({worst[1]} vs {worst[2]} at frame {worst[3]}), {len(roots)} figures")
+        if os.environ.get("CHECK_ONLY"):
+            sys.exit(0)
     setup_render(cfg.get("exposure", 0.0))
     if STILLS:
         SC.render.use_motion_blur = False
