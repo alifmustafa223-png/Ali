@@ -378,3 +378,5 @@
      Catmull paths use light smoothing (0.14) and make the camera ARRIVE on the subject ~0.5 s before the event.
 152. Simulate, then check: the wrecking-ball pendulum is integrated numerically, its closest approach to the tower is printed
      before rendering (first try: -4 mm = it would have gone through the tower; tuned to +30.8 mm).
+153. 2D titles/stamps must never sit on top of text that exists INSIDE the 3D shot (the giant permit's printed words). Check every
+     scene where the plate contains readable text at 4-5 fps on the FINAL composite, and give titles/stamps their own empty band.
