@@ -30,3 +30,23 @@ python make_cove_test.py ../cove_test/frames ../cove_test/cove_test.mp4
 - Read `CLAUDE.md` and `LESSONS.md`.
 - No glitches: check frames at every beat before delivering.
 - Commit and push to `claude/new-session-ati950`.
+
+## What the owner said in the cloud session (it's not in any other file)
+- Rejected:
+  - 2D toon characters pasted over 3D. "Characters look bad, 2D on 3D doesn't fit, background is wrong, captions/text."
+  - Code-built 3D characters, which looked like wooden toys.
+  - The miniature-town/giant-watch look as the main style. It "felt empty": too few, too small people.
+- Wants:
+  - full 3D, film-quality characters with readable, acting faces, in a rich, full set
+  - smooth camera, real physics, zero glitches
+  - fast iteration
+- Reference channel: Ricks Clips, "How Mine Salting Worked". Breakdown in `dailymind/studio/REFERENCE_RICKS_CLIPS.md`.
+  Takeaways: one story with a twist, characters big in frame with expressive faces, a new framing every 1.5-2 s, present-tense casual narration.
+- Captions: the owner disliked the one-word caption mock. Ask before adding any text style, and propose one in the next test.
+- Voice:
+  - wants free and better than vidIQ. Chatterbox chosen (MIT).
+  - Do NOT clone vidIQ's "Chris" voice.
+  - Current settings: exaggeration 0.7, cfg 0.3. Short lines (e.g. "is fake.") produce artifacts, so keep the twist inside a full sentence and insert the pause in post.
+- Test clip script: "This chest is full of gold... and she's about to throw it into the sea. Because every single coin in it... is fake."
+- Bone axis gotcha: Snow's FK-UpperArm Z sign is opposite to Rain's. Snow's FK-Head Y is positive when turning toward Rain.
+- A cloud render (40 % res, 10 samples) of this same clip was in progress as a fallback.
