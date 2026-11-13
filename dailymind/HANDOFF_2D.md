@@ -1,5 +1,8 @@
 # HANDOFF for the PC session: 10-second animated test in the polished 2D style
 
+**STATUS 2026-11-13: DONE — the owner APPROVED this style and voice** (`cove_test/style2d_test.mp4`, QC ALL PASS).
+Next: full 61-65 s Shorts in this style (see CLAUDE.md, "APPROVED HOUSE STYLE + VOICE").
+
 The owner chose the 2D "Classic+ cartoon" look. Hero frame: `dailymind/ultimate/style2d_ultimate.py`.
 Make a 10 s animated test, 1080x1920, 30 fps, at TOP quality. The owner's words: "the physics, music and voice should
 be top, no glitches." They do not tolerate glitches, so check everything before showing them.

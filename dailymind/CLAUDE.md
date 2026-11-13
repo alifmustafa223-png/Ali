@@ -13,6 +13,18 @@ Format: surprising history of everyday things, English, natural male narrator.
 - Full HD 1080x1920, export with `base.CRF = 16`.
 - Always give ready-to-post title, description, tags.
 
+## APPROVED HOUSE STYLE + VOICE (owner approved 2026-11-13) — use this for every new video
+- **Style: 2D "Classic+ cartoon"** — hero frame `ultimate/style2d_ultimate.py`, animated by `ultimate/make_style2d_test.py`
+  (static layers once at 1.25x, the push-in is a crop; cel shade + rim light + cast shadows; bloom, grade, vignette, grain;
+  title slams on its spoken word, no caption boxes). Reference result: `cove_test/style2d_test.mp4`.
+- **Voice: Chatterbox (free, MIT) on the PC GPU**, exaggeration 0.7 / cfg 0.3, best of 3 takes per line verified by
+  faster-whisper: `tts/chatter_takes.py lines.json out.wav 3 0.7 0.3` (venv `C:/Users/AliFM/tts_env`). Word timestamps drive
+  every animation cue and SFX. Do NOT clone vidIQ's "Chris".
+- **Sound:** real CC0 foley (`cove_test/sfx/`, BigSoundBank) placed on frames, `ultimate/make_style2d_audio.py`
+  (mastered + verified on the encoded MP4). Music optional (the approved test had none).
+- **QC:** `ultimate/qc_style2d.py` must print ALL PASS, then look at its sheets/strips. Physics is solved and asserted in code.
+- Superseded: the 3D Rain/Snow cove test and the miniature-universe look were NOT chosen.
+
 ## Three production styles (all built)
 1. **Code-drawn Skia toon** (latest, owner asked for it): `ultimate/toon.py` (characters, props) +
    `ultimate/make_toon.py` (12 scenes) + `ultimate/ultimate.py` (stage, mascot pineapple, coins physics, bloom).
@@ -36,7 +48,7 @@ Format: surprising history of everyday things, English, natural male narrator.
 ## Videos made so far
 cooking, bread, tea, ice cream, salt, coffee, pizza, chocolate, ketchup, carrot, honey, lobster, potato,
 nutmeg, popcorn, banana, toothpaste, fork, pineapple (Gemini version + code-drawn Skia version + Chris re-voice),
-chewing gum (Skia toon, `ultimate/make_gum.py`), ice / Frederic Tudor (Skia toon, `ultimate/make_ice.py`), chess / the queen (Skia toon, `ultimate/make_chess.py`), Coca-Cola as medicine (Skia toon, `ultimate/make_cola.py`), bubble wrap as wallpaper (Skia toon, `ultimate/make_bubble.py`), purple / snail dye / Perkin (Skia toon + CTA v2, `ultimate/make_purple.py`), Monopoly / Lizzie Magie (Skia toon + CTA v2, `ultimate/make_monopoly.py`), Messi vs Ronaldo childhood facts (Skia toon + `physics.py`, `ultimate/make_goat.py`), Mona Lisa theft 1911 (Skia toon + physics, `ultimate/make_mona.py`), airplane windows / Comet (REAL 3D: Blender plates `blender/window3d.py` + `ultimate/make_window3d.py`; old fake-3D `make_window.py`), Leaning Tower of Pisa (REAL 3D v2: 3D toons `blender/toon3d.py` + Bullet physics `blender/pisa3d.py` + `ultimate/make_pisa3d.py`), Eiffel Tower / a radio saved it (MINIATURE CINEMATIC UNIVERSE — the chosen house style: `blender/eiffel_mini.py` + figurine.py + town_kit.py + dm_assets.py, `ultimate/make_eiffel_mini.py`).
+chewing gum (Skia toon, `ultimate/make_gum.py`), ice / Frederic Tudor (Skia toon, `ultimate/make_ice.py`), chess / the queen (Skia toon, `ultimate/make_chess.py`), Coca-Cola as medicine (Skia toon, `ultimate/make_cola.py`), bubble wrap as wallpaper (Skia toon, `ultimate/make_bubble.py`), purple / snail dye / Perkin (Skia toon + CTA v2, `ultimate/make_purple.py`), Monopoly / Lizzie Magie (Skia toon + CTA v2, `ultimate/make_monopoly.py`), Messi vs Ronaldo childhood facts (Skia toon + `physics.py`, `ultimate/make_goat.py`), Mona Lisa theft 1911 (Skia toon + physics, `ultimate/make_mona.py`), airplane windows / Comet (REAL 3D: Blender plates `blender/window3d.py` + `ultimate/make_window3d.py`; old fake-3D `make_window.py`), Leaning Tower of Pisa (REAL 3D v2: 3D toons `blender/toon3d.py` + Bullet physics `blender/pisa3d.py` + `ultimate/make_pisa3d.py`), Eiffel Tower / a radio saved it (MINIATURE CINEMATIC UNIVERSE — earlier style, superseded: `blender/eiffel_mini.py` + figurine.py + town_kit.py + dm_assets.py, `ultimate/make_eiffel_mini.py`).
 END CARD: use `ultimate/cta2.py` (draw_cta2) for every new video — the owner did not like the old one.
 LONG-FORM (16:9, 10 min): "What If You Got $1 Every Time Someone Thought About You?" (`ultimate/make_thoughts.py` + `long_engine.py`).
 Don't repeat topics.
