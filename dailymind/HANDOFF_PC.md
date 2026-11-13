@@ -54,7 +54,9 @@ python make_cove_test.py ../cove_test/frames ../cove_test/cove_test.mp4
 ## Speed for test iterations (the owner wants fast)
 - Cycles at 100 % / 64 samples takes about 75 min for 10 s on the RTX 4050. Too slow for tests.
 - For TESTS use EEVEE with env `DM_ENGINE=EEVEE`, e.g. 64 samples at 100 %. Expect a few minutes.
-  - PowerShell: `$env:DM_ENGINE="EEVEE"; blender -b -P cove_anim.py -- ../cove_test/frames 100 64`
+  - PowerShell: `$env:DM_ENGINE="EEVEE"; $env:VO_TIMES="../cove_test/vo_final.wav.times.json"; blender -b -P cove_anim.py -- ../cove_test/frames 100 16` (16 samples = ~3 s/frame, ~12 min with motion blur; 64 = ~6 s/frame)
+  - ALWAYS set VO_TIMES, or the animation runs on default cues ~1 s out of sync with the voice.
+  - Use an absolute output path on Windows (a relative one landed in C:\cove_test).
 - Keep Cycles for the approved final only, or use Cycles at 50 % / 24 samples (about 4x faster).
 
 ## Fixed after the cloud test (pull before rendering)

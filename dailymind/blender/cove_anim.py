@@ -120,10 +120,12 @@ kb(snow, "FK-Forearm.L", 0, rot=(12, 0, 0))
 T_SNAP = VO["throw"] + 1.0
 kb(snow, "FK-UpperArm.L", T_SNAP, rot=(0, 0, 66))
 kb(snow, "FK-Forearm.L", T_SNAP, rot=(12, 0, 0))
-kb(snow, "FK-UpperArm.L", T_SNAP + 0.35, rot=(48, 0, 40))          # hand flies up toward his face
-kb(snow, "FK-Forearm.L", T_SNAP + 0.35, rot=(105, 0, 0))
-hold(snow, "FK-UpperArm.L", (DUR,), rot=(48, 0, 40))
-hold(snow, "FK-Forearm.L", (DUR,), rot=(105, 0, 0))
+SNOW_UA = tuple(float(x) for x in os.environ.get("SNOW_UA", "-60,0,30").split(","))   # +X swings his arm BEHIND him: (48,0,40) hid the forearm
+SNOW_FA = float(os.environ.get("SNOW_FA", "120"))
+kb(snow, "FK-UpperArm.L", T_SNAP + 0.35, rot=SNOW_UA)          # arm snaps up, pointing at the chest in shock
+kb(snow, "FK-Forearm.L", T_SNAP + 0.35, rot=(SNOW_FA, 0, 0))
+hold(snow, "FK-UpperArm.L", (DUR,), rot=SNOW_UA)
+hold(snow, "FK-Forearm.L", (DUR,), rot=(SNOW_FA, 0, 0))
 for t, rot in ((0, (14, 4, 0)), (T_SNAP - 0.05, (16, 2, 0)), (T_SNAP + 0.18, (0, 26, -4)), (T_FAKE, (-2, 24, -6)), (T_FAKE + 0.4, (4, 20, -10)),
                (DUR, (4, 19, -10))):
     kb(snow, "FK-Head", t, rot=rot)
@@ -158,7 +160,16 @@ SC.frame_set(fr(T_TOSS))
 p0 = held.matrix_world.translation.copy()
 SC.frame_set(fr(T_TOSS + 0.6))
 p1 = held.matrix_world.translation.copy()
-fly = bpy.data.objects.new("flip_coin", held.data)
+fly_me = held.data.copy()                      # own material: the shared gold read as a pale flat disc against the sky
+fly_gold = bpy.data.materials.new("flip_gold")
+fly_gold.use_nodes = True
+_p = fly_gold.node_tree.nodes["Principled BSDF"]
+_p.inputs["Base Color"].default_value = (0.36, 0.18, 0.02, 1)
+_p.inputs["Roughness"].default_value = 0.55
+_p.inputs["Metallic"].default_value = 1.0
+fly_me.materials.clear()
+fly_me.materials.append(fly_gold)
+fly = bpy.data.objects.new("flip_coin", fly_me)
 SC.collection.objects.link(fly)
 fly.scale = held.scale
 tf = 0.6
@@ -226,7 +237,20 @@ if os.environ.get("DM_ENGINE", "").upper() == "EEVEE":  # fast test renders on t
             setattr(ee, attr, val)
         except Exception:
             pass
+    # Rain's cornea is a pure Refraction BSDF: EEVEE draws it as an opaque dark shell (black eyes).
+    # Swap the refraction for a Transparent BSDF so the iris shows through; the gloss layer stays.
+    cm = bpy.data.materials.get("MAT-rain.cornea")
+    if cm and cm.use_nodes:
+        nt = cm.node_tree
+        for n in [n for n in nt.nodes if n.bl_idname == "ShaderNodeBsdfRefraction"]:
+            tr = nt.nodes.new("ShaderNodeBsdfTransparent")
+            for l in list(nt.links):
+                if l.from_node == n:
+                    nt.links.new(tr.outputs[0], l.to_socket)
+            nt.nodes.remove(n)
+        print("CORNEA fixed for EEVEE")
     print("ENGINE", SC.render.engine)
+SC.render.use_motion_blur = True               # the spinning coin and the hand flick get real blur
 SC.render.use_persistent_data = True
 SC.view_settings.view_transform = "AgX"
 SC.view_settings.look = "AgX - Medium High Contrast"
