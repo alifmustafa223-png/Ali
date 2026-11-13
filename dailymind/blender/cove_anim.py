@@ -209,6 +209,21 @@ except Exception:
     pass
 SC.cycles.samples = SAMPLES
 SC.cycles.use_denoising = True
+if os.environ.get("DM_ENGINE", "").upper() == "EEVEE":  # fast test renders on the RTX GPU (~1-3 s/frame at full HD)
+    for eng in ("BLENDER_EEVEE_NEXT", "BLENDER_EEVEE"):
+        try:
+            SC.render.engine = eng
+            break
+        except TypeError:
+            pass
+    ee = SC.eevee
+    ee.taa_render_samples = max(16, SAMPLES)
+    for attr, val in (("use_raytracing", True), ("use_shadows", True), ("use_volumetric_shadows", False), ("ray_tracing_method", "SCREEN")):
+        try:
+            setattr(ee, attr, val)
+        except Exception:
+            pass
+    print("ENGINE", SC.render.engine)
 SC.render.use_persistent_data = True
 SC.view_settings.view_transform = "AgX"
 SC.view_settings.look = "AgX - Medium High Contrast"

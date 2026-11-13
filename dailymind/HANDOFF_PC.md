@@ -50,3 +50,9 @@ python make_cove_test.py ../cove_test/frames ../cove_test/cove_test.mp4
 - Test clip script: "This chest is full of gold... and she's about to throw it into the sea. Because every single coin in it... is fake."
 - Bone axis gotcha: Snow's FK-UpperArm Z sign is opposite to Rain's. Snow's FK-Head Y is positive when turning toward Rain.
 - A cloud render (40 % res, 10 samples) of this same clip was in progress as a fallback.
+
+## Speed for test iterations (the owner wants fast)
+- Cycles at 100 % / 64 samples takes about 75 min for 10 s on the RTX 4050. Too slow for tests.
+- For TESTS use EEVEE with env `DM_ENGINE=EEVEE`, e.g. 64 samples at 100 %. Expect a few minutes.
+  - PowerShell: `$env:DM_ENGINE="EEVEE"; blender -b -P cove_anim.py -- ../cove_test/frames 100 64`
+- Keep Cycles for the approved final only, or use Cycles at 50 % / 24 samples (about 4x faster).
