@@ -56,3 +56,10 @@ python make_cove_test.py ../cove_test/frames ../cove_test/cove_test.mp4
 - For TESTS use EEVEE with env `DM_ENGINE=EEVEE`, e.g. 64 samples at 100 %. Expect a few minutes.
   - PowerShell: `$env:DM_ENGINE="EEVEE"; blender -b -P cove_anim.py -- ../cove_test/frames 100 64`
 - Keep Cycles for the approved final only, or use Cycles at 50 % / 24 samples (about 4x faster).
+
+## Fixed after the cloud test (pull before rendering)
+- The flipped coin crossed her face and showed as a flat white disc.
+  - Her coin hand is now at chest height.
+  - The flip arcs out to her side.
+  - The gold is less mirror-like.
+- Still to watch: the coin in flight reads pale against the bright sky. Check the 10 fps frames of the toss.

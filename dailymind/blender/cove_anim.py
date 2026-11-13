@@ -82,13 +82,13 @@ kb(rain, "FK-Forearm.L", 0, rot=(18, 0, 0))
 kb(rain, "FK-Upperarm.L", T_RAISE - 0.5, rot=(4, 0, -68))
 kb(rain, "FK-Forearm.L", T_RAISE - 0.5, rot=(18, 0, 0))
 for t in (T_RAISE + 0.3, T_TOSS - 0.25):           # coin up beside her face
-    kb(rain, "FK-Upperarm.L", t, rot=(35, 0, -52))
-    kb(rain, "FK-Forearm.L", t, rot=(122, 0, 0))
-kb(rain, "FK-Forearm.L", T_TOSS - 0.1, rot=(105, 0, 0))     # dip ...
-kb(rain, "FK-Forearm.L", T_TOSS + 0.05, rot=(130, 0, 0))   # ... flick
-kb(rain, "FK-Forearm.L", T_TOSS + 0.6, rot=(122, 0, 0))
-kb(rain, "FK-Forearm.L", DUR, rot=(122, 0, 0))
-kb(rain, "FK-Upperarm.L", DUR, rot=(35, 0, -52))
+    kb(rain, "FK-Upperarm.L", t, rot=(18, 0, -62))
+    kb(rain, "FK-Forearm.L", t, rot=(96, 0, 0))
+kb(rain, "FK-Forearm.L", T_TOSS - 0.1, rot=(80, 0, 0))     # dip ...
+kb(rain, "FK-Forearm.L", T_TOSS + 0.05, rot=(106, 0, 0))   # ... flick
+kb(rain, "FK-Forearm.L", T_TOSS + 0.6, rot=(96, 0, 0))
+kb(rain, "FK-Forearm.L", DUR, rot=(96, 0, 0))
+kb(rain, "FK-Upperarm.L", DUR, rot=(18, 0, -62))
 for t, rot in ((0, (-2, 6, -4)), (T_RAISE, (-3, 10, -6)), (T_TOSS, (2, 4, -2)), (T_TOSS + 0.7, (-6, 2, 0)), (T_FAKE + 0.1, (-5, 12, -10)),
                (DUR, (-5, 13, -11))):
     kb(rain, "FK-Head", t, rot=rot)
@@ -168,8 +168,11 @@ for k in range(0, int(tf * FPS) + 3):
     tt = min(tf, k / FPS)
     pos = p0.lerp(p1, tt / tf)
     pos.z = p0.z + vz * tt - 0.5 * g_ * tt * tt
+    side = math.sin(math.pi * tt / tf)            # the flip arcs out to her side and toward the camera, never across her face
+    pos.x += 0.16 * side
+    pos.y -= 0.10 * side
     fly.location = pos
-    fly.rotation_euler = (R(90) + tt * 6 * 2 * math.pi, 0, R(20))
+    fly.rotation_euler = (R(90), tt * 5 * 2 * math.pi, R(20))   # tumbles edge-over-edge like a real flipped coin
     fly.keyframe_insert("location", frame=fr(T_TOSS) + k)
     fly.keyframe_insert("rotation_euler", frame=fr(T_TOSS) + k)
 for t, v in ((0, True), (T_TOSS, True), (T_TOSS + 0.04, False), (T_TOSS + 0.56, False), (T_TOSS + 0.6, True)):

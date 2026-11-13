@@ -105,7 +105,7 @@ for o in chest:
     if o.name.endswith("_lid"):
         o.rotation_euler.x += R(-105)   # hinge open (lid origin sits on the hinge)
 # gold heaped in the chest + a few spilled coins
-gold = paint("gold", (1.0, 0.72, 0.28), 0.18, 1.0)
+gold = paint("gold", (0.8, 0.5, 0.12), 0.42, 1.0)   # brighter/smoother gold blew out to a white disc in the sunset light
 rr = random.Random(3)
 bpy.ops.mesh.primitive_cylinder_add(vertices=24, radius=0.022, depth=0.004)
 coin_me = bpy.context.active_object.data
@@ -191,7 +191,7 @@ print("SNOW FK", [b.name for b in snow.pose.bones if b.name.startswith(("FK-Uppe
 hand = rain.pose.bones.get("FK-Hand.L")
 held = bpy.data.objects.new("held_coin", coin_me)
 SC.collection.objects.link(held)
-held.scale = (2.2, 2.2, 2.2)
+held.scale = (1.6, 1.6, 1.6)
 held.parent, held.parent_type, held.parent_bone = rain, "BONE", "FK-Hand.L"
 held.location = (0.0, 0.05, 0.02)
 held.rotation_euler = (R(90), 0, 0)
