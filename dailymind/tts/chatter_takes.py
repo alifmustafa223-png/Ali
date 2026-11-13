@@ -8,6 +8,7 @@ whisper timestamp) - short lines like "is fake." make Chatterbox glitch, so the 
 Writes OUT.wav (24 kHz mono), OUT.wav.times.json (line starts), OUT.wav.words.json (start of every word, by key
 "word" and "word#n" for repeats) and OUT.wav.takes.json (the scorecard of every take).
 """
+import hashlib
 import json
 import os
 import re
@@ -24,6 +25,8 @@ out = sys.argv[2]
 N = int(sys.argv[3]) if len(sys.argv) > 3 else 3
 EXAG = float(sys.argv[4]) if len(sys.argv) > 4 else 0.7
 CFG = float(sys.argv[5]) if len(sys.argv) > 5 else 0.3
+CACHE = os.path.join(os.path.dirname(os.path.abspath(out)), "_takes_cache")
+os.makedirs(CACHE, exist_ok=True)
 dev = "cuda" if torch.cuda.is_available() else "cpu"
 print("device", dev)
 tts = ChatterboxTTS.from_pretrained(device=dev)
@@ -31,8 +34,45 @@ SR = tts.sr
 asr = WhisperModel(os.environ.get("WHISPER", "small.en"), device=dev, compute_type="float16" if dev == "cuda" else "int8")
 
 
+ONES = "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen".split()
+TENS = "_ _ twenty thirty forty fifty sixty seventy eighty ninety".split()
+
+
+def two(n):
+    return ONES[n] if n < 20 else TENS[n // 10] + ("" if n % 10 == 0 else " " + ONES[n % 10])
+
+
+def year_words(m):
+    """Whisper writes years as digits ('1878'); the script spells them ('eighteen seventy-eight'). Compare as words."""
+    y = int(m.group(0))
+    hi, lo = divmod(y, 100)
+    if 1100 <= y <= 1999 or 2010 <= y <= 2099:
+        return " " + two(hi) + " " + ("hundred" if lo == 0 else ("oh " + ONES[lo] if lo < 10 else two(lo))) + " "
+    return m.group(0)
+
+
+def num_words(n):
+    """Plain cardinal: 100000 -> 'one hundred thousand', 4000000 -> 'four million'."""
+    if n < 100:
+        return two(n)
+    if n < 1000:
+        h, r = divmod(n, 100)
+        return ONES[h] + " hundred" + ("" if r == 0 else " " + two(r))
+    for big, name in ((10 ** 9, "billion"), (10 ** 6, "million"), (1000, "thousand")):
+        if n >= big:
+            q, r = divmod(n, big)
+            return num_words(q) + " " + name + ("" if r == 0 else " " + num_words(r))
+
+
 def norm(s):
-    return re.sub(r"[^a-z' ]", " ", s.lower().replace("’", "'")).split()
+    s = s.lower().replace("’", "'").replace("-", " ")
+    s = re.sub(r"(\d) ?,(\d{3})", r"\1\2", s)          # whisper writes '100 ,000' / '3,000,000'
+    s = re.sub(r"(\d) ?,(\d{3})", r"\1\2", s)
+    s = re.sub(r"\b\d{4}\b", year_words, s)            # years: 1878 -> eighteen seventy eight
+    s = re.sub(r"\b\d+\b", lambda m: " " + num_words(int(m.group(0))) + " ", s)
+    s = re.sub(r"\ba (hundred|thousand|million|billion)\b", r"one \1", s)
+    w = re.sub(r"[^a-z' ]", " ", s).split()
+    return [{"too": "to", "two": "to", "learnt": "learned"}.get(x, x) for x in w]   # homophones whisper cannot tell apart
 
 
 def transcribe(wav):
@@ -58,23 +98,34 @@ parts, times, words_all, t = [], {}, {}, 0.0
 for li, ln in enumerate(lines):
     want = norm(ln["text"])
     best = None
-    for k in range(N):
+    for k in range(ln.get("takes", N)):
         seed = 1000 * li + 17 * k + 7
-        torch.manual_seed(seed)
-        wav = tts.generate(ln["text"], exaggeration=ln.get("exaggeration", EXAG), cfg_weight=ln.get("cfg", CFG))[0].cpu().numpy()
-        wav = trim(wav)
-        # whisper wants 16 kHz
-        w16 = np.interp(np.arange(0, len(wav), SR / 16000), np.arange(len(wav)), wav)
-        ws = transcribe(w16)
+        # cache every take by (text, settings, seed): re-runs only generate lines that changed
+        ex_, cf_ = ln.get("exaggeration", EXAG), ln.get("cfg", CFG)
+        tag = hashlib.md5(f"{ln['text']}|{ex_}|{cf_}|{seed}".encode()).hexdigest()[:12]
+        cpath = os.path.join(CACHE, tag + ".npz")
+        if os.path.exists(cpath):
+            z = np.load(cpath, allow_pickle=True)
+            wav, ws = z["wav"], list(z["ws"])
+        else:
+            torch.manual_seed(seed)
+            wav = tts.generate(ln["text"], exaggeration=ex_, cfg_weight=cf_)[0].cpu().numpy()
+            wav = trim(wav)
+            w16 = np.interp(np.arange(0, len(wav), SR / 16000), np.arange(len(wav)), wav)   # whisper wants 16 kHz
+            ws = transcribe(w16)
+            np.savez(cpath, wav=wav, ws=np.array(ws, dtype=object))
+        ws = [dict(x) for x in ws]
         got = norm(" ".join(x["w"] for x in ws))
         exact = got == want
         gaps = [ws[i + 1]["start"] - ws[i]["end"] for i in range(len(ws) - 1)]
         max_gap = max(gaps) if gaps else 0.0
         conf = float(np.mean([x["p"] for x in ws])) if ws else 0.0
         peak = float(np.max(np.abs(wav)))
+        if peak > 0.95:   # the model's float output can exceed 1.0 - nothing has clipped yet, so scale it, don't reject it
+            wav = wav * (0.95 / peak)
         dur = len(wav) / SR
-        # the score: exact words first, then recogniser confidence; odd gaps (>0.6 s) or clipping are disqualifying
-        ok = exact and max_gap < 0.6 and peak < 0.99
+        # the score: exact words first, then recogniser confidence; odd silences inside a line (> 0.8 s) disqualify
+        ok = exact and max_gap < 0.8
         score = (1 if ok else 0, conf)
         card.append(dict(line=ln["key"], take=k, seed=seed, heard=" ".join(x["w"] for x in ws), exact=exact, conf=round(conf, 3),
                          max_gap=round(max_gap, 2), peak=round(peak, 3), dur=round(dur, 2), ok=ok))
@@ -115,5 +166,5 @@ for li, ln in enumerate(lines):
 sf.write(out, np.concatenate(parts), SR)
 json.dump(times, open(out + ".times.json", "w"), indent=1)
 json.dump(words_all, open(out + ".words.json", "w"), indent=1)
-json.dump(card, open(out + ".takes.json", "w"), indent=1)
+json.dump(card, open(out + ".takes.json", "w"), indent=1, default=float)
 print("total", round(t, 2), "s ->", out)

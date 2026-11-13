@@ -1,0 +1,78 @@
+[
+ {
+  "key": "hook",
+  "text": "You've cracked open hundreds of these, and not one of them was Chinese.",
+  "gap_before": 0.3
+ },
+ {
+  "key": "japanese",
+  "text": "Fortune cookies are Japanese.",
+  "gap_before": 0.5,
+  "exaggeration": 0.8
+ },
+ {
+  "key": "kyoto",
+  "text": "An eighteen seventy-eight print from Kyoto shows a baker grilling these exact cookies.",
+  "gap_before": 0.6
+ },
+ {
+  "key": "darker",
+  "text": "Bigger, darker, made with sesame and miso, with the fortune tucked into the fold.",
+  "gap_before": 0.4
+ },
+ {
+  "key": "california",
+  "text": "Japanese bakers brought them to California.",
+  "gap_before": 0.65
+ },
+ {
+  "key": "teagarden",
+  "text": "A tea garden in San Francisco served them with green tea, and a family bakery made them by the thousands.",
+  "gap_before": 0.4
+ },
+ {
+  "key": "camps",
+  "text": "Then, in nineteen forty-two, Japanese Americans on the West Coast were sent to internment camps, and the bakeries closed.",
+  "gap_before": 0.7,
+  "exaggeration": 0.5
+ },
+ {
+  "key": "homes",
+  "text": "More than a hundred thousand people lost their homes and their businesses.",
+  "gap_before": 0.5,
+  "exaggeration": 0.5
+ },
+ {
+  "key": "factories",
+  "text": "Chinese American factories filled the gap, and put a cookie at the end of every Chinese meal.",
+  "gap_before": 0.75
+ },
+ {
+  "key": "billion",
+  "text": "Today, about three billion are made every year.",
+  "gap_before": 0.6
+ },
+ {
+  "key": "daily",
+  "text": "One factory in New York makes more than four million of them a day.",
+  "gap_before": 0.45
+ },
+ {
+  "key": "flop",
+  "text": "And when a company tried selling them in China, they flopped. Why? They were too American.",
+  "gap_before": 0.5,
+  "exaggeration": 0.8
+ },
+ {
+  "key": "twist",
+  "text": "So the most Chinese thing on your table was Japanese all along.",
+  "gap_before": 0.7,
+  "exaggeration": 0.8
+ },
+ {
+  "key": "cta",
+  "text": "Did you learn something new? Like, and subscribe.",
+  "gap_before": 0.75,
+  "takes": 4
+ }
+]

@@ -11,7 +11,8 @@ import random
 
 import skia
 
-FB = skia.Typeface.MakeFromFile("/usr/share/fonts/opentype/inter/Inter-ExtraBold.otf")
+FB = next((skia.Typeface.MakeFromFile(f) for f in ("/usr/share/fonts/opentype/inter/Inter-ExtraBold.otf", "C:/Windows/Fonts/seguibl.ttf")
+           if __import__("os").path.exists(f)), None)   # Inter on the Linux box, Segoe UI Black on the Windows PC
 
 
 def C(r, g, b, a=255):
@@ -416,6 +417,33 @@ def hat(c, look, pose, R):
         c.drawCircle(0, -R * 0.42, 13, P(C(60, 140, 80)))
         c.drawCircle(0, -R * 0.42, 6, P(C(210, 40, 50)))
         c.drawCircle(0, -R * 0.42, 22, S(OUT, 3))
+    elif kind == "headband":   # tied cloth band across the forehead, knot on the side
+        band = skia.Path()
+        band.moveTo(-R * 1.0, R * 0.12)
+        band.cubicTo(-R * 0.5, -R * 0.08, R * 0.5, -R * 0.08, R * 1.0, R * 0.12)
+        band.lineTo(R * 0.98, R * 0.36)
+        band.cubicTo(R * 0.5, R * 0.16, -R * 0.5, R * 0.16, -R * 0.98, R * 0.36)
+        band.close()
+        blob(c, band, (240, 238, 230), 1.05, 0.8)
+        for k, (ex, ey) in enumerate(((R * 1.25, R * 0.05), (R * 1.3, R * 0.45))):
+            tail = skia.Path()
+            tail.moveTo(R * 0.92, R * 0.22)
+            tail.quadTo((R * 0.92 + ex) / 2, ey - R * 0.12, ex, ey)
+            c.drawPath(tail, S(OUT, 18))
+            c.drawPath(tail, S(C(240, 238, 230), 11))
+    elif kind == "toque":     # baker's tall white hat
+        c.drawRoundRect(skia.Rect(-R * 0.85, -R * 0.25, R * 0.85, R * 0.12), 10, 10, P(C(245, 245, 240)))
+        c.drawRoundRect(skia.Rect(-R * 0.85, -R * 0.25, R * 0.85, R * 0.12), 10, 10, S(OUT, 4))
+        for k, (px, py, pr) in enumerate(((-R * 0.5, -R * 0.55, R * 0.42), (R * 0.5, -R * 0.55, R * 0.42), (0, -R * 0.8, R * 0.5))):
+            blob(c, oval(px, py, pr, pr), (250, 250, 245), 1.02, 0.85)
+    elif kind == "papercap":  # factory paper cap
+        p = skia.Path()
+        p.moveTo(-R * 0.95, R * 0.05)
+        p.lineTo(-R * 0.6, -R * 0.45)
+        p.lineTo(R * 0.6, -R * 0.45)
+        p.lineTo(R * 0.95, R * 0.05)
+        p.close()
+        blob(c, p, (245, 245, 245), 1.02, 0.85)
     elif kind == "bowler":
         blob(c, oval(0, -R * 0.08, R * 1.2, R * 0.18), (45, 40, 40), 1.5, 0.7)
         p = skia.Path()

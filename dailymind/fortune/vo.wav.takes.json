@@ -1,0 +1,574 @@
+[
+ {
+  "line": "hook",
+  "take": 0,
+  "seed": 7,
+  "heard": "Youth cracked open hundreds of these and not one of them was Chinese.",
+  "exact": false,
+  "conf": 0.968,
+  "max_gap": 0.0,
+  "peak": 0.877,
+  "dur": 3.09,
+  "ok": false
+ },
+ {
+  "line": "hook",
+  "take": 1,
+  "seed": 24,
+  "heard": "You've cracked open hundreds of these, and not one of them was Chinese.",
+  "exact": true,
+  "conf": 0.977,
+  "max_gap": 0.2,
+  "peak": 0.894,
+  "dur": 3.86,
+  "ok": 1.0
+ },
+ {
+  "line": "hook",
+  "take": 2,
+  "seed": 41,
+  "heard": "You've cracked open hundreds of these and not one of them was Chinese.",
+  "exact": true,
+  "conf": 0.954,
+  "max_gap": 0.0,
+  "peak": 0.997,
+  "dur": 2.99,
+  "ok": 1.0
+ },
+ {
+  "line": "hook",
+  "chosen": 1
+ },
+ {
+  "line": "japanese",
+  "take": 0,
+  "seed": 1007,
+  "heard": "Fortune cookies are Japanese.",
+  "exact": true,
+  "conf": 0.952,
+  "max_gap": 0.0,
+  "peak": 0.669,
+  "dur": 1.68,
+  "ok": 1.0
+ },
+ {
+  "line": "japanese",
+  "take": 1,
+  "seed": 1024,
+  "heard": "Fortune cookies are Japanese.",
+  "exact": true,
+  "conf": 0.958,
+  "max_gap": 0.0,
+  "peak": 0.913,
+  "dur": 1.67,
+  "ok": 1.0
+ },
+ {
+  "line": "japanese",
+  "take": 2,
+  "seed": 1041,
+  "heard": "Fortune cookies are Japanese!",
+  "exact": true,
+  "conf": 0.948,
+  "max_gap": 0.0,
+  "peak": 0.94,
+  "dur": 1.91,
+  "ok": 1.0
+ },
+ {
+  "line": "japanese",
+  "chosen": 1
+ },
+ {
+  "line": "kyoto",
+  "take": 0,
+  "seed": 2007,
+  "heard": "An 1878 print from Kyoto shows a baker grilling these exact cookies.",
+  "exact": true,
+  "conf": 0.979,
+  "max_gap": 0.0,
+  "peak": 0.843,
+  "dur": 4.01,
+  "ok": 1.0
+ },
+ {
+  "line": "kyoto",
+  "take": 1,
+  "seed": 2024,
+  "heard": "An 1878 print from Kyoto shows a baker grilling these exact cookies.",
+  "exact": true,
+  "conf": 0.98,
+  "max_gap": 0.0,
+  "peak": 0.98,
+  "dur": 4.06,
+  "ok": 1.0
+ },
+ {
+  "line": "kyoto",
+  "take": 2,
+  "seed": 2041,
+  "heard": "An 1878 print from Kyoto shows a baker grilling these exact cookies.",
+  "exact": true,
+  "conf": 0.981,
+  "max_gap": 0.0,
+  "peak": 1.006,
+  "dur": 3.8,
+  "ok": 1.0
+ },
+ {
+  "line": "kyoto",
+  "chosen": 2
+ },
+ {
+  "line": "darker",
+  "take": 0,
+  "seed": 3007,
+  "heard": "bigger, darker, made with sesame and miso, with the fortune tucked into the fold.",
+  "exact": true,
+  "conf": 0.954,
+  "max_gap": 0.28,
+  "peak": 0.938,
+  "dur": 3.95,
+  "ok": 1.0
+ },
+ {
+  "line": "darker",
+  "take": 1,
+  "seed": 3024,
+  "heard": "Bigger, darker, made with sesame and miso with the fortune tucked into the fold.",
+  "exact": true,
+  "conf": 0.892,
+  "max_gap": 0.34,
+  "peak": 1.004,
+  "dur": 4.65,
+  "ok": 1.0
+ },
+ {
+  "line": "darker",
+  "take": 2,
+  "seed": 3041,
+  "heard": "Bigger, darker, made with sesame and misal with a fortune tucked into the fold.",
+  "exact": false,
+  "conf": 0.901,
+  "max_gap": 0.26,
+  "peak": 0.995,
+  "dur": 3.68,
+  "ok": false
+ },
+ {
+  "line": "darker",
+  "chosen": 0
+ },
+ {
+  "line": "california",
+  "take": 0,
+  "seed": 4007,
+  "heard": "Japanese bakers brought them to California.",
+  "exact": true,
+  "conf": 0.976,
+  "max_gap": 0.0,
+  "peak": 0.893,
+  "dur": 1.72,
+  "ok": 1.0
+ },
+ {
+  "line": "california",
+  "take": 1,
+  "seed": 4024,
+  "heard": "Japanese bakers brought them to California.",
+  "exact": true,
+  "conf": 0.943,
+  "max_gap": 0.0,
+  "peak": 0.983,
+  "dur": 1.89,
+  "ok": 1.0
+ },
+ {
+  "line": "california",
+  "take": 2,
+  "seed": 4041,
+  "heard": "Japanese bakers brought them to California.",
+  "exact": true,
+  "conf": 0.983,
+  "max_gap": 0.0,
+  "peak": 0.997,
+  "dur": 1.9,
+  "ok": 1.0
+ },
+ {
+  "line": "california",
+  "chosen": 2
+ },
+ {
+  "line": "teagarden",
+  "take": 0,
+  "seed": 5007,
+  "heard": "A tea garden in San Francisco served them with green tea, and a family bakery made them by the thousands.",
+  "exact": true,
+  "conf": 0.967,
+  "max_gap": 0.2,
+  "peak": 1.01,
+  "dur": 4.62,
+  "ok": 1.0
+ },
+ {
+  "line": "teagarden",
+  "take": 1,
+  "seed": 5024,
+  "heard": "A tea garden in San Francisco served them with green tea, and a family bakery made them by the thousands.",
+  "exact": true,
+  "conf": 0.96,
+  "max_gap": 0.32,
+  "peak": 0.952,
+  "dur": 4.93,
+  "ok": 1.0
+ },
+ {
+  "line": "teagarden",
+  "take": 2,
+  "seed": 5041,
+  "heard": "A tea garden in San Francisco served them with green tea, and a family bakery made them by the thousands.",
+  "exact": true,
+  "conf": 0.973,
+  "max_gap": 0.24,
+  "peak": 0.989,
+  "dur": 5.23,
+  "ok": 1.0
+ },
+ {
+  "line": "teagarden",
+  "chosen": 2
+ },
+ {
+  "line": "camps",
+  "take": 0,
+  "seed": 6007,
+  "heard": "Then, in 1942, Japanese Americans on the west coast were sent to internment camps and the bakeries closed.",
+  "exact": true,
+  "conf": 0.922,
+  "max_gap": 0.62,
+  "peak": 0.989,
+  "dur": 6.27,
+  "ok": 1.0
+ },
+ {
+  "line": "camps",
+  "take": 1,
+  "seed": 6024,
+  "heard": "Then, in 1942, Japanese Americans on the west coast were sent to internment camps and the bakeries closed.",
+  "exact": true,
+  "conf": 0.95,
+  "max_gap": 0.62,
+  "peak": 0.952,
+  "dur": 5.89,
+  "ok": 1.0
+ },
+ {
+  "line": "camps",
+  "take": 2,
+  "seed": 6041,
+  "heard": "Then, in 1942, Japanese Americans on the west coast were sent to internment camps, and the bakeries closed.",
+  "exact": true,
+  "conf": 0.961,
+  "max_gap": 0.6,
+  "peak": 0.889,
+  "dur": 5.94,
+  "ok": 1.0
+ },
+ {
+  "line": "camps",
+  "chosen": 2
+ },
+ {
+  "line": "homes",
+  "take": 0,
+  "seed": 7007,
+  "heard": "More than 100 ,000 people lost their homes and their businesses.",
+  "exact": true,
+  "conf": 0.95,
+  "max_gap": 0.0,
+  "peak": 0.926,
+  "dur": 3.01,
+  "ok": 1.0
+ },
+ {
+  "line": "homes",
+  "take": 1,
+  "seed": 7024,
+  "heard": "More than 100 ,000 people lost their homes and their businesses.",
+  "exact": true,
+  "conf": 0.967,
+  "max_gap": 0.0,
+  "peak": 0.808,
+  "dur": 3.37,
+  "ok": 1.0
+ },
+ {
+  "line": "homes",
+  "take": 2,
+  "seed": 7041,
+  "heard": "More than 100 ,000 people lost their homes and their businesses.",
+  "exact": true,
+  "conf": 0.948,
+  "max_gap": 0.0,
+  "peak": 0.938,
+  "dur": 3.42,
+  "ok": 1.0
+ },
+ {
+  "line": "homes",
+  "chosen": 1
+ },
+ {
+  "line": "factories",
+  "take": 0,
+  "seed": 8007,
+  "heard": "Chinese American factories filled the gap and put a cookie at the end of every Chinese meal.",
+  "exact": true,
+  "conf": 0.979,
+  "max_gap": 0.0,
+  "peak": 1.011,
+  "dur": 4.25,
+  "ok": 1.0
+ },
+ {
+  "line": "factories",
+  "take": 1,
+  "seed": 8024,
+  "heard": "Chinese American factories filled the gap and put a cookie at the end of every Chinese meal.",
+  "exact": true,
+  "conf": 0.971,
+  "max_gap": 0.0,
+  "peak": 1.0,
+  "dur": 4.23,
+  "ok": 1.0
+ },
+ {
+  "line": "factories",
+  "take": 2,
+  "seed": 8041,
+  "heard": "Chinese American factories filled the gap and put a cookie at the end of every Chinese meal.",
+  "exact": true,
+  "conf": 0.98,
+  "max_gap": 0.0,
+  "peak": 1.04,
+  "dur": 4.68,
+  "ok": 1.0
+ },
+ {
+  "line": "factories",
+  "chosen": 2
+ },
+ {
+  "line": "billion",
+  "take": 0,
+  "seed": 9007,
+  "heard": "Today, about 3 billion are made every year.",
+  "exact": true,
+  "conf": 0.921,
+  "max_gap": 0.2,
+  "peak": 0.766,
+  "dur": 2.8,
+  "ok": 1.0
+ },
+ {
+  "line": "billion",
+  "take": 1,
+  "seed": 9024,
+  "heard": "Today, about 3 billion are made every year.",
+  "exact": true,
+  "conf": 0.929,
+  "max_gap": 0.24,
+  "peak": 0.988,
+  "dur": 2.86,
+  "ok": 1.0
+ },
+ {
+  "line": "billion",
+  "take": 2,
+  "seed": 9041,
+  "heard": "Today, about 3 billion are made every year.",
+  "exact": true,
+  "conf": 0.935,
+  "max_gap": 0.16,
+  "peak": 0.94,
+  "dur": 2.39,
+  "ok": 1.0
+ },
+ {
+  "line": "billion",
+  "chosen": 2
+ },
+ {
+  "line": "daily",
+  "take": 0,
+  "seed": 10007,
+  "heard": "One factory in New York makes more than 4 million of them a day.",
+  "exact": true,
+  "conf": 0.923,
+  "max_gap": 0.0,
+  "peak": 0.996,
+  "dur": 3.23,
+  "ok": 1.0
+ },
+ {
+  "line": "daily",
+  "take": 1,
+  "seed": 10024,
+  "heard": "One factory in New York makes more than 4 million of them a day.",
+  "exact": true,
+  "conf": 0.92,
+  "max_gap": 0.0,
+  "peak": 0.83,
+  "dur": 2.91,
+  "ok": 1.0
+ },
+ {
+  "line": "daily",
+  "take": 2,
+  "seed": 10041,
+  "heard": "One factory in New York makes more than four million of them a day.",
+  "exact": true,
+  "conf": 0.949,
+  "max_gap": 0.0,
+  "peak": 1.033,
+  "dur": 2.8,
+  "ok": 1.0
+ },
+ {
+  "line": "daily",
+  "chosen": 2
+ },
+ {
+  "line": "flop",
+  "take": 0,
+  "seed": 11007,
+  "heard": "And when a company tried selling them in China, they flopped. Why? They were too American.",
+  "exact": true,
+  "conf": 0.97,
+  "max_gap": 0.46,
+  "peak": 0.987,
+  "dur": 4.33,
+  "ok": 1.0
+ },
+ {
+  "line": "flop",
+  "take": 1,
+  "seed": 11024,
+  "heard": "And when a company tried selling them in China, they flocked. Why? They were too American.",
+  "exact": false,
+  "conf": 0.949,
+  "max_gap": 0.52,
+  "peak": 0.936,
+  "dur": 3.96,
+  "ok": false
+ },
+ {
+  "line": "flop",
+  "take": 2,
+  "seed": 11041,
+  "heard": "And when a company tried selling them in China, they flubbed. Why? They were too American.",
+  "exact": false,
+  "conf": 0.943,
+  "max_gap": 0.36,
+  "peak": 0.983,
+  "dur": 4.68,
+  "ok": false
+ },
+ {
+  "line": "flop",
+  "chosen": 0
+ },
+ {
+  "line": "twist",
+  "take": 0,
+  "seed": 12007,
+  "heard": "Though the most Chinese thing on your table was Japanese all along.",
+  "exact": false,
+  "conf": 0.928,
+  "max_gap": 0.0,
+  "peak": 0.971,
+  "dur": 2.96,
+  "ok": false
+ },
+ {
+  "line": "twist",
+  "take": 1,
+  "seed": 12024,
+  "heard": "So the most Chinese thing on your table was Japanese all along.",
+  "exact": true,
+  "conf": 0.969,
+  "max_gap": 0.0,
+  "peak": 0.861,
+  "dur": 2.98,
+  "ok": 1.0
+ },
+ {
+  "line": "twist",
+  "take": 2,
+  "seed": 12041,
+  "heard": "So the most Chinese thing on your table was Japanese all along.",
+  "exact": true,
+  "conf": 0.968,
+  "max_gap": 0.0,
+  "peak": 0.73,
+  "dur": 2.52,
+  "ok": 1.0
+ },
+ {
+  "line": "twist",
+  "chosen": 1
+ },
+ {
+  "line": "cta",
+  "take": 0,
+  "seed": 13007,
+  "heard": "Did you learn something new? Like and subscribe!",
+  "exact": true,
+  "conf": 0.958,
+  "max_gap": 0.5,
+  "peak": 0.852,
+  "dur": 2.67,
+  "ok": 1.0
+ },
+ {
+  "line": "cta",
+  "take": 1,
+  "seed": 13024,
+  "heard": "Did you learn something new? Like and subscribe.",
+  "exact": true,
+  "conf": 0.95,
+  "max_gap": 0.56,
+  "peak": 0.905,
+  "dur": 2.55,
+  "ok": 1.0
+ },
+ {
+  "line": "cta",
+  "take": 2,
+  "seed": 13041,
+  "heard": "Did you learn something new? Like and subscribe.",
+  "exact": true,
+  "conf": 0.94,
+  "max_gap": 0.42,
+  "peak": 0.773,
+  "dur": 2.65,
+  "ok": 1.0
+ },
+ {
+  "line": "cta",
+  "take": 3,
+  "seed": 13058,
+  "heard": "Did you learn something new? Like and subscribe.",
+  "exact": true,
+  "conf": 0.965,
+  "max_gap": 0.42,
+  "peak": 1.02,
+  "dur": 2.46,
+  "ok": 1.0
+ },
+ {
+  "line": "cta",
+  "chosen": 3
+ }
+]

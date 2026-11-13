@@ -62,3 +62,8 @@ dailymind/cove_test/style2d/_*
 dailymind/cove_test/style2d/still_*.png
 dailymind/cove_test/style2d/qc/final.wav
 dailymind/cove_test/style2d/*.log
+dailymind/**/_takes_cache/
+dailymind/fortune/frames/
+dailymind/fortune/stills/
+dailymind/fortune/_audio/
+dailymind/fortune/*.log

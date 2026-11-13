@@ -18,7 +18,8 @@ import skia
 from toon import C, P, S, FB, blur, ease, lin, out_back, rad, spring
 
 W = 1080
-FM = skia.Typeface.MakeFromFile("/usr/share/fonts/opentype/inter/Inter-Medium.otf")
+FM = next((skia.Typeface.MakeFromFile(f) for f in ("/usr/share/fonts/opentype/inter/Inter-Medium.otf", "C:/Windows/Fonts/seguisb.ttf")
+           if __import__("os").path.exists(f)), None)
 BLUE, RED, GREY = (62, 140, 255), (235, 35, 45), (70, 72, 80)
 
 
