@@ -858,8 +858,25 @@ def s3_factory():
         lamps.append(piv)
     # workers
     lev = Figure("f_lever", FIG_H, coat=(0.25, 0.32, 0.45), hat="cap", mustache=True, apron=(0.4, 0.35, 0.28))
-    lev.place((press_x + 0.004, -0.03, 0.0), 0)
-    lever = cyl("lever", (press_x + 0.004, -0.04, 0.012), 0.0007, 0.02, steel)
+    lev.place((press_x + 0.017, -0.035, 0.0), -143)    # beside the press, seen in profile, facing his lever
+    # a real lever: pivot box bolted to the press column, linkage rod up into the press, handle from the pivot to his hand
+    lever_red = paint("lever_red", (0.7, 0.1, 0.06), 0.35, 0.2)
+    box("lever_box", (press_x + 0.01, -0.026, 0.003), (0.008, 0.006, 0.006), press_col, bevel=0.0005)
+    link_bot, link_top = 0.006, cz + 0.048        # from the top of the pivot box up into the press head (no gap)
+    cyl("lever_link", (press_x + 0.0095, -0.025, (link_bot + link_top) / 2), 0.0005, link_top - link_bot, steel)
+    box("lever_link_top", (press_x + 0.0075, -0.025, cz + 0.048), (0.005, 0.0012, 0.0012), steel)
+    piv = empty("lever_pivot", (press_x + 0.011, -0.029, 0.0058))
+    lever = beams_mesh("lever", [((0, 0, 0), (0, 1.0, 0), 0.0011)], steel)
+    lever.location = piv.location
+    st = lever.constraints.new("STRETCH_TO")      # always spans pivot -> the worker's actual hand
+    st.target = lev.hands[1]
+    st.rest_length = 1.0
+    st.volume = "NO_VOLUME"
+    st.keep_axis = "PLANE_X"
+    knob = sphere("lever_knob", (0, 0, 0), 1.0, lever_red, segs=12)
+    parent(knob, lev.hands[1])
+    knob.location = (0, 0, -0.01)
+    knob.scale = (0.045, 0.045, 0.045)
     cartw = Figure("f_cart", FIG_H, coat=(0.45, 0.25, 0.15), hat="cap")
     cart = box("cart", (0, 0, 0), (0.018, 0.012, 0.008), metal, bevel=0.0006)
     weld = Figure("f_weld", FIG_H, coat=(0.2, 0.22, 0.2), hat="helmet", hat_col=(0.15, 0.15, 0.17))
@@ -873,7 +890,6 @@ def s3_factory():
         ph = t % CYCLE
         pull = ease((ph - 0.45) / 0.17) if ph < T_HIT else (1 - ease((ph - T_HIT - 0.1) / 0.35))
         lev.pose(f, t, lever=pull, look=(0, -10))
-        key(lever, f, rot=(math.radians(-30 + 50 * pull), 0, 0))
         k = ease((t - 0.5) / 9.0)
         x = lerp(-0.2, 0.08, k)
         key(cartw.root, f, loc=(x, -0.065, 0.0), rot=(0, 0, math.radians(-90)))
@@ -885,24 +901,18 @@ def s3_factory():
         wl.data.energy = 0.25 * on * (0.6 + 0.4 * math.sin(t * 80))
         wl.data.keyframe_insert("energy", frame=f)
 
-    def path(t):  # dolly along the line, ARRIVE at the press by 4 s, hold on two full strikes, then rise to the reveal
-        k1 = ease_io(t / 4.0)
-        k2 = ease_io((t - 7.6) / 4.4)
-        c = lerp((-0.2, -0.06, 0.016), (-0.012, -0.062, 0.026), k1)
-        c = lerp(c, (0.0, -0.058, 0.024), ease_io((t - 4.0) / 3.6))
-        c = lerp(c, (0.08, -0.36, 0.22), k2)
-        a = lerp((-0.12, 0.0, 0.014), (press_x, 0.0, cz + 0.012), k1)
-        a = lerp(a, (0.0, 0.05, 0.04), k2)
-        return add(c, drift(t, 0.0004)), a
+    cam_k = [(0.0, (-0.2, -0.06, 0.016)), (2.5, (-0.085, -0.065, 0.021)), (5.0, (-0.012, -0.064, 0.026)), (7.4, (0.012, -0.075, 0.034)),
+             (12.0, (0.08, -0.36, 0.22))]
+    aim_k = [(0.0, (-0.12, 0.0, 0.014)), (2.5, (-0.035, 0.0, 0.014)), (5.0, (press_x, 0.0, cz + 0.01)), (7.4, (press_x + 0.006, 0.0, cz + 0.014)),
+             (12.0, (0.0, 0.05, 0.04))]
+    foc_k = [(0.0, (-0.1, -0.01, 0.014)), (4.0, (press_x, 0.0, cz + 0.008)), (7.4, (press_x + 0.006, -0.01, cz + 0.008)), (12.0, (0.0, 0.05, 0.04))]
+
+    def path(t):  # ONE continuous Catmull-Rom move: it never stops, it keeps drifting slowly past the press
+        return add(catmull(cam_k, t), drift(t, 0.0003)), catmull(aim_k, t)
 
     def focus(t):
-        return lerp(lerp((-0.1, -0.01, 0.014), (press_x, 0.0, cz + 0.008), ease_io(t / 4.0)), (0.0, 0.05, 0.04), ease_io((t - 7.6) / 4.0))
-
-    def knocked(t):
-        c, a = path(t)
-        kick = sum(0.00025 * math.exp(-14 * (t - h)) * math.sin(60 * (t - h)) for h in hits if t >= h)
-        return (c[0], c[1], c[2] + kick), a
-    macro_camera(knocked, focus, lens=40, fstop=8.0)
+        return catmull(foc_k, t)
+    macro_camera(path, focus, lens=40, fstop=8.0, smooth=0.06)
     w = SC.world
     vs = w.node_tree.nodes.new("ShaderNodeVolumeScatter")
     vs.inputs["Density"].default_value = 0.3

@@ -364,3 +364,9 @@
      the contact point, worker and camera knock on the same frame.
 146. QC must look at fast events at 10 fps around each impact (a 2 fps sheet hid the missing contact), and the camera must be
      FRAMING the event when it happens (the first fix landed the strike at the frame edge).
+147. Props a character operates must be physically connected: the S3 "lever" was a loose rod that read as a spear being pounded
+     at the press. Build the mechanism (pivot box bolted to the machine + linkage) and bind the handle to the hand with a
+     STRETCH_TO constraint (pivot -> hand), so it can never detach whatever the pose. Keep operators beside the machine,
+     never between the camera and the action.
+148. Smooth camera = ONE continuous Catmull-Rom path that never comes to a full stop (keep drifting while watching), no shake.
+     Chaining eased segments (arrive / hold / rise) makes the camera stop-and-go; the owner noticed at once.
