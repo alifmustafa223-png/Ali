@@ -357,3 +357,10 @@
 144. Macro-scale glitch: anything within a few cm of the lens (an unlit lamp-glow ball, a lamp post) renders as a big blurry
      disc/blob. Hide practical-light glow meshes until they are lit, and before rendering compute the minimum distance from
      the camera path to every prop (S2B: >= 38 mm) — moving one prop can put it in the path at a LATER moment.
+145. **Every action needs a visible consequence, and contact must be computed, never guessed.** The owner spotted the S3 press:
+     the ram stopped in mid-air above the crates, which kept gliding past while sparks fired from nothing. Fix: an indexed
+     (stop-go) belt so the crate stops under the tool, the ram's lowest point = the crate's measured top (bounding box after
+     `view_layer.update()` — matrix_world is stale before it), squash + spring-back, a stamp mark that stays, sparks/dust at
+     the contact point, worker and camera knock on the same frame.
+146. QC must look at fast events at 10 fps around each impact (a 2 fps sheet hid the missing contact), and the camera must be
+     FRAMING the event when it happens (the first fix landed the strike at the frame edge).

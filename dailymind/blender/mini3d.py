@@ -736,40 +736,89 @@ def s3_factory():
     for k in range(10):
         rl = cyl(f"roller{k}", (-0.17 + k * 0.038, 0.0, cz - 0.0005), 0.0018, 0.027, steel, verts=16, rot=(math.pi / 2, 0, 0))
         rollers.append(rl)
+    # --- cause and effect: an INDEXED belt (stop-go) so each crate stops under the press, the ram lands exactly on the
+    # crate's top, the crate squashes and springs back, gets a gold stamp, sparks + dust burst at the contact point.
+    from mathutils import Vector
     crate_root, crate_objs = AS.model("wooden_crate_01", "1k", loc=(0, 0, -1), scale=1.0, name="crate_src")
+    bpy.context.view_layer.update()  # matrix_world is stale until the depsgraph updates
+    zs = [(o.matrix_world @ Vector(c)).z for o in crate_objs for c in o.bound_box]
+    xs = [(o.matrix_world @ Vector(c)).x for o in crate_objs for c in o.bound_box]
     cdim = max(max(o.dimensions) for o in crate_objs)
-    speed = 0.03  # m/s along the belt
+    csc = 0.012 / cdim
+    c_bottom = (min(zs) + 1.0) * csc          # crate origin -> bottom offset (scaled)
+    c_h = (max(zs) - min(zs)) * csc           # crate height (scaled)
+    c_w = (max(xs) - min(xs)) * csc
+    belt_top = cz + 0.00075
+    print(f"[crate] height {c_h * 1000:.2f} mm, width {c_w * 1000:.2f} mm, origin->bottom {c_bottom * 1000:.2f} mm")
+    CYCLE, MOVE, SPACING = 1.25, 0.55, 0.05   # one stamp per cycle; the belt moves one crate-spacing in MOVE seconds
+    T_DOWN, T_HIT, T_UP = 0.62, 0.74, 1.12    # ram starts down / contact / back up (seconds into the cycle)
+    press_x = 0.02
     crates = []
     for i in range(8):
-        r_, _ = AS.model("wooden_crate_01", "1k", loc=(0, 0, -1), scale=0.012 / cdim, name=f"crate{i}")
-        crates.append(r_)
-    press_x = 0.02
-    for f, t in frames():
-        for i, c in enumerate(crates):
-            x = -0.18 + ((t * speed + i * 0.05) % 0.4)
-            z = cz + 0.0008
-            if x > 0.17:  # tips off the end into the bin
-                k = (x - 0.17) / speed
-                x = 0.17 + 0.02 * k
-                z = cz + 0.0008 - 0.5 * 9.81 * 0.06 * k * k * 30
-                z = max(0.003, z)
-            key(c, f, loc=(x, 0.0, z), rot=(0, 0, 0.0))
-        for rl in rollers:
-            key(rl, f, rot=(math.pi / 2, -t * speed / 0.0018, 0))
-    bin_ = box("bin", (0.205, 0.0, 0.006), (0.03, 0.04, 0.012), metal, bevel=0.0005)
-    # stamping press
-    press_col = paint("press_paint", (0.5, 0.12, 0.08), 0.45, 0.3)
-    for s in (-1, 1):
-        box(f"press_col{s}", (press_x, s * 0.022, cz + 0.03), (0.008, 0.008, 0.06), press_col, bevel=0.0008)
-    box("press_top", (press_x, 0.0, cz + 0.062), (0.016, 0.056, 0.012), press_col, bevel=0.001)
-    ram = box("press_ram", (press_x, 0.0, cz + 0.03), (0.014, 0.022, 0.012), steel, bevel=0.0008)
+        r_, _ = AS.model("wooden_crate_01", "1k", loc=(0, 0, -1), scale=csc, name=f"crate{i}")
+        stampm = glow(f"stamp{i}", (1.0, 0.72, 0.25), 3.0)
+        st = box(f"stamp_mark{i}", (0, 0, 0), (0.7, 0.7, 0.02), stampm)   # in crate-local units (parented, scaled with the crate)
+        parent(st, r_)
+        st.location = (0, 0, (max(zs) + 1.0) + 0.005)
+        st.scale = (0.25 * cdim, 0.25 * cdim, 0.01)
+        crates.append((r_, st))
+
+    def belt_pos(t):  # distance travelled by the belt at time t (stop-go)
+        n = math.floor(t / CYCLE)
+        return SPACING * (n + ease((t - n * CYCLE) / MOVE))
+
     hits = []
+    n_cycles = int(DUR / CYCLE) + 1
+    for k in range(n_cycles):
+        th = k * CYCLE + T_HIT
+        if th < DUR:
+            hits.append(th)
     for f, t in frames():
-        ph = (t * 0.8) % 1.0
-        down = ease(ph / 0.15) if ph < 0.15 else (1 - ease((ph - 0.25) / 0.6) if ph > 0.25 else 1.0)
-        key(ram, f, loc=(press_x, 0.0, cz + 0.032 - 0.018 * down))
-    hits = [k / 0.8 + 0.15 / 0.8 for k in range(12)]
-    sparks("press_sparks", (press_x, 0.0, cz + 0.004), hits, n=14, speed=0.06)
+        bp = belt_pos(t)
+        ph = t % CYCLE
+        for i, (c, st) in enumerate(crates):
+            x = -0.18 + ((bp + i * SPACING) % 0.4)
+            z = belt_top - c_bottom
+            sq = 1.0
+            # is this crate the one under the press right now?
+            under = abs(x - press_x) < 0.004
+            if under and T_HIT <= ph:
+                sq = 1.0 - 0.14 * math.exp(-9 * (ph - T_HIT)) * math.cos(30 * (ph - T_HIT))   # squash, then spring back
+            if x > 0.17:  # tips off the end into the bin
+                kk = (x - 0.17) / SPACING * MOVE
+                x = 0.17 + 0.02 * kk
+                z = max(0.003 - c_bottom, z - 0.5 * 9.81 * kk * kk * 0.3)
+            key(c, f, loc=(x, 0.0, z), scale=(csc / math.sqrt(sq), csc / math.sqrt(sq), csc * sq))
+            stamped = x > press_x + 0.002 or (under and ph >= T_HIT)
+            show(st, f, stamped)
+        for rl in rollers:
+            key(rl, f, rot=(math.pi / 2, -bp / 0.0018, 0))
+    bin_ = box("bin", (0.205, 0.0, 0.006), (0.03, 0.04, 0.012), metal, bevel=0.0005)
+    # stamping press: the ram's lowest point is EXACTLY the crate top (contact), computed from the real crate size
+    press_col = paint("press_paint", (0.5, 0.12, 0.08), 0.45, 0.3)
+    for s_ in (-1, 1):
+        box(f"press_col{s_}", (press_x, s_ * 0.022, cz + 0.03), (0.008, 0.008, 0.06), press_col, bevel=0.0008)
+    box("press_top", (press_x, 0.0, cz + 0.062), (0.016, 0.056, 0.012), press_col, bevel=0.001)
+    RAM_H = 0.012
+    ram = box("press_ram", (press_x, 0.0, cz + 0.03), (min(0.014, c_w * 0.9), 0.022, RAM_H), steel, bevel=0.0008)
+    crate_top = belt_top + c_h
+    z_up = cz + 0.05 - RAM_H / 2
+    z_contact = crate_top + RAM_H / 2
+    for f, t in frames():
+        ph = t % CYCLE
+        if ph < T_DOWN:
+            z = z_up
+        elif ph < T_HIT:
+            z = lerp(z_up, z_contact, ((ph - T_DOWN) / (T_HIT - T_DOWN)) ** 2)   # accelerates down
+        elif ph < T_HIT + 0.1:
+            z = z_contact - 0.14 * c_h * math.exp(-9 * (ph - T_HIT)) * max(0.0, math.cos(30 * (ph - T_HIT)))  # follows the squash
+        else:
+            z = lerp(z_contact, z_up, ease((ph - T_HIT - 0.1) / (T_UP - T_HIT - 0.1)))
+        key(ram, f, loc=(press_x, 0.0, z))
+    sparks("press_sparks", (press_x, 0.0, crate_top), hits, n=16, speed=0.05)
+    for k, th in enumerate(hits):
+        smoke(f"press_dust{k}", (press_x, 0.0, belt_top + 0.002), th, n=3, size=0.004, rise=0.008, col=(0.7, 0.6, 0.48), life=0.9)
+    PRESS_HITS[:] = hits
     smoke("press_steam", (press_x + 0.01, 0.015, cz + 0.06), 0.0, n=6, size=0.007, rise=0.06, period=0.5, life=3.0)
     # gears + pistons on the back wall
     gears = [gear_mesh("gear_big", 18, 0.028, 0.032, 0.006, brass), gear_mesh("gear_mid", 12, 0.018, 0.0215, 0.006, steel),
@@ -821,8 +870,8 @@ def s3_factory():
     sparks("weld_sparks", (-0.12, 0.175, 0.012), weld_t, n=10, speed=0.04, col=(0.6, 0.8, 1.0))
     wl = light("POINT", (-0.12, 0.17, 0.014), 0.0, (0.6, 0.8, 1.0), 0.001)
     for f, t in frames():
-        ph = (t * 0.8) % 1.0
-        pull = ease(ph / 0.15) if ph < 0.15 else (1 - ease((ph - 0.25) / 0.5))
+        ph = t % CYCLE
+        pull = ease((ph - 0.45) / 0.17) if ph < T_HIT else (1 - ease((ph - T_HIT - 0.1) / 0.35))
         lev.pose(f, t, lever=pull, look=(0, -10))
         key(lever, f, rot=(math.radians(-30 + 50 * pull), 0, 0))
         k = ease((t - 0.5) / 9.0)
@@ -836,18 +885,24 @@ def s3_factory():
         wl.data.energy = 0.25 * on * (0.6 + 0.4 * math.sin(t * 80))
         wl.data.keyframe_insert("energy", frame=f)
 
-    def path(t):
-        k1 = ease_io(t / 7.5)
-        k2 = ease_io((t - 7.0) / 5.0)
-        c = lerp((-0.2, -0.06, 0.016), (-0.01, -0.07, 0.022), k1)
+    def path(t):  # dolly along the line, ARRIVE at the press by 4 s, hold on two full strikes, then rise to the reveal
+        k1 = ease_io(t / 4.0)
+        k2 = ease_io((t - 7.6) / 4.4)
+        c = lerp((-0.2, -0.06, 0.016), (-0.012, -0.062, 0.026), k1)
+        c = lerp(c, (0.0, -0.058, 0.024), ease_io((t - 4.0) / 3.6))
         c = lerp(c, (0.08, -0.36, 0.22), k2)
-        a = lerp((-0.12, 0.0, 0.014), (0.03, 0.0, 0.02), k1)
+        a = lerp((-0.12, 0.0, 0.014), (press_x, 0.0, cz + 0.012), k1)
         a = lerp(a, (0.0, 0.05, 0.04), k2)
-        return add(c, drift(t, 0.0005)), a
+        return add(c, drift(t, 0.0004)), a
 
     def focus(t):
-        return lerp(lerp((-0.1, -0.01, 0.014), (press_x, 0.0, cz + 0.01), ease_io((t - 2.0) / 3.5)), (0.0, 0.05, 0.04), ease_io((t - 7.0) / 4.5))
-    macro_camera(path, focus, lens=40, fstop=8.0)
+        return lerp(lerp((-0.1, -0.01, 0.014), (press_x, 0.0, cz + 0.008), ease_io(t / 4.0)), (0.0, 0.05, 0.04), ease_io((t - 7.6) / 4.0))
+
+    def knocked(t):
+        c, a = path(t)
+        kick = sum(0.00025 * math.exp(-14 * (t - h)) * math.sin(60 * (t - h)) for h in hits if t >= h)
+        return (c[0], c[1], c[2] + kick), a
+    macro_camera(knocked, focus, lens=40, fstop=8.0)
     w = SC.world
     vs = w.node_tree.nodes.new("ShaderNodeVolumeScatter")
     vs.inputs["Density"].default_value = 0.3
@@ -1050,6 +1105,7 @@ def s2b_giant_watch():
     return dict(exposure=-0.2)
 
 
+PRESS_HITS = []
 SAMPLES_FN = {"S1": s1_paris1889, "S2": s2_giant_watch, "S3": s3_factory, "S2B": s2b_giant_watch}
 
 if __name__ == "__main__":
