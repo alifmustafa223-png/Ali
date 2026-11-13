@@ -380,3 +380,24 @@
      before rendering (first try: -4 mm = it would have gone through the tower; tuned to +30.8 mm).
 153. 2D titles/stamps must never sit on top of text that exists INSIDE the 3D shot (the giant permit's printed words). Check every
      scene where the plate contains readable text at 4-5 fps on the FINAL composite, and give titles/stamps their own empty band.
+
+## Added after the 2D "Classic+" 10-second test (cove, `ultimate/make_style2d_test.py`)
+154. Skia hands you PREMULTIPLIED pixels and the approved hero frame blends them with `src*a + dst*(1-a)` (alpha applied twice).
+     That double multiply IS the approved look: a "correct" premultiplied over made every glow (lantern, gold pool, coin glint)
+     blow out to white. When animating a hero frame, reuse its exact blend and diff a still against the hero before rendering.
+155. Gold on gold disappears: a coin held in front of the treasure heap vanished. Give hero props a dark ink rim and keep them
+     against a contrasting background (the coin now flies against the sea, not the heap).
+156. Never start a sparkle burst with every sparkle on one point: 12 stacked glow halos bloom into a white blob. Start the ring
+     ~50 px out and use crisp stars (no halo) for bursts.
+157. Physics guards in code: the flip is solved for the exact catch frame (error printed, 0.000 px), apex asserted 0.3-0.6 m, and the
+     arc's right edge asserted left of her hair. The guard caught a pose tweak that put the coin 0.8 px into her hair.
+158. A push-in must be checked at its LAST frame with the characters' final poses: his recoil lean (-3 deg = ~36 px at head
+     height) pushed his head out of frame. Frame the end with a 40+ px margin for every face and hand.
+159. Voice best-of-N: generate 3 Chatterbox takes per line and let faster-whisper (word timestamps) reject non-exact or clipping
+     takes (2 of 9 clipped above 0 dBFS). Drive every animation cue and SFX from those word times. On Windows import torch
+     BEFORE faster_whisper (it ships the cuBLAS DLLs) and feed whisper a numpy array (PyAV API mismatch).
+160. Mastering must be verified on the ENCODED file: a WAV that measured -14 LUFS / -1.5 dBTP came out -14.8 / -1.2 after AAC.
+     Loop gain + true-peak limiter (ceiling ~-3 dBFS) and re-measure the MP4 until -14 +-0.2 and <= -1.5 dBTP.
+161. Check each SFX onset on its own stem with the same onset rule used to place it (30 % of the clip's peak); slow-attack
+     chimes measured in the mix read 46-86 ms off even though they were placed right.
+162. `dict.get(k, fallback)` evaluates the fallback even when k exists (`VO["fake"]` crashed the render). Use `x if k in d else y`.

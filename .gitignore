@@ -51,3 +51,14 @@ dailymind/cove_test/*_log.txt
 dailymind/cove_test/_*
 dailymind/cove_test/seg*.wav
 dailymind/cove_test/vo16.wav
+# cove tests: renders, caches and intermediates (rebuilt by the scripts)
+dailymind/cove_test/frames/
+dailymind/cove_test/*.log
+dailymind/cove_test/sfx/*.wav
+dailymind/cove_test/style2d/frames/
+dailymind/cove_test/style2d/*.npy
+dailymind/cove_test/style2d/stems/
+dailymind/cove_test/style2d/_*
+dailymind/cove_test/style2d/still_*.png
+dailymind/cove_test/style2d/qc/final.wav
+dailymind/cove_test/style2d/*.log

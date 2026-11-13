@@ -1,0 +1,15 @@
+{
+ "catch_error_px": 0.0,
+ "apex_m": 0.411,
+ "apex_px": 204.8,
+ "ppm": 498.8,
+ "flight_s": 0.6,
+ "launch_frame": 179,
+ "catch_frame": 197,
+ "coin_max_x": 563.8,
+ "hair_left_x": 583.6,
+ "t_gold": 1.32,
+ "t_snap": 2.843,
+ "t_coin": 5.458,
+ "t_fake": 6.568
+}

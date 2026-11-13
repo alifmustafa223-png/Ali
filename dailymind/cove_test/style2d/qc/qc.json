@@ -1,0 +1,57 @@
+[
+ {
+  "check": "frame count",
+  "ok": true,
+  "detail": "300 frames"
+ },
+ {
+  "check": "no 1-frame pops",
+  "ok": true,
+  "detail": "0 suspects []; max frame diff 11.74 at 198"
+ },
+ {
+  "check": "coin catch error < 1 px",
+  "ok": true,
+  "detail": "0.0 px"
+ },
+ {
+  "check": "flip apex 0.3-0.6 m",
+  "ok": true,
+  "detail": "0.411 m (204.8 px at 498.8 px/m)"
+ },
+ {
+  "check": "arc clear of her face/hair",
+  "ok": true,
+  "detail": "coin right edge 563.8 < hair 583.6"
+ },
+ {
+  "check": "loudness -14 +-0.5 LUFS",
+  "ok": true,
+  "detail": "-14.2 LUFS"
+ },
+ {
+  "check": "true peak <= -1.5 dBTP",
+  "ok": true,
+  "detail": "-1.6 dBTP"
+ },
+ {
+  "check": "no clipped samples",
+  "ok": true,
+  "detail": "0 samples >= 0.999"
+ },
+ {
+  "check": "duration 10 s",
+  "ok": true,
+  "detail": "10.000 s"
+ },
+ {
+  "check": "every SFX within 1 frame",
+  "ok": true,
+  "detail": "6 cues, off: []"
+ },
+ {
+  "check": "final mix transcript == script",
+  "ok": true,
+  "detail": "heard: \"This chest is full of gold and she's about to throw it into the sea because every single coin in it is fake.\""
+ }
+]

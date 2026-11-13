@@ -1,0 +1,122 @@
+[
+ {
+  "line": "gold",
+  "take": 0,
+  "seed": 7,
+  "heard": "This chest is full of gold.",
+  "exact": true,
+  "conf": 0.98,
+  "max_gap": 0.0,
+  "peak": 0.978,
+  "dur": 1.5,
+  "ok": true
+ },
+ {
+  "line": "gold",
+  "take": 1,
+  "seed": 24,
+  "heard": "This chest is full of gold.",
+  "exact": true,
+  "conf": 0.967,
+  "max_gap": 0.0,
+  "peak": 0.867,
+  "dur": 1.93,
+  "ok": true
+ },
+ {
+  "line": "gold",
+  "take": 2,
+  "seed": 41,
+  "heard": "This chest is full of gold.",
+  "exact": true,
+  "conf": 0.975,
+  "max_gap": 0.0,
+  "peak": 0.944,
+  "dur": 1.41,
+  "ok": true
+ },
+ {
+  "line": "gold",
+  "chosen": 0
+ },
+ {
+  "line": "throw",
+  "take": 0,
+  "seed": 1007,
+  "heard": "and she's about to throw it into the sea.",
+  "exact": true,
+  "conf": 0.968,
+  "max_gap": 0.0,
+  "peak": 0.829,
+  "dur": 1.71,
+  "ok": true
+ },
+ {
+  "line": "throw",
+  "take": 1,
+  "seed": 1024,
+  "heard": "and she's about to throw it into the sea.",
+  "exact": true,
+  "conf": 0.955,
+  "max_gap": 0.0,
+  "peak": 1.001,
+  "dur": 1.7,
+  "ok": false
+ },
+ {
+  "line": "throw",
+  "take": 2,
+  "seed": 1041,
+  "heard": "and she's about to throw it into the sea.",
+  "exact": true,
+  "conf": 0.963,
+  "max_gap": 0.0,
+  "peak": 0.93,
+  "dur": 1.82,
+  "ok": true
+ },
+ {
+  "line": "throw",
+  "chosen": 0
+ },
+ {
+  "line": "because",
+  "take": 0,
+  "seed": 2007,
+  "heard": "because every single coin in it is fake.",
+  "exact": true,
+  "conf": 0.971,
+  "max_gap": 0.0,
+  "peak": 0.75,
+  "dur": 2.13,
+  "ok": true
+ },
+ {
+  "line": "because",
+  "take": 1,
+  "seed": 2024,
+  "heard": "because every single coin in it is fake.",
+  "exact": true,
+  "conf": 0.939,
+  "max_gap": 0.0,
+  "peak": 1.018,
+  "dur": 2.38,
+  "ok": false
+ },
+ {
+  "line": "because",
+  "take": 2,
+  "seed": 2041,
+  "heard": "because every single coin in it is fake.",
+  "exact": true,
+  "conf": 0.93,
+  "max_gap": 0.0,
+  "peak": 1.031,
+  "dur": 2.21,
+  "ok": false
+ },
+ {
+  "line": "because",
+  "chosen": 0
+ }
+]

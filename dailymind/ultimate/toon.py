@@ -148,10 +148,11 @@ def eye(c, x, y, kind, lx, ly, blink, size=1.0):
         p2.lineTo(x + w * 0.4, y - 2)
         c.drawPath(p2, S(OUT, 6))
         return
-    hh = h * (1.25 if kind == "wide" else 0.8 if kind == "sad" else 1.0)
-    ww = w * (1.15 if kind == "wide" else 1.0)
+    wv = float(kind) if isinstance(kind, (int, float)) else (1.0 if kind == "wide" else 0.0)   # 0 = open .. 1 = wide, continuous
+    hh = h * (0.8 if kind == "sad" else 1.0 + 0.25 * wv)
+    ww = w * (1.0 + 0.15 * wv)
     c.drawOval(skia.Rect(x - ww, y - hh, x + ww, y + hh), P(C(255, 255, 255)))
-    pr = (11 if kind == "wide" else 14) * size
+    pr = (14 - 3 * wv) * size
     px, py = x + lx * ww * 0.4, y + ly * hh * 0.4
     c.drawCircle(px, py, pr, P(Shader=rad(px, py, pr, [C(30, 20, 15), C(90, 60, 35)])))
     c.drawCircle(px - pr * 0.35, py - pr * 0.4, pr * 0.32, P(C(255, 255, 255)))
@@ -171,7 +172,7 @@ def brow(c, x, y, kind, side, col):
     c.drawPath(p, S(col, 9))
 
 
-def mouth(c, x, y, kind, talk, lips):
+def mouth(c, x, y, kind, talk, lips, amt=1.0):
     col = C(150, 40, 50) if lips else C(110, 35, 35)
     if kind == "chew":  # jaw working sideways, talk = time
         ph = talk * 8.5
@@ -187,14 +188,14 @@ def mouth(c, x, y, kind, talk, lips):
         c.drawArc(skia.Rect(x - 26, y - 22, x + 26, y + 12), 20, 140, False, S(col, 7))
     elif kind == "grin":
         p = skia.Path()
-        p.moveTo(x - 32, y - 8)
-        p.quadTo(x, y + 30, x + 32, y - 8)
+        p.moveTo(x - 32 * amt, y - 8 - 6 * (amt - 1))
+        p.quadTo(x, y + 30, x + 32 * amt + 10 * (amt - 1), y - 8 - 14 * (amt - 1))   # amt > 1: wider, lopsided smirk
         p.close()
         c.drawPath(p, P(C(120, 30, 40)))
         c.drawRect(skia.Rect(x - 24, y - 7, x + 24, y + 2), P(C(255, 255, 255)))
         c.drawPath(p, S(OUT, 4))
     elif kind in ("O", "open", "laugh"):
-        h = {"O": 22, "open": 13, "laugh": 26}[kind]
+        h = {"O": 22, "open": 13, "laugh": 26}[kind] * (amt if kind == "O" else 1.0)   # amt > 1: jaw drops further
         w = {"O": 15, "open": 20, "laugh": 30}[kind]
         p = oval(x, y + 2, w, h)
         if kind == "laugh":
@@ -346,7 +347,8 @@ def head(c, look, pose, t, R=88, back=True):
     ey = -R * 0.08
     for side in (-1, 1):
         eye(c, side * R * 0.36, ey, pose.get("eyes", "open"), lx, ly, pose.get("blink", False))
-        brow(c, side * R * 0.36, ey - R * 0.42, pose.get("brows", "flat"), side,
+        bl = pose.get("brow_lift", (0, 0))[0 if side < 0 else 1]
+        brow(c, side * R * 0.36, ey - R * 0.42 - bl, pose.get("brows", "flat"), side,
              C(*[v * 0.5 for v in look["hair_col"]]) if look["hair"] not in ("wig", "powder") else C(140, 110, 100))
     if look.get("glasses"):
         for side in (-1, 1):
@@ -368,7 +370,7 @@ def head(c, look, pose, t, R=88, back=True):
             p.moveTo(0, R * 0.42)
             p.cubicTo(side * 24, R * 0.32, side * 44, R * 0.45, side * 52, R * 0.3)
             c.drawPath(p, S(C(25, 18, 20), 9))
-    mouth(c, 0, R * 0.55, pose.get("mouth", "smile"), pose.get("talk", 0), look.get("lips"))
+    mouth(c, 0, R * 0.55, pose.get("mouth", "smile"), pose.get("talk", 0), look.get("lips"), pose.get("mouth_amt", 1.0))
     hair_front(c, look, R, t)
     if look.get("sideburns"):
         for side in (-1, 1):
@@ -604,7 +606,8 @@ def person(c, x, y, s, look, pose, t):
     hands = pose.get("hands", [(-20, 150), (20, 150)])
     for side, (hx, hy) in zip((-1, 1), hands):
         sx, sy = side * 60, -235
-        arm(c, sx, sy, sx + hx, sy + hy, sleeve, look["skin"], -side if hy > 0 else side)
+        bend = pose["bends"][0 if side < 0 else 1] if "bends" in pose else (-side if hy > 0 else side)
+        arm(c, sx, sy, sx + hx, sy + hy, sleeve, look["skin"], bend)
     uniform_front(c, look, "arms")
     c.restore()
 
