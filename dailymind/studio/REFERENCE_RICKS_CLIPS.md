@@ -32,3 +32,14 @@ firecracker and runs. The dust clears: a vein of REAL gold as thick as your arm,
   miniature worlds stay our signature backdrop.
 - A/B test **word-by-word captions** against title + subtitle.
 - Payoff annotations drawn in chalk style.
+
+## Decision (owner): full 3D characters
+The owner rejected 2D toons over the miniature world. Direction now: film-quality 3D characters acting inside real 3D
+sets. Characters = Blender Studio's free rigs **Rain** and **Snow** (CC-BY 4.0 — every video description must credit:
+"Rain & Snow rigs © Blender Foundation | studio.blender.org"). Rigs are downloaded into `assets_cache/rigs/` (git-ignored).
+Style frame builder: `blender/cove_style.py` (smugglers' pier at sunset, open treasure chest, Rain smug / Snow shocked).
+Face controls found by probing — Rain (CloudRig): MSTR-Jaw rot X opens the mouth; ACT-Lips_Corner.* loc Y = smile;
+ACT-Eyelid_Upper.* loc -Y = lids down; MSTR-Eyebrow.* loc Y = brows up; set Properties_IKFK ik_arm_* = 0 for FK arms;
+FK-Upperarm.R rot Z +70 = arm down (L: negative). Snow: Jaw, MSTR-Eyelid_Upper.*, MSTR-Eyebrow.*; Properties
+ik_*_upperarm = 0; FK-UpperArm.R rot Z NEGATIVE = arm down (opposite of Rain).
+`blender/hero3d.py` = an abandoned code-built character attempt (read as wooden toys) — kept for reference only.
