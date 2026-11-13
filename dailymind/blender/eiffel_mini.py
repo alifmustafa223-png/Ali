@@ -480,7 +480,7 @@ def catmull(keys, t):
                          for a, b, c, d in zip(p0, p1, p2, p3))
 
 
-def cam_rig(cam_k, aim_k, foc_k, lens=35, fstop=11.0, smooth=0.06):
+def cam_rig(cam_k, aim_k, foc_k, lens=35, fstop=11.0, smooth=0.14):
     """ONE continuous Catmull-Rom move per scene (never stops), zero-lag smoothed; focus bound to story keys."""
     return macro_camera(lambda t: (add(catmull(cam_k, t), drift(t, 0.0004)), catmull(aim_k, t)), lambda t: catmull(foc_k, t),
                         lens=lens, fstop=fstop, smooth=smooth)
@@ -725,7 +725,7 @@ def m1_build():
     for i in range(12):
         fg = Figure(f"c{i}", FH * rr.uniform(0.93, 1.05), coat=[(0.35, 0.15, 0.2), (0.15, 0.25, 0.4), (0.4, 0.3, 0.15), (0.2, 0.35, 0.25)][i % 4],
                     hat=rr.choice(["tophat", "bowler", "bowler", None]), long_coat=i % 2 == 0, mustache=i % 3 == 0, seed=200 + i)
-        fg.place((rr.uniform(-0.08, 0.09), rr.uniform(-0.33, -0.29), 0.0), rr.uniform(170, 190))
+        fg.place((rr.uniform(-0.08, 0.1), rr.uniform(-0.245, -0.205), 0.0), rr.uniform(170, 190))   # behind Gustave, facing the tower
         crowd.append(fg)
     for f, t in frames():
         G.pose(f, t, wave=t > tg - 0.2, look=(0, 25))
@@ -821,8 +821,11 @@ def m3_permit():
     tp, ttw, t19, tc = cue("permit"), cue("twenty"), cue("nineteen"), cue("comes")
     # a giant real sheet of paper flutters down (falling-leaf motion) and lands FLAT in the square
     paper_m = AS.texture("paper_0025", "1k", scale=8.0) if False else paint("permitpaper", (0.72, 0.66, 0.54), 0.9)
-    sheet = box("permit", (0, 0, 0), (0.15, 0.21, 0.0004), paper_m)
-    land = (0.17, -0.3, 0.0004)
+    sheet = empty("permit_holder")                     # unscaled holder: children keep their true size
+    paper = box("permit", (0, 0, 0), (0.15, 0.21, 0.0004), paper_m)
+    parent(paper, sheet)
+    land = (0.0, -0.42, 0.0004)                       # open front of the square: no shadows across the text
+    pl = light("AREA", (0.0, -0.46, 0.25), 1.5, (1.0, 0.9, 0.78), 0.12)
     t_land = ttw + 0.2
     for f, t in frames():
         k = (t - (tp - 0.5)) / (t_land - (tp - 0.5))
@@ -885,9 +888,9 @@ def m3_permit():
         key(croot, f, loc=(x, -0.15, 0.0))
         for w in wheels:
             key(w, f, rot=(math.pi / 2, (x - x0) / 0.006, 0))
-    cam_k = [(0.0, (0.25, -0.62, 0.32)), (2.4, (0.2, -0.55, 0.2)), (3.6, (0.16, -0.48, 0.16)), (5.66, (0.0, -0.75, 0.3))]
-    aim_k = [(0.0, (0.15, -0.3, 0.25)), (2.4, (0.17, -0.31, 0.0)), (3.6, (0.17, -0.33, 0.0)), (5.66, (-0.15, -0.1, 0.12))]
-    foc_k = [(0.0, (0.15, -0.3, 0.3)), (2.4, (0.17, -0.31, 0.0)), (4.0, (0.17, -0.33, 0.0)), (5.66, (-0.2, -0.12, 0.1))]
+    cam_k = [(0.0, (0.06, -0.75, 0.32)), (2.4, (0.0, -0.7, 0.26)), (3.6, (0.0, -0.66, 0.22)), (5.66, (-0.05, -0.85, 0.3))]
+    aim_k = [(0.0, (0.0, -0.42, 0.25)), (2.4, (0.0, -0.43, 0.0)), (3.6, (0.0, -0.44, 0.0)), (5.66, (-0.15, -0.15, 0.12))]
+    foc_k = [(0.0, (0.0, -0.42, 0.3)), (2.4, (0.0, -0.43, 0.0)), (4.0, (0.0, -0.44, 0.0)), (5.66, (-0.2, -0.15, 0.1))]
     return cam_rig(cam_k, aim_k, foc_k, lens=32, fstop=11)
 
 
@@ -1057,9 +1060,10 @@ def m8_spy():
         for f, t in frames():
             key(piv, f, rot=(math.radians(-25 + 12 * math.sin(t * 0.7 + ph)), math.radians(10 * math.sin(t * 0.5 + ph)), 0))
     key_pt = W["radio"].matrix_world @ Vector((0.074, -0.214, 0.03))
-    cam_k = [(0.0, (0.05, -0.3, 0.6)), (2.6, (0.2, -0.42, 0.1)), (4.2, (0.15, -0.5, 0.04)), (6.86, (-0.07, -0.47, 0.016))]
-    aim_k = [(0.0, (0.0, 0.0, 0.62)), (2.6, tuple(key_pt)), (4.2, tuple(key_pt)), (6.86, (-0.12, -0.38, 0.008))]
-    foc_k = [(0.0, (0.0, 0.0, 0.62)), (2.6, tuple(key_pt)), (4.6, tuple(key_pt)), (5.6, (-0.12, -0.38, 0.008)), (6.86, (-0.12, -0.38, 0.008))]
+    spy_pt = (-0.12, -0.38, 0.006)
+    cam_k = [(0.0, (0.05, -0.3, 0.6)), (2.6, (0.2, -0.42, 0.1)), (3.9, (0.15, -0.5, 0.04)), (5.3, (-0.07, -0.47, 0.016)), (6.86, (-0.085, -0.465, 0.014))]
+    aim_k = [(0.0, (0.0, 0.0, 0.62)), (2.6, tuple(key_pt)), (3.9, tuple(key_pt)), (5.3, spy_pt), (6.86, spy_pt)]
+    foc_k = [(0.0, (0.0, 0.0, 0.62)), (2.6, tuple(key_pt)), (3.9, tuple(key_pt)), (5.2, spy_pt), (6.86, spy_pt)]
     return cam_rig(cam_k, aim_k, foc_k, lens=35, fstop=14)
 
 

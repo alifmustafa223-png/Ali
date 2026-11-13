@@ -370,3 +370,11 @@
      never between the camera and the action.
 148. Smooth camera = ONE continuous Catmull-Rom path that never comes to a full stop (keep drifting while watching), no shake.
      Chaining eased segments (arrive / hold / rise) makes the camera stop-and-go; the owner noticed at once.
+149. Copies made with `bpy.data.objects.new(name, src.data)` do NOT inherit the template's OBJECT scale: 144 "1 mm" tower bulbs
+     came out 1 m wide and turned every night sky white. Copy `scale` too. The lens check must not skip big objects.
+150. Never parent text/props to a mesh whose size lives in its object scale (a paper sheet box): children inherit the squash and
+     vanish. Use an unscaled empty as the holder.
+151. Heavy zero-lag camera smoothing (alpha 0.06) made the camera arrive ~0.5 s late — the spy was caught off-screen. With
+     Catmull paths use light smoothing (0.14) and make the camera ARRIVE on the subject ~0.5 s before the event.
+152. Simulate, then check: the wrecking-ball pendulum is integrated numerically, its closest approach to the tower is printed
+     before rendering (first try: -4 mm = it would have gone through the tower; tuned to +30.8 mm).
