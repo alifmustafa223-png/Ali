@@ -111,7 +111,7 @@ bpy.ops.mesh.primitive_cylinder_add(vertices=24, radius=0.022, depth=0.004)
 coin_me = bpy.context.active_object.data
 bpy.data.objects.remove(bpy.context.active_object)
 coin_me.materials.append(gold)
-for i in range(220):
+for i in range(int(os.environ.get('COVE_COINS', 220))):
     o = bpy.data.objects.new(f"coin{i}", coin_me)
     SC.collection.objects.link(o)
     o.parent = chest_root
@@ -219,6 +219,8 @@ foc.location = (0.62, 0.62, DECK + 1.45)
 cd.dof.focus_object = foc
 
 # ------------------------------------------------------------------ render
+if os.environ.get("COVE_BUILD_ONLY"):
+    raise SystemExit  # cove_anim.py builds the set + cast from here and animates it
 SC.render.engine = "CYCLES"
 SC.cycles.samples = SAMPLES
 SC.cycles.use_denoising = True
