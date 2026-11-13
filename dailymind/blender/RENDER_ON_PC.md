@@ -76,3 +76,15 @@ set PLATE_FMT=MP4
 
 450 frames (15 s). Commit and push only `dailymind/miniature/renders/S2B.mp4`. Claude adds the sound
 (`ultimate/make_mini.py S2B`), reviews every frame and sends the finished sample.
+
+# Render the EIFFEL TOWER — MINIATURE version (the first full Short in the new style)
+
+Blender 4.5 LTS. Pull the branch first, then in `dailymind/blender`:
+
+```
+set PLATE_FMT=MP4
+for %s in (0 1 2 3 4 5 6 7 8 9 11) do "C:\Program Files\Blender Foundation\Blender 4.5\blender.exe" -b -P eiffel_mini.py -- %s ..\eiffel_mini\plates 100 64
+```
+
+Each scene prints `[physics]` and `[lens-check]` lines before rendering; if any says TOO CLOSE or a negative distance,
+stop and report it. Then commit and push only `dailymind/eiffel_mini/plates/s*.mp4` (11 files).
