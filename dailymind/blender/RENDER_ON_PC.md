@@ -88,3 +88,19 @@ for %s in (0 1 2 3 4 5 6 7 8 9 11) do "C:\Program Files\Blender Foundation\Blend
 
 Each scene prints `[physics]` and `[lens-check]` lines before rendering; if any says TOO CLOSE or a negative distance,
 stop and report it. Then commit and push only `dailymind/eiffel_mini/plates/s*.mp4` (11 files).
+
+## FULL-3D CHARACTER TEST (Rain + Snow on the pier) — 10 s, GPU
+Paste into the PC Claude session (Ali repo):
+```
+git pull
+cd dailymind/blender
+blender -b -P cove_anim.py -- ../cove_test/frames 100 64
+cd ../ultimate
+python make_cove_test.py ../cove_test/frames ../cove_test/cove_test.mp4
+cd ../..
+git add dailymind/cove_test/cove_test.mp4
+git commit -m "cove test render (RTX)"
+git push
+```
+First run downloads the Rain/Snow rigs (~300 MB, CC-BY Blender Foundation) and Poly Haven assets into
+dailymind/assets_cache. The script picks OPTIX (else CUDA) automatically — the log prints "GPU OPTIX".

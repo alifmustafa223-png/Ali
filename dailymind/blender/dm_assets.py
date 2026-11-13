@@ -159,3 +159,20 @@ def hdri(asset_id, res="2k", strength=1.0, rot_deg=0.0):
     nt.links.new(env.outputs["Color"], bg.inputs["Color"])
     bg.inputs["Strength"].default_value = strength
     return w
+
+
+RIG_ZIPS = {  # Blender Studio character rigs, CC-BY 4.0 — credit "Rain & Snow rigs (c) Blender Foundation | studio.blender.org"
+    "rain": "https://studio.blender.org/download-source/files/10/1033fad76f67bba3e362065d68c85791/1033fad76f67bba3e362065d68c85791.zip",
+    "snow": "https://studio.blender.org/download-source/files/ca/cab3fc59bce48d1b8090109016ac16f0/cab3fc59bce48d1b8090109016ac16f0.zip",
+}
+
+
+def rig(name):
+    """Folder of a downloaded + unzipped character rig (fetched once into the cache)."""
+    import zipfile
+    folder = os.path.join(CACHE, "rigs", name)
+    if not (os.path.isdir(folder) and any(f.endswith(".blend") for f in os.listdir(folder))):
+        z = _get(RIG_ZIPS[name], os.path.join(CACHE, "rigs", name + ".zip"))
+        with zipfile.ZipFile(z) as zf:
+            zf.extractall(folder)
+    return folder

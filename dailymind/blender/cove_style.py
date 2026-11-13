@@ -149,8 +149,8 @@ def pose(arm, d):
             b.rotation_euler = tuple(R(x) for x in v)
 
 
-rain_c, rain = append_char(os.path.join(RIGS, "rain", "rain_rig.blend"), "CH-rain")
-snow_blend = os.path.join(RIGS, "snow", "snow_v03.blend")
+rain_c, rain = append_char(os.path.join(AS.rig("rain"), "rain_rig.blend"), "CH-rain")
+snow_blend = os.path.join(AS.rig("snow"), "snow_v03.blend")
 with bpy.data.libraries.load(snow_blend) as (src, _):
     snow_coll = next((n for n in src.collections if n.lower().startswith("ch-snow")), None) or src.collections[0]
 print("SNOW COLL", snow_coll)

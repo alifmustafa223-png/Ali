@@ -191,6 +191,22 @@ for t, c, a, f in keys:
 # (Blender's default Bezier/auto-clamped keys give an eased, continuous move)
 # ------------------------------------------------------------------ render (preview quality in the cloud)
 SC.render.engine = "CYCLES"
+try:  # use the RTX GPU when there is one (OPTIX, else CUDA); the cloud falls back to CPU
+    cp = bpy.context.preferences.addons["cycles"].preferences
+    for kind in ("OPTIX", "CUDA"):
+        try:
+            cp.compute_device_type = kind
+            cp.get_devices()
+            if any(d.type == kind for d in cp.devices):
+                for d in cp.devices:
+                    d.use = d.type == kind
+                SC.cycles.device = "GPU"
+                print("GPU", kind)
+                break
+        except Exception:
+            pass
+except Exception:
+    pass
 SC.cycles.samples = SAMPLES
 SC.cycles.use_denoising = True
 SC.render.use_persistent_data = True
