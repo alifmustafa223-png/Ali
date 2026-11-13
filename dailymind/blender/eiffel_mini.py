@@ -488,7 +488,8 @@ def cam_rig(cam_k, aim_k, foc_k, lens=35, fstop=11.0, smooth=0.06):
 
 def lens_check(cam, min_mm=18.0):
     """QC: no object may pass within min_mm of the lens while in view (blurry blobs). Prints the closest offenders."""
-    objs = [o for o in SC.objects if o.type in ("MESH", "CURVE", "FONT") and not o.hide_render and max(o.dimensions) < 0.25]
+    skip = ("ground", "champ", "lawn")
+    objs = [o for o in SC.objects if o.type in ("MESH", "CURVE", "FONT") and not o.hide_render and not o.name.startswith(skip)]
     worst = []
     for f in range(1, NF + 1, 3):
         SC.frame_set(f)
@@ -530,7 +531,7 @@ def world(night=True, golden=False, era="1909", antenna=False, tower_lights=None
         bg.inputs["Strength"].default_value = 0.6
         light("SUN", (0, 0, 1), 0.25, (0.5, 0.62, 1.0), 1.0, rot=(math.radians(50), 0, math.radians(150)))
     else:
-        AS.hdri("belfast_sunset_puresky", "2k", 1.0, 200)
+        AS.hdri("belfast_sunset_puresky", "2k", 0.6, 200)
         light("SUN", (0, 0, 1), 3.5 if golden else 4.0, (1.0, 0.68, 0.42), 1.5, rot=(math.radians(74), 0, math.radians(-35)))
     cob = AS.texture("cobblestone_floor_08", "2k", scale=1.0 / (2.0 * TS) * 0.9, tint=(0.6, 0.55, 0.5))
     box("ground", (0, 0, -0.002), (2.4, 2.4, 0.004), cob)
@@ -574,6 +575,7 @@ def world(night=True, golden=False, era="1909", antenna=False, tower_lights=None
                     b_ = bpy.data.objects.new("bulb", src.data)
                     link(b_)
                     b_.location = (sx * w_ * ST, sy * w_ * ST, z * ST)
+                    b_.scale = src.scale   # the template's size lives in its OBJECT scale (mesh radius is 1 m!)
         sp = light("SPOT", (0.0, -0.45, 0.01), 18.0, (1.0, 0.72, 0.4), 0.02, spot_deg=40)
         aim_at(sp, empty("tspot_tgt", (0, 0, 0.3)))
     radio_root, robj = AS.model("vintage_radio_transceiver", "1k", loc=RADIO_AT, rot=(0, 0, RADIO_YAW), scale=1.0, name="radio")
@@ -717,7 +719,7 @@ def m1_build():
             s_ = ease((t - t_on) / 0.3)
             key(p_, f, scale=(s0[0] * max(1e-3, s_), s0[1] * max(1e-3, s_), s0[2] * max(1e-3, s_)))
     G = Figure("gustave", FH * 1.02, coat=(0.1, 0.1, 0.16), hat="tophat", long_coat=True, mustache=True, hair=(0.5, 0.48, 0.45), seed=3)
-    G.place((0.03, -0.27, 0.0), 190)
+    G.place((0.03, -0.27, 0.0), 12)
     rr = random.Random(31)
     crowd = []
     for i in range(12):
@@ -782,7 +784,7 @@ def m2_hate():
         tx.align_y = "CENTER"
         to = bpy.data.objects.new(f"signt{i}", tx)
         link(to)
-        to.rotation_euler = (math.pi / 2, 0, math.pi)
+        to.rotation_euler = (math.pi / 2, 0, 0)      # text faces -Y (the camera): readable, not mirrored
         tx.materials.append(paint("ink", (0.08, 0.06, 0.05), 0.6))
         signs.append((board, stick, to, fg))
     # one painter flings a blob of paint at the tower leg: ballistic arc, then it splats and stays (an impact with a consequence)
@@ -818,7 +820,7 @@ def m3_permit():
     W = world(night=True, tower_lights=None)
     tp, ttw, t19, tc = cue("permit"), cue("twenty"), cue("nineteen"), cue("comes")
     # a giant real sheet of paper flutters down (falling-leaf motion) and lands FLAT in the square
-    paper_m = AS.texture("paper_0025", "1k", scale=8.0) if False else paint("permitpaper", (0.93, 0.89, 0.78), 0.85)
+    paper_m = AS.texture("paper_0025", "1k", scale=8.0) if False else paint("permitpaper", (0.72, 0.66, 0.54), 0.9)
     sheet = box("permit", (0, 0, 0), (0.15, 0.21, 0.0004), paper_m)
     land = (0.17, -0.3, 0.0004)
     t_land = ttw + 0.2
@@ -834,7 +836,7 @@ def m3_permit():
             key(sheet, f, loc=land, rot=(0, 0, 0.15))
     txt_m = paint("permink", (0.08, 0.06, 0.05), 0.6)
     red_m = paint("stampred", (0.75, 0.05, 0.04), 0.5)
-    for i, (body, size, dy) in enumerate((("PERMIT", 0.022, 0.06), ("20 YEARS", 0.026, 0.02))):
+    for i, (body, size, dy) in enumerate((("PERMIT", 0.028, 0.065), ("20 YEARS", 0.03, 0.02))):
         cu = bpy.data.curves.new(f"pt{i}", "FONT")
         cu.body = body
         cu.size = size
@@ -854,7 +856,7 @@ def m3_permit():
         parent(p_, stamp)
     mark = bpy.data.curves.new("mark", "FONT")
     mark.body = "1909"
-    mark.size = 0.026
+    mark.size = 0.036
     mark.align_x = "CENTER"
     mark.align_y = "CENTER"
     mo = bpy.data.objects.new("mark", mark)
@@ -893,17 +895,17 @@ def m4_clever():
     W = world(night=False, golden=True)
     tcl, tu = cue("clever"), cue("useful")
     G = Figure("gustave", FH * 1.02, coat=(0.1, 0.1, 0.16), hat="tophat", long_coat=True, mustache=True, hair=(0.5, 0.48, 0.45), seed=3)
-    G.place((0.03, -0.27, 0.0), 200)
-    bulb = sphere("idea", (0.03, -0.27, FH * 1.55), 0.0014, paint("ideag", (1.0, 0.95, 0.7), 0.1, emit=(1.0, 0.85, 0.4), estr=0.0))
+    G.place((0.03, -0.27, 0.0), 18)
+    bulb = sphere("idea", (0.03, -0.27, FH * 1.32), 0.0006, paint("ideag", (1.0, 0.95, 0.7), 0.1, emit=(1.0, 0.85, 0.4), estr=0.0))
     bp = bulb.data.materials[0].node_tree.nodes.get("Principled BSDF")
-    bl = light("POINT", (0.03, -0.272, FH * 1.55), 0.0, (1.0, 0.85, 0.5), 0.001)
+    bl = light("POINT", (0.03, -0.272, FH * 1.32), 0.0, (1.0, 0.85, 0.5), 0.0005)
     for f, t in frames():
         k = ease((t - tcl) / 0.2)
-        bp.inputs["Emission Strength"].default_value = 20 * k
+        bp.inputs["Emission Strength"].default_value = 8 * k
         bp.inputs["Emission Strength"].keyframe_insert("default_value", frame=f)
         bl.data.energy = 0.02 * k
         bl.data.keyframe_insert("energy", frame=f)
-        key(bulb, f, scale=(max(1e-4, 0.0014 * (0.2 + 0.8 * k)),) * 3)
+        key(bulb, f, scale=(max(1e-4, 0.0006 * (0.2 + 0.8 * k)),) * 3)
         G.pose(f, t, look=(0, 30 if t > tcl else 10), point=t > tu - 0.3, carry=t < tcl - 0.1)
     cam_k = [(0.0, (0.05, -0.32, 0.011)), (3.56, (0.042, -0.305, 0.012))]
     aim_k = [(0.0, (0.03, -0.27, 0.009)), (3.56, (0.03, -0.27, 0.011))]
@@ -1096,16 +1098,16 @@ def m11_top():
     top = 89 * ST + 0.7 * ST
     pa = Figure("pa", FH, coat=(0.95, 0.4, 0.15), hat="cap", hat_col=(0.15, 0.4, 0.8), seed=8)
     pb = Figure("pb", FH, coat=(0.2, 0.75, 0.6), seed=9)
-    pa.place((-0.004, -0.008, top), 0)
-    pb.place((0.004, -0.009, top), 10)
-    rail = box("rail", (0, -0.012, top + FH * 0.6), (0.026, 0.0004, 0.0004), paint("railm", (0.15, 0.15, 0.15), 0.4, 0.8))
+    pa.place((-0.004, -0.0155, top), 0)
+    pb.place((0.004, -0.016, top), 10)
+    rail = box("rail", (0, -0.0195, top + FH * 0.6), (0.026, 0.0004, 0.0004), paint("railm", (0.15, 0.15, 0.15), 0.4, 0.8))
     tcm = cue("comments")
     for f, t in frames():
         pa.pose(f, t, wave=True, look=(10, 0))
         pb.pose(f, t, carry=True, look=(0, -30 if t < tcm else 0))
-    cam_k = [(0.0, (-0.03, -0.055, top + 0.022)), (2.77, (0.03, -0.06, top + 0.026))]
-    aim_k = [(0.0, (0.0, -0.008, top + 0.006)), (2.77, (0.0, -0.008, top + 0.006))]
-    foc_k = [(0.0, (0.0, -0.008, top + 0.006)), (2.77, (0.0, -0.008, top + 0.006))]
+    cam_k = [(0.0, (-0.03, -0.065, top + 0.02)), (2.77, (0.03, -0.068, top + 0.024))]
+    aim_k = [(0.0, (0.0, -0.016, top + 0.005)), (2.77, (0.0, -0.016, top + 0.005))]
+    foc_k = [(0.0, (0.0, -0.016, top + 0.005)), (2.77, (0.0, -0.016, top + 0.005))]
     return cam_rig(cam_k, aim_k, foc_k, lens=35, fstop=16)
 
 
