@@ -1,0 +1,3442 @@
+[
+ {
+  "line": "hook1",
+  "take": 0,
+  "seed": 7,
+  "heard": "Tomorrow morning, you wake up, look in the mirror, and the face looking back at you isn't yours.",
+  "exact": true,
+  "conf": 0.991,
+  "max_gap": 0.28,
+  "peak": 0.973,
+  "dur": 4.12,
+  "ok": 1.0
+ },
+ {
+  "line": "hook1",
+  "take": 1,
+  "seed": 24,
+  "heard": "Tomorrow morning, you wake up, look in the mirror, and the face looking back at you isn't yours.",
+  "exact": true,
+  "conf": 0.989,
+  "max_gap": 0.2,
+  "peak": 0.937,
+  "dur": 3.79,
+  "ok": 1.0
+ },
+ {
+  "line": "hook1",
+  "take": 2,
+  "seed": 41,
+  "heard": "Tomorrow morning, you wake up, look in the mirror, and the face looking back at you isn't yours.",
+  "exact": true,
+  "conf": 0.991,
+  "max_gap": 0.22,
+  "peak": 0.963,
+  "dur": 4.06,
+  "ok": 1.0
+ },
+ {
+  "line": "hook1",
+  "chosen": 2
+ },
+ {
+  "line": "hook2",
+  "take": 0,
+  "seed": 1007,
+  "heard": "It's the same face your mom has, the same face your boss has, and the same face as every single person on earth.",
+  "exact": true,
+  "conf": 0.961,
+  "max_gap": 0.28,
+  "peak": 0.965,
+  "dur": 4.7,
+  "ok": 1.0
+ },
+ {
+  "line": "hook2",
+  "take": 1,
+  "seed": 1024,
+  "heard": "It's the same face your mom has, the same face your boss has, and the same face as every single person on Earth.",
+  "exact": true,
+  "conf": 0.961,
+  "max_gap": 0.3,
+  "peak": 1.064,
+  "dur": 5.42,
+  "ok": 1.0
+ },
+ {
+  "line": "hook2",
+  "take": 2,
+  "seed": 1041,
+  "heard": "It's the same face your mom has, the same face your boss has, and the same face as every single person on Earth.",
+  "exact": true,
+  "conf": 0.962,
+  "max_gap": 0.28,
+  "peak": 0.992,
+  "dur": 5.59,
+  "ok": 1.0
+ },
+ {
+  "line": "hook2",
+  "chosen": 2
+ },
+ {
+  "line": "hook3",
+  "take": 0,
+  "seed": 2007,
+  "heard": "Overnight, all 8 billion of us got the exact same body. The same looks, the same strength, and the same IQ.",
+  "exact": true,
+  "conf": 0.958,
+  "max_gap": 0.42,
+  "peak": 1.018,
+  "dur": 5.98,
+  "ok": 1.0
+ },
+ {
+  "line": "hook3",
+  "take": 1,
+  "seed": 2024,
+  "heard": "Overnight, all eight billion of us got the exact same body, the same looks, the same strength and the same IQ.",
+  "exact": true,
+  "conf": 0.924,
+  "max_gap": 0.42,
+  "peak": 1.004,
+  "dur": 5.15,
+  "ok": 1.0
+ },
+ {
+  "line": "hook3",
+  "take": 2,
+  "seed": 2041,
+  "heard": "Overnight, all 8 billion of us got the exact same body. The same looks, the same strength, and the same IQ.",
+  "exact": true,
+  "conf": 0.956,
+  "max_gap": 0.4,
+  "peak": 1.008,
+  "dur": 5.07,
+  "ok": 1.0
+ },
+ {
+  "line": "hook3",
+  "chosen": 0
+ },
+ {
+  "line": "hook4",
+  "take": 0,
+  "seed": 3007,
+  "heard": "all perfectly average. Same height, same muscles, same brain power, the only thing that's still yours is what's inside.",
+  "exact": false,
+  "conf": 0.918,
+  "max_gap": 0.4,
+  "peak": 1.021,
+  "dur": 5.35,
+  "ok": false
+ },
+ {
+  "line": "hook4",
+  "take": 1,
+  "seed": 3024,
+  "heard": "are all perfectly average. Same height, same muscles, same brain power. The only thing that's still yours is what's inside.",
+  "exact": false,
+  "conf": 0.96,
+  "max_gap": 0.38,
+  "peak": 0.984,
+  "dur": 5.53,
+  "ok": false
+ },
+ {
+  "line": "hook4",
+  "take": 2,
+  "seed": 3041,
+  "heard": "We're all perfectly average. Same height, same muscles, same brain power. The only thing that's still yours is what's inside.",
+  "exact": true,
+  "conf": 0.971,
+  "max_gap": 0.52,
+  "peak": 1.01,
+  "dur": 6.55,
+  "ok": 1.0
+ },
+ {
+  "line": "hook4",
+  "chosen": 2
+ },
+ {
+  "line": "hook5",
+  "take": 0,
+  "seed": 4007,
+  "heard": "So, what would actually happen? Would the world become fair or would it fall apart? Let's find out.",
+  "exact": true,
+  "conf": 0.957,
+  "max_gap": 0.28,
+  "peak": 0.737,
+  "dur": 4.02,
+  "ok": 1.0
+ },
+ {
+  "line": "hook5",
+  "take": 1,
+  "seed": 4024,
+  "heard": "So what would actually happen? Would the world become fair or would it fall apart? Let's find out!",
+  "exact": true,
+  "conf": 0.948,
+  "max_gap": 0.4,
+  "peak": 0.95,
+  "dur": 4.37,
+  "ok": 1.0
+ },
+ {
+  "line": "hook5",
+  "take": 2,
+  "seed": 4041,
+  "heard": "So, what would actually happen? Would the world become fair, or would it fall apart? Let's find out.",
+  "exact": true,
+  "conf": 0.993,
+  "max_gap": 0.42,
+  "peak": 0.847,
+  "dur": 4.63,
+  "ok": 1.0
+ },
+ {
+  "line": "hook5",
+  "chosen": 2
+ },
+ {
+  "line": "hook6",
+  "take": 0,
+  "seed": 5007,
+  "heard": "And stay until the end, because the most dangerous part of this new world isn't what you think.",
+  "exact": true,
+  "conf": 0.949,
+  "max_gap": 0.22,
+  "peak": 1.024,
+  "dur": 4.14,
+  "ok": 1.0
+ },
+ {
+  "line": "hook6",
+  "take": 1,
+  "seed": 5024,
+  "heard": "And stay until the end, because the most dangerous part of this new world isn't what you think.",
+  "exact": true,
+  "conf": 0.964,
+  "max_gap": 0.18,
+  "peak": 1.007,
+  "dur": 3.62,
+  "ok": 1.0
+ },
+ {
+  "line": "hook6",
+  "take": 2,
+  "seed": 5041,
+  "heard": "And stay until the end, because the most dangerous part of this new world isn't what you think.",
+  "exact": true,
+  "conf": 0.963,
+  "max_gap": 0.2,
+  "peak": 0.955,
+  "dur": 4.2,
+  "ok": 1.0
+ },
+ {
+  "line": "hook6",
+  "chosen": 1
+ },
+ {
+  "line": "morn1",
+  "take": 0,
+  "seed": 6007,
+  "heard": "The first problem hits before breakfast. Your brain has a special area just for recognizing faces.",
+  "exact": true,
+  "conf": 0.949,
+  "max_gap": 0.42,
+  "peak": 0.987,
+  "dur": 5.21,
+  "ok": 1.0
+ },
+ {
+  "line": "morn1",
+  "take": 1,
+  "seed": 6024,
+  "heard": "The first problem hits before breakfast. Your brain has a special area just for recognizing faces.",
+  "exact": true,
+  "conf": 0.956,
+  "max_gap": 0.48,
+  "peak": 0.937,
+  "dur": 4.53,
+  "ok": 1.0
+ },
+ {
+  "line": "morn1",
+  "take": 2,
+  "seed": 6041,
+  "heard": "The first problem hits before breakfast. Your brain has a special area, just for recognizing faces.",
+  "exact": true,
+  "conf": 0.98,
+  "max_gap": 0.54,
+  "peak": 0.981,
+  "dur": 5.27,
+  "ok": 1.0
+ },
+ {
+  "line": "morn1",
+  "chosen": 2
+ },
+ {
+  "line": "morn2",
+  "take": 0,
+  "seed": 7007,
+  "heard": "Scientists estimate the average person knows about 5 ,000 faces. And this morning, every one of them looks exactly the same.",
+  "exact": true,
+  "conf": 0.957,
+  "max_gap": 0.42,
+  "peak": 1.004,
+  "dur": 6.04,
+  "ok": 1.0
+ },
+ {
+  "line": "morn2",
+  "take": 1,
+  "seed": 7024,
+  "heard": "Scientists estimate the average person knows about 5 ,000 faces, and this morning, every one of them looks exactly the same.",
+  "exact": true,
+  "conf": 0.975,
+  "max_gap": 0.38,
+  "peak": 1.02,
+  "dur": 6.04,
+  "ok": 1.0
+ },
+ {
+  "line": "morn2",
+  "take": 2,
+  "seed": 7041,
+  "heard": "Scientists estimate the average person knows about 5 ,000 faces, and this morning, every one of them looks exactly the same.",
+  "exact": true,
+  "conf": 0.974,
+  "max_gap": 0.34,
+  "peak": 1.005,
+  "dur": 6.52,
+  "ok": 1.0
+ },
+ {
+  "line": "morn2",
+  "chosen": 1
+ },
+ {
+  "line": "morn3",
+  "take": 0,
+  "seed": 8007,
+  "heard": "You walk into the kitchen, and there are four identical strangers eating cereal. One of them is your little brother. Good luck guessing which one!",
+  "exact": true,
+  "conf": 0.984,
+  "max_gap": 0.4,
+  "peak": 0.913,
+  "dur": 6.39,
+  "ok": 1.0
+ },
+ {
+  "line": "morn3",
+  "take": 1,
+  "seed": 8024,
+  "heard": "You walk into the kitchen and there are four identical strangers eating cereal. One of them is your little brother. Good luck guessing which one.",
+  "exact": true,
+  "conf": 0.963,
+  "max_gap": 0.54,
+  "peak": 0.965,
+  "dur": 6.52,
+  "ok": 1.0
+ },
+ {
+  "line": "morn3",
+  "take": 2,
+  "seed": 8041,
+  "heard": "You walk into the kitchen and there are four identical strangers eating cereal. One of them is your little brother. Good luck guessing which one!",
+  "exact": true,
+  "conf": 0.958,
+  "max_gap": 0.38,
+  "peak": 0.991,
+  "dur": 6.31,
+  "ok": 1.0
+ },
+ {
+  "line": "morn3",
+  "chosen": 0
+ },
+ {
+  "line": "morn4",
+  "take": 0,
+  "seed": 9007,
+  "heard": "Outside, it's chaos. Parents can't find their kids at school pickup. Couples hold hands on the street just to make sure they don't lose each other.",
+  "exact": true,
+  "conf": 0.972,
+  "max_gap": 0.68,
+  "peak": 0.849,
+  "dur": 6.06,
+  "ok": 1.0
+ },
+ {
+  "line": "morn4",
+  "take": 1,
+  "seed": 9024,
+  "heard": "Outside, it's chaos. Parents can't find their kids at school pickup. Couples hold hands on the street just to make sure they don't lose each other.",
+  "exact": true,
+  "conf": 0.971,
+  "max_gap": 0.76,
+  "peak": 1.036,
+  "dur": 6.99,
+  "ok": 1.0
+ },
+ {
+  "line": "morn4",
+  "take": 2,
+  "seed": 9041,
+  "heard": "Outside, it's chaos. Parents can't find their kids at school pickup. Couples hold hands on the street just to make sure they don't lose each other.",
+  "exact": true,
+  "conf": 0.973,
+  "max_gap": 0.7,
+  "peak": 0.963,
+  "dur": 6.55,
+  "ok": 1.0
+ },
+ {
+  "line": "morn4",
+  "chosen": 2
+ },
+ {
+  "line": "morn5",
+  "take": 0,
+  "seed": 10007,
+  "heard": "Even you with struggle, when every reflection looks the same, you might wave at a stranger in a shop window.",
+  "exact": false,
+  "conf": 0.966,
+  "max_gap": 0.26,
+  "peak": 1.017,
+  "dur": 4.22,
+  "ok": false
+ },
+ {
+  "line": "morn5",
+  "take": 1,
+  "seed": 10024,
+  "heard": "even you would struggle. Whenever your reflection looks the same, you might wave at a stranger in a shop window.",
+  "exact": false,
+  "conf": 0.963,
+  "max_gap": 0.32,
+  "peak": 1.033,
+  "dur": 4.46,
+  "ok": false
+ },
+ {
+  "line": "morn5",
+  "take": 2,
+  "seed": 10041,
+  "heard": "Even you would struggle. When every reflection looks the same, you might wave at a stranger in a shop window.",
+  "exact": true,
+  "conf": 0.966,
+  "max_gap": 0.28,
+  "peak": 0.821,
+  "dur": 4.83,
+  "ok": 1.0
+ },
+ {
+  "line": "morn5",
+  "chosen": 2
+ },
+ {
+  "line": "morn6",
+  "take": 0,
+  "seed": 11007,
+  "heard": "There is one group that would barely notice. Newborn babies already recognize their mother's voice because they hear it for months before they're born.",
+  "exact": true,
+  "conf": 0.952,
+  "max_gap": 0.34,
+  "peak": 1.008,
+  "dur": 6.12,
+  "ok": 1.0
+ },
+ {
+  "line": "morn6",
+  "take": 1,
+  "seed": 11024,
+  "heard": "There is one group that would barely notice. Newborn babies already recognize their mother's voice because they hear it for months before they're born.",
+  "exact": true,
+  "conf": 0.942,
+  "max_gap": 0.5,
+  "peak": 0.88,
+  "dur": 5.95,
+  "ok": 1.0
+ },
+ {
+  "line": "morn6",
+  "take": 2,
+  "seed": 11041,
+  "heard": "there is one group that would barely notice. Newborn babies already recognize their mother's voice because they hear it for months before they're born.",
+  "exact": true,
+  "conf": 0.949,
+  "max_gap": 0.5,
+  "peak": 0.997,
+  "dur": 6.64,
+  "ok": 1.0
+ },
+ {
+  "line": "morn6",
+  "chosen": 0
+ },
+ {
+  "line": "morn7",
+  "take": 0,
+  "seed": 12007,
+  "heard": "So families would lean on voices, laughs, and little habits, the same way you can recognize someone you love in the dark.",
+  "exact": true,
+  "conf": 0.975,
+  "max_gap": 0.38,
+  "peak": 0.925,
+  "dur": 5.04,
+  "ok": 1.0
+ },
+ {
+  "line": "morn7",
+  "take": 1,
+  "seed": 12024,
+  "heard": "So families would lean on voices, laughs, and little habits \u2013 the same way you can recognize someone you love in the dark.",
+  "exact": true,
+  "conf": 0.928,
+  "max_gap": 0.38,
+  "peak": 0.894,
+  "dur": 4.98,
+  "ok": 1.0
+ },
+ {
+  "line": "morn7",
+  "take": 2,
+  "seed": 12041,
+  "heard": "So, families would lean on voices, laps, and little habits, the same way you can recognize someone you love in the dark.",
+  "exact": false,
+  "conf": 0.97,
+  "max_gap": 0.34,
+  "peak": 0.986,
+  "dur": 5.22,
+  "ok": false
+ },
+ {
+  "line": "morn7",
+  "chosen": 0
+ },
+ {
+  "line": "id1",
+  "take": 0,
+  "seed": 13007,
+  "heard": "By lunchtime, every security system on the planet is broken. Face unlock on your phone? It opens for anyone.",
+  "exact": true,
+  "conf": 0.978,
+  "max_gap": 0.46,
+  "peak": 0.949,
+  "dur": 5.41,
+  "ok": 1.0
+ },
+ {
+  "line": "id1",
+  "take": 1,
+  "seed": 13024,
+  "heard": "By lunchtime, every security system on the planet is broken. Face unlock on your phone, it opens for anyone.",
+  "exact": true,
+  "conf": 0.985,
+  "max_gap": 0.36,
+  "peak": 1.016,
+  "dur": 5.1,
+  "ok": 1.0
+ },
+ {
+  "line": "id1",
+  "take": 2,
+  "seed": 13041,
+  "heard": "By lunchtime, every security system on the planet is broken. Face unlock on your phone, it opens for anyone.",
+  "exact": true,
+  "conf": 0.979,
+  "max_gap": 0.36,
+  "peak": 0.994,
+  "dur": 5.3,
+  "ok": 1.0
+ },
+ {
+  "line": "id1",
+  "chosen": 1
+ },
+ {
+  "line": "id2",
+  "take": 0,
+  "seed": 14007,
+  "heard": "Houseport photos are useless. Security cameras can see a crime happen, but every suspect looks exactly like every witness.",
+  "exact": false,
+  "conf": 0.976,
+  "max_gap": 0.5,
+  "peak": 0.99,
+  "dur": 6.12,
+  "ok": false
+ },
+ {
+  "line": "id2",
+  "take": 1,
+  "seed": 14024,
+  "heard": "Passport photos are useless. Security cameras can see a crime happen, but every suspect looks exactly like every witness.",
+  "exact": true,
+  "conf": 0.978,
+  "max_gap": 0.74,
+  "peak": 1.037,
+  "dur": 6.68,
+  "ok": 1.0
+ },
+ {
+  "line": "id2",
+  "take": 2,
+  "seed": 14041,
+  "heard": "passport photos are useless. Security cameras can see a crime happen, but every suspect looks exactly like every witness.",
+  "exact": true,
+  "conf": 0.92,
+  "max_gap": 0.68,
+  "peak": 1.035,
+  "dur": 6.86,
+  "ok": 1.0
+ },
+ {
+  "line": "id2",
+  "chosen": 1
+ },
+ {
+  "line": "id3",
+  "take": 0,
+  "seed": 15007,
+  "heard": "But here's the thing, even identical twins who share the same genes don't have the same fingerprints.",
+  "exact": true,
+  "conf": 0.954,
+  "max_gap": 0.4,
+  "peak": 0.751,
+  "dur": 4.8,
+  "ok": 1.0
+ },
+ {
+  "line": "id3",
+  "take": 1,
+  "seed": 15024,
+  "heard": "But here's the thing, even identical twins who share the same genes don't have the same fingerprints.",
+  "exact": true,
+  "conf": 0.98,
+  "max_gap": 0.48,
+  "peak": 1.002,
+  "dur": 5.43,
+  "ok": 1.0
+ },
+ {
+  "line": "id3",
+  "take": 2,
+  "seed": 15041,
+  "heard": "But here's the thing, even identical twins who share the same genes don't have the same fingerprints.",
+  "exact": true,
+  "conf": 0.969,
+  "max_gap": 0.28,
+  "peak": 0.864,
+  "dur": 4.62,
+  "ok": 1.0
+ },
+ {
+  "line": "id3",
+  "chosen": 1
+ },
+ {
+  "line": "id4",
+  "take": 0,
+  "seed": 16007,
+  "heard": "The fine details of your fingerprints are shaped by tiny differences in the womb, like your position and your blood flow, so fingerprints still work.",
+  "exact": true,
+  "conf": 0.992,
+  "max_gap": 0.26,
+  "peak": 1.029,
+  "dur": 6.2,
+  "ok": 1.0
+ },
+ {
+  "line": "id4",
+  "take": 1,
+  "seed": 16024,
+  "heard": "The fine details of your fingerprints are shaped by tiny differences in the womb, like your position and your blood flow, so fingerprints still work.",
+  "exact": true,
+  "conf": 0.986,
+  "max_gap": 0.36,
+  "peak": 1.027,
+  "dur": 6.01,
+  "ok": 1.0
+ },
+ {
+  "line": "id4",
+  "take": 2,
+  "seed": 16041,
+  "heard": "The fine details of your fingerprints are shaped by tiny differences in the womb, like your position and your blood flow. So fingerprints still work!",
+  "exact": true,
+  "conf": 0.987,
+  "max_gap": 0.34,
+  "peak": 1.0,
+  "dur": 5.95,
+  "ok": 1.0
+ },
+ {
+  "line": "id4",
+  "chosen": 0
+ },
+ {
+  "line": "id5",
+  "take": 0,
+  "seed": 17007,
+  "heard": "Within weeks, the whole world switches to fingerprint scanners, voice checks, and secret passwords. Your name tag becomes the most important thing you own.",
+  "exact": true,
+  "conf": 0.982,
+  "max_gap": 0.5,
+  "peak": 1.014,
+  "dur": 6.48,
+  "ok": 1.0
+ },
+ {
+  "line": "id5",
+  "take": 1,
+  "seed": 17024,
+  "heard": "within weeks. The whole world switches to fingerprint scanners, voice checks, and secret passwords. Your name tag becomes the most important thing you own.",
+  "exact": true,
+  "conf": 0.961,
+  "max_gap": 0.48,
+  "peak": 0.945,
+  "dur": 6.99,
+  "ok": 1.0
+ },
+ {
+  "line": "id5",
+  "take": 2,
+  "seed": 17041,
+  "heard": "Within Weech, the whole world switches to fingerprint scanners, voice checks, and secret passwords. Your name tag becomes the most important thing you own.",
+  "exact": false,
+  "conf": 0.962,
+  "max_gap": 0.4,
+  "peak": 0.996,
+  "dur": 6.91,
+  "ok": false
+ },
+ {
+  "line": "id5",
+  "chosen": 0
+ },
+ {
+  "line": "id6",
+  "take": 0,
+  "seed": 18007,
+  "heard": "and people get creative. Bright hair colors, wild clothes, tattoos, and hats become the only way to say, this is me.",
+  "exact": true,
+  "conf": 0.935,
+  "max_gap": 0.64,
+  "peak": 1.022,
+  "dur": 6.9,
+  "ok": 1.0
+ },
+ {
+  "line": "id6",
+  "take": 1,
+  "seed": 18024,
+  "heard": "and people get creative. Bright hair colors, wild clothes, tattoos, and hats become the only way to say, this is me.",
+  "exact": true,
+  "conf": 0.937,
+  "max_gap": 0.56,
+  "peak": 0.983,
+  "dur": 6.22,
+  "ok": 1.0
+ },
+ {
+  "line": "id6",
+  "take": 2,
+  "seed": 18041,
+  "heard": "and people get creative. Bright hair colors, wild clothes, tattoos and hats become the only way to say, this is me.",
+  "exact": true,
+  "conf": 0.889,
+  "max_gap": 0.42,
+  "peak": 1.003,
+  "dur": 5.53,
+  "ok": 1.0
+ },
+ {
+  "line": "id6",
+  "chosen": 1
+ },
+ {
+  "line": "id7",
+  "take": 0,
+  "seed": 19007,
+  "heard": "Banks, hospitals, and airports would rebuild everything around fingerprints. For the first time in history, your face would be worth nothing and your fingertips would be worth everything.",
+  "exact": true,
+  "conf": 0.98,
+  "max_gap": 0.42,
+  "peak": 0.991,
+  "dur": 7.94,
+  "ok": 1.0
+ },
+ {
+  "line": "id7",
+  "take": 1,
+  "seed": 19024,
+  "heard": "Banks, hospitals, and airports would rebuild everything around fingerprints. For the first time in history, your face would be worth nothing, and your fingertips would be worth everything.",
+  "exact": true,
+  "conf": 0.972,
+  "max_gap": 0.46,
+  "peak": 0.912,
+  "dur": 8.08,
+  "ok": 1.0
+ },
+ {
+  "line": "id7",
+  "take": 2,
+  "seed": 19041,
+  "heard": "Banks, hospitals, and airports would rebuild everything around fingerprints. For the first time in history, your face would be worth nothing and your fingertips would be worth everything.",
+  "exact": true,
+  "conf": 0.973,
+  "max_gap": 0.4,
+  "peak": 0.984,
+  "dur": 8.7,
+  "ok": 1.0
+ },
+ {
+  "line": "id7",
+  "chosen": 0
+ },
+ {
+  "line": "crime1",
+  "take": 0,
+  "seed": 20007,
+  "heard": "Now imagine trying to solve a crime. Today, one of the strongest pieces of evidence police can find is DNA.",
+  "exact": true,
+  "conf": 0.983,
+  "max_gap": 0.48,
+  "peak": 0.992,
+  "dur": 5.44,
+  "ok": 1.0
+ },
+ {
+  "line": "crime1",
+  "take": 1,
+  "seed": 20024,
+  "heard": "Now imagine trying to solve a crime. Today, one of the strongest pieces of evidence police can find is DNA.",
+  "exact": true,
+  "conf": 0.993,
+  "max_gap": 0.32,
+  "peak": 0.985,
+  "dur": 5.43,
+  "ok": 1.0
+ },
+ {
+  "line": "crime1",
+  "take": 2,
+  "seed": 20041,
+  "heard": "Now imagine trying to solve a crime. Today, one of the strongest pieces of evidence police can find is DNA.",
+  "exact": true,
+  "conf": 0.984,
+  "max_gap": 0.48,
+  "peak": 0.998,
+  "dur": 5.88,
+  "ok": 1.0
+ },
+ {
+  "line": "crime1",
+  "chosen": 1
+ },
+ {
+  "line": "crime2",
+  "take": 0,
+  "seed": 21007,
+  "heard": "But in our world, everyone has the same body, and police have already met this problem with identical twins.",
+  "exact": true,
+  "conf": 0.982,
+  "max_gap": 0.26,
+  "peak": 0.988,
+  "dur": 5.47,
+  "ok": 1.0
+ },
+ {
+  "line": "crime2",
+  "take": 1,
+  "seed": 21024,
+  "heard": "But in our world, everyone has the same body, and police have already met this problem with identical twins.",
+  "exact": true,
+  "conf": 0.968,
+  "max_gap": 0.3,
+  "peak": 1.006,
+  "dur": 4.92,
+  "ok": 1.0
+ },
+ {
+  "line": "crime2",
+  "take": 2,
+  "seed": 21041,
+  "heard": "But in our world, everyone has the same body, and police have already met this problem with identical twins.",
+  "exact": true,
+  "conf": 0.969,
+  "max_gap": 0.34,
+  "peak": 1.009,
+  "dur": 5.98,
+  "ok": 1.0
+ },
+ {
+  "line": "crime2",
+  "chosen": 0
+ },
+ {
+  "line": "crime3",
+  "take": 0,
+  "seed": 22007,
+  "heard": "In 2009, thieves broke into a famous department store in Berlin and stole jewelry worth millions.",
+  "exact": true,
+  "conf": 0.982,
+  "max_gap": 0.28,
+  "peak": 0.928,
+  "dur": 5.1,
+  "ok": 1.0
+ },
+ {
+  "line": "crime3",
+  "take": 1,
+  "seed": 22024,
+  "heard": "In 2009, thieves broke into a famous department store in Berlin and stole jewelry worth millions.",
+  "exact": true,
+  "conf": 0.983,
+  "max_gap": 0.32,
+  "peak": 0.991,
+  "dur": 5.14,
+  "ok": 1.0
+ },
+ {
+  "line": "crime3",
+  "take": 2,
+  "seed": 22041,
+  "heard": "In 2009, Thebes broke into a famous department store in Berlin and stole jewelry worth millions.",
+  "exact": false,
+  "conf": 0.96,
+  "max_gap": 0.38,
+  "peak": 0.993,
+  "dur": 5.43,
+  "ok": false
+ },
+ {
+  "line": "crime3",
+  "chosen": 1
+ },
+ {
+  "line": "crime4",
+  "take": 0,
+  "seed": 23007,
+  "heard": "Police found DNA on a glove left at the scene. It matched a pair of identical twin brothers, but the tests could not tell which brother it came from.",
+  "exact": true,
+  "conf": 0.968,
+  "max_gap": 0.24,
+  "peak": 1.002,
+  "dur": 5.66,
+  "ok": 1.0
+ },
+ {
+  "line": "crime4",
+  "take": 1,
+  "seed": 23024,
+  "heard": "Police found DNA on a glove left at the scene. It matched a pair of identical twin brothers, but the tests could not tell which brother it came from.",
+  "exact": true,
+  "conf": 0.981,
+  "max_gap": 0.38,
+  "peak": 1.015,
+  "dur": 6.36,
+  "ok": 1.0
+ },
+ {
+  "line": "crime4",
+  "take": 2,
+  "seed": 23041,
+  "heard": "Police found DNA on a glove left at the scene. It mashed a pair of identical twin brothers, but the test could not tell which brother it came from.",
+  "exact": false,
+  "conf": 0.972,
+  "max_gap": 0.32,
+  "peak": 0.998,
+  "dur": 5.59,
+  "ok": false
+ },
+ {
+  "line": "crime4",
+  "chosen": 1
+ },
+ {
+  "line": "crime5",
+  "take": 0,
+  "seed": 24007,
+  "heard": "The court couldn't prove which twin did it, so both brothers walked free. Now imagine that problem with 8 billion people.",
+  "exact": true,
+  "conf": 0.953,
+  "max_gap": 0.42,
+  "peak": 0.911,
+  "dur": 5.65,
+  "ok": 1.0
+ },
+ {
+  "line": "crime5",
+  "take": 1,
+  "seed": 24024,
+  "heard": "The court couldn't prove which twin did it, so both brothers walked free. Now imagine that problem with eight billion people.",
+  "exact": true,
+  "conf": 0.937,
+  "max_gap": 0.58,
+  "peak": 1.026,
+  "dur": 5.62,
+  "ok": 1.0
+ },
+ {
+  "line": "crime5",
+  "take": 2,
+  "seed": 24041,
+  "heard": "The court couldn't prove which twin did it, so both brothers walked free. Now imagine that problem with 8 billion people.",
+  "exact": true,
+  "conf": 0.948,
+  "max_gap": 0.4,
+  "peak": 0.787,
+  "dur": 5.47,
+  "ok": 1.0
+ },
+ {
+  "line": "crime5",
+  "chosen": 0
+ },
+ {
+  "line": "crime6",
+  "take": 0,
+  "seed": 25007,
+  "heard": "Detectives would go back to old -school methods, fingerprints, voices, receipts, phone records, and witnesses who remember how someone walks.",
+  "exact": true,
+  "conf": 0.982,
+  "max_gap": 0.42,
+  "peak": 1.018,
+  "dur": 6.48,
+  "ok": 1.0
+ },
+ {
+  "line": "crime6",
+  "take": 1,
+  "seed": 25024,
+  "heard": "Detectives would go back to old school methods, fingerprints, voices, receipts, phone records, and witnesses who remember how someone walks.",
+  "exact": true,
+  "conf": 0.963,
+  "max_gap": 0.38,
+  "peak": 0.994,
+  "dur": 6.36,
+  "ok": 1.0
+ },
+ {
+  "line": "crime6",
+  "take": 2,
+  "seed": 25041,
+  "heard": "Detectives would go back to old school methods. Fingerprints, voices, receipts, phone records, and witnesses who remember how someone walks.",
+  "exact": true,
+  "conf": 0.964,
+  "max_gap": 0.36,
+  "peak": 1.014,
+  "dur": 5.98,
+  "ok": 1.0
+ },
+ {
+  "line": "crime6",
+  "chosen": 0
+ },
+ {
+  "line": "crime7",
+  "take": 0,
+  "seed": 26007,
+  "heard": "And in a world of identical faces, the perfect disguise would be walking down the street as herself.",
+  "exact": false,
+  "conf": 0.942,
+  "max_gap": 0.38,
+  "peak": 0.893,
+  "dur": 4.2,
+  "ok": false
+ },
+ {
+  "line": "crime7",
+  "take": 1,
+  "seed": 26024,
+  "heard": "And in a world of identical faces, the perfect disguise would be walking down the street as yourself.",
+  "exact": true,
+  "conf": 0.956,
+  "max_gap": 0.36,
+  "peak": 1.02,
+  "dur": 4.36,
+  "ok": 1.0
+ },
+ {
+  "line": "crime7",
+  "take": 2,
+  "seed": 26041,
+  "heard": "And in a world of identical faces, the perfect disguise would be walking down the street as yourself.",
+  "exact": true,
+  "conf": 0.95,
+  "max_gap": 0.3,
+  "peak": 1.0,
+  "dur": 4.76,
+  "ok": 1.0
+ },
+ {
+  "line": "crime7",
+  "chosen": 1
+ },
+ {
+  "line": "love1",
+  "take": 0,
+  "seed": 27007,
+  "heard": "Now let's talk about love. If everyone is equally attractive, what happens to dating?",
+  "exact": true,
+  "conf": 0.99,
+  "max_gap": 0.38,
+  "peak": 0.982,
+  "dur": 3.8,
+  "ok": 1.0
+ },
+ {
+  "line": "love1",
+  "take": 1,
+  "seed": 27024,
+  "heard": "Now let's talk about love. If everyone is equally attractive, what happens to dating?",
+  "exact": true,
+  "conf": 0.99,
+  "max_gap": 0.44,
+  "peak": 0.947,
+  "dur": 4.17,
+  "ok": 1.0
+ },
+ {
+  "line": "love1",
+  "take": 2,
+  "seed": 27041,
+  "heard": "Now let's talk about love. If everyone is equally attractive, what happens to dating?",
+  "exact": true,
+  "conf": 0.993,
+  "max_gap": 0.38,
+  "peak": 1.007,
+  "dur": 4.06,
+  "ok": 1.0
+ },
+ {
+  "line": "love1",
+  "chosen": 2
+ },
+ {
+  "line": "love2",
+  "take": 0,
+  "seed": 28007,
+  "heard": "Here's the surprise. Studies on attraction show that looks matter most for first impressions and much less once people get to know each other.",
+  "exact": true,
+  "conf": 0.959,
+  "max_gap": 0.62,
+  "peak": 0.979,
+  "dur": 5.92,
+  "ok": 1.0
+ },
+ {
+  "line": "love2",
+  "take": 1,
+  "seed": 28024,
+  "heard": "Here's the surprise. Studies on attraction show that looks matter most for first impressions, and much less once people get to know each other.",
+  "exact": true,
+  "conf": 0.986,
+  "max_gap": 0.6,
+  "peak": 0.986,
+  "dur": 6.06,
+  "ok": 1.0
+ },
+ {
+  "line": "love2",
+  "take": 2,
+  "seed": 28041,
+  "heard": "Here's the surprise! Studies on attraction show that looks matter most for first impressions, and much less once people get to know each other.",
+  "exact": true,
+  "conf": 0.99,
+  "max_gap": 0.68,
+  "peak": 1.014,
+  "dur": 7.07,
+  "ok": 1.0
+ },
+ {
+  "line": "love2",
+  "chosen": 2
+ },
+ {
+  "line": "love3",
+  "take": 0,
+  "seed": 29007,
+  "heard": "Psychologists call it the mirror exposure effect. The more time we spend around someone, the more we tend to like them.",
+  "exact": false,
+  "conf": 0.945,
+  "max_gap": 0.48,
+  "peak": 1.024,
+  "dur": 4.73,
+  "ok": false
+ },
+ {
+  "line": "love3",
+  "take": 1,
+  "seed": 29024,
+  "heard": "Psychologists call it the mere exposure effect. The more time we spend around someone, the more we tend to like them.",
+  "exact": true,
+  "conf": 0.961,
+  "max_gap": 0.34,
+  "peak": 0.833,
+  "dur": 4.58,
+  "ok": 1.0
+ },
+ {
+  "line": "love3",
+  "take": 2,
+  "seed": 29041,
+  "heard": "Psychologists call it the mere exposure effect. The more time we spend around someone, the more we tend to like them.",
+  "exact": true,
+  "conf": 0.963,
+  "max_gap": 0.3,
+  "peak": 0.936,
+  "dur": 4.84,
+  "ok": 1.0
+ },
+ {
+  "line": "love3",
+  "chosen": 2
+ },
+ {
+  "line": "love4",
+  "take": 0,
+  "seed": 30007,
+  "heard": "though, in a world where everyone looks the same, dating stops being about the photo. It becomes about the conversation.",
+  "exact": false,
+  "conf": 0.95,
+  "max_gap": 0.38,
+  "peak": 1.078,
+  "dur": 4.68,
+  "ok": false
+ },
+ {
+  "line": "love4",
+  "take": 1,
+  "seed": 30024,
+  "heard": "Though in a world where everyone looks the same, dating stops being about the photo. It becomes about the conversation.",
+  "exact": false,
+  "conf": 0.972,
+  "max_gap": 0.4,
+  "peak": 1.079,
+  "dur": 5.71,
+  "ok": false
+ },
+ {
+  "line": "love4",
+  "take": 2,
+  "seed": 30041,
+  "heard": "So in a world where everyone looks the same, dating stops being about the photo. It becomes about the conversation.",
+  "exact": true,
+  "conf": 0.962,
+  "max_gap": 0.28,
+  "peak": 1.008,
+  "dur": 5.04,
+  "ok": 1.0
+ },
+ {
+  "line": "love4",
+  "chosen": 2
+ },
+ {
+  "line": "love5",
+  "take": 0,
+  "seed": 31007,
+  "heard": "humor, kindness, shared interests, and how someone makes you feel. Those would be the only things that make one person stand out.",
+  "exact": true,
+  "conf": 0.971,
+  "max_gap": 0.38,
+  "peak": 0.954,
+  "dur": 6.03,
+  "ok": 1.0
+ },
+ {
+  "line": "love5",
+  "take": 1,
+  "seed": 31024,
+  "heard": "Humor, kindness, shared interests, and how someone makes you feel. Those would be the only things that make one person stand out.",
+  "exact": true,
+  "conf": 0.982,
+  "max_gap": 0.36,
+  "peak": 0.945,
+  "dur": 5.96,
+  "ok": 1.0
+ },
+ {
+  "line": "love5",
+  "take": 2,
+  "seed": 31041,
+  "heard": "Humor, kindness, shared interests, and how someone makes you feel, those would be the only things that make one person stand out.",
+  "exact": true,
+  "conf": 0.978,
+  "max_gap": 0.32,
+  "peak": 1.006,
+  "dur": 5.92,
+  "ok": 1.0
+ },
+ {
+  "line": "love5",
+  "chosen": 1
+ },
+ {
+  "line": "love6",
+  "take": 0,
+  "seed": 32007,
+  "heard": "Dating apps would have to delete profile pictures completely. Every profile would be just words. And honestly, that might work better.",
+  "exact": true,
+  "conf": 0.988,
+  "max_gap": 0.32,
+  "peak": 1.003,
+  "dur": 6.02,
+  "ok": 1.0
+ },
+ {
+  "line": "love6",
+  "take": 1,
+  "seed": 32024,
+  "heard": "Dating apps would have to delete profile pictures completely. Every profile would be just words. And honestly, that might work better.",
+  "exact": true,
+  "conf": 0.958,
+  "max_gap": 0.4,
+  "peak": 0.999,
+  "dur": 6.05,
+  "ok": 1.0
+ },
+ {
+  "line": "love6",
+  "take": 2,
+  "seed": 32041,
+  "heard": "Dating apps would have to delete profile pictures completely. Every profile would be just words. And honestly, that might work better.",
+  "exact": true,
+  "conf": 0.977,
+  "max_gap": 0.44,
+  "peak": 0.988,
+  "dur": 6.05,
+  "ok": 1.0
+ },
+ {
+  "line": "love6",
+  "chosen": 0
+ },
+ {
+  "line": "love7",
+  "take": 0,
+  "seed": 33007,
+  "heard": "Some people might fall in love with someone they would have ignored before. In a strange way, this world would be kinder to people who were never noticed.",
+  "exact": true,
+  "conf": 0.983,
+  "max_gap": 0.56,
+  "peak": 0.967,
+  "dur": 6.67,
+  "ok": 1.0
+ },
+ {
+  "line": "love7",
+  "take": 1,
+  "seed": 33024,
+  "heard": "Some people might fall in love with someone they would have ignored before. In a strange way, this world would be kinder to people who were never noticed.",
+  "exact": true,
+  "conf": 0.977,
+  "max_gap": 0.26,
+  "peak": 0.971,
+  "dur": 5.84,
+  "ok": 1.0
+ },
+ {
+  "line": "love7",
+  "take": 2,
+  "seed": 33041,
+  "heard": "Some people might fall in love with someone they would have ignored before. In a strange way, this world would be kinder to people who were never noticed.",
+  "exact": true,
+  "conf": 0.987,
+  "max_gap": 0.28,
+  "peak": 1.027,
+  "dur": 6.92,
+  "ok": 1.0
+ },
+ {
+  "line": "love7",
+  "chosen": 2
+ },
+ {
+  "line": "fame1",
+  "take": 0,
+  "seed": 34007,
+  "heard": "And what about fame? Today, millions of people follow influencers partly because of how they look.",
+  "exact": true,
+  "conf": 0.965,
+  "max_gap": 0.52,
+  "peak": 1.006,
+  "dur": 5.29,
+  "ok": 1.0
+ },
+ {
+  "line": "fame1",
+  "take": 1,
+  "seed": 34024,
+  "heard": "And what about fame? Today, millions of people follow influencers partly because of how they look.",
+  "exact": true,
+  "conf": 0.977,
+  "max_gap": 0.48,
+  "peak": 0.996,
+  "dur": 4.84,
+  "ok": 1.0
+ },
+ {
+  "line": "fame1",
+  "take": 2,
+  "seed": 34041,
+  "heard": "And what about fame? Today, millions of people follow influencers partly because of how they look.",
+  "exact": true,
+  "conf": 0.975,
+  "max_gap": 0.52,
+  "peak": 0.887,
+  "dur": 5.0,
+  "ok": 1.0
+ },
+ {
+  "line": "fame1",
+  "chosen": 1
+ },
+ {
+  "line": "fame2",
+  "take": 0,
+  "seed": 35007,
+  "heard": "In this world, every model and every movie star looks exactly like you. Beautyettes disappear overnight because there's nothing left to sell.",
+  "exact": false,
+  "conf": 0.963,
+  "max_gap": 0.32,
+  "peak": 0.977,
+  "dur": 6.17,
+  "ok": false
+ },
+ {
+  "line": "fame2",
+  "take": 1,
+  "seed": 35024,
+  "heard": "In this world, every model and every movie star looks exactly like you. Beauty ads disappear overnight, because there's nothing left to sell.",
+  "exact": true,
+  "conf": 0.983,
+  "max_gap": 0.56,
+  "peak": 0.985,
+  "dur": 6.63,
+  "ok": 1.0
+ },
+ {
+  "line": "fame2",
+  "take": 2,
+  "seed": 35041,
+  "heard": "In this world, every model and every movie star looks exactly like you. Beauty ads disappear overnight because there's nothing left to sell.",
+  "exact": true,
+  "conf": 0.977,
+  "max_gap": 0.5,
+  "peak": 1.021,
+  "dur": 7.03,
+  "ok": 1.0
+ },
+ {
+  "line": "fame2",
+  "chosen": 1
+ },
+ {
+  "line": "fame3",
+  "take": 0,
+  "seed": 36007,
+  "heard": "Fame would move to the things that are still different, like voices, jokes, ideas and skills you can actually watch.",
+  "exact": true,
+  "conf": 0.925,
+  "max_gap": 0.38,
+  "peak": 1.001,
+  "dur": 5.62,
+  "ok": 1.0
+ },
+ {
+  "line": "fame3",
+  "take": 1,
+  "seed": 36024,
+  "heard": "Fame would move to the things that are still different, like voices, jokes, ideas, and skills you can actually watch.",
+  "exact": true,
+  "conf": 0.969,
+  "max_gap": 0.48,
+  "peak": 0.977,
+  "dur": 5.45,
+  "ok": 1.0
+ },
+ {
+  "line": "fame3",
+  "take": 2,
+  "seed": 36041,
+  "heard": "Fame would move to the things that are still different, like voices, jokes, ideas, and skills you can actually watch.",
+  "exact": true,
+  "conf": 0.984,
+  "max_gap": 0.32,
+  "peak": 0.981,
+  "dur": 4.99,
+  "ok": 1.0
+ },
+ {
+  "line": "fame3",
+  "chosen": 2
+ },
+ {
+  "line": "fame4",
+  "take": 0,
+  "seed": 37007,
+  "heard": "most famous people on the planet would be comedians, storytellers, and inventors. Being interesting would become the new, being beautiful.",
+  "exact": false,
+  "conf": 0.948,
+  "max_gap": 0.42,
+  "peak": 0.995,
+  "dur": 6.1,
+  "ok": false
+ },
+ {
+  "line": "fame4",
+  "take": 1,
+  "seed": 37024,
+  "heard": "The most famous people on the planet would be comedians, storytellers, and inventors. Being interesting would become the new being beautiful.",
+  "exact": true,
+  "conf": 0.971,
+  "max_gap": 0.4,
+  "peak": 0.894,
+  "dur": 6.39,
+  "ok": 1.0
+ },
+ {
+  "line": "fame4",
+  "take": 2,
+  "seed": 37041,
+  "heard": "The most famous people on the planet would be comedians, storytellers, and inventors. Being interesting would become the new, being beautiful.",
+  "exact": true,
+  "conf": 0.982,
+  "max_gap": 0.3,
+  "peak": 1.008,
+  "dur": 6.23,
+  "ok": 1.0
+ },
+ {
+  "line": "fame4",
+  "chosen": 2
+ },
+ {
+  "line": "sport1",
+  "take": 0,
+  "seed": 38007,
+  "heard": "Sports would be hit the hardest. Think about Michael Phelps. He's 6 foot 4, but his arms band is 6 foot 7. That's part of why he won 28 Olympic medals.",
+  "exact": false,
+  "conf": 0.932,
+  "max_gap": 0.42,
+  "peak": 0.939,
+  "dur": 7.02,
+  "ok": false
+ },
+ {
+  "line": "sport1",
+  "take": 1,
+  "seed": 38024,
+  "heard": "Sports would be hit the hardest. Think about Michael Phelps. He's 6 foot 4, but his arm span is 6 foot 7. That's part of why he won 28 Olympic medals.",
+  "exact": true,
+  "conf": 0.956,
+  "max_gap": 0.46,
+  "peak": 1.026,
+  "dur": 7.58,
+  "ok": 1.0
+ },
+ {
+  "line": "sport1",
+  "take": 2,
+  "seed": 38041,
+  "heard": "sports would be hit the hardest. Think about Michael Phelps. He's 6 foot 4, but his arm span is 6 foot 7. That's part of why he won 28 Olympic medals.",
+  "exact": true,
+  "conf": 0.94,
+  "max_gap": 0.46,
+  "peak": 1.003,
+  "dur": 7.34,
+  "ok": 1.0
+ },
+ {
+  "line": "sport1",
+  "chosen": 1
+ },
+ {
+  "line": "sport2",
+  "take": 0,
+  "seed": 39007,
+  "heard": "Basketball players are tall, sprinters have fast muscle fibers, and gymnasts are small and light. Every sport rewards a different kind of body.",
+  "exact": true,
+  "conf": 0.967,
+  "max_gap": 0.3,
+  "peak": 0.991,
+  "dur": 7.02,
+  "ok": 1.0
+ },
+ {
+  "line": "sport2",
+  "take": 1,
+  "seed": 39024,
+  "heard": "Basketball players are tall, sprinters have fast muscle fibers, and gymnasts are small and light. Every sport rewards a different kind of body.",
+  "exact": true,
+  "conf": 0.981,
+  "max_gap": 0.44,
+  "peak": 1.021,
+  "dur": 7.14,
+  "ok": 1.0
+ },
+ {
+  "line": "sport2",
+  "take": 2,
+  "seed": 39041,
+  "heard": "Basketball players are tall, sprinters have fast muscle fibers, and gymnasts are small and light. Every sport rewards a different kind of body.",
+  "exact": true,
+  "conf": 0.984,
+  "max_gap": 0.42,
+  "peak": 1.05,
+  "dur": 6.7,
+  "ok": 1.0
+ },
+ {
+  "line": "sport2",
+  "chosen": 2
+ },
+ {
+  "line": "sport3",
+  "take": 0,
+  "seed": 40007,
+  "heard": "In our new world, nobody has a natural advantage. Every 100 meter race could end in a near perfect tie.",
+  "exact": true,
+  "conf": 0.925,
+  "max_gap": 0.38,
+  "peak": 1.008,
+  "dur": 6.17,
+  "ok": 1.0
+ },
+ {
+  "line": "sport3",
+  "take": 1,
+  "seed": 40024,
+  "heard": "In our new world, nobody has a natural advantage. Every 100 -meter race could end in a near -perfect tie.",
+  "exact": true,
+  "conf": 0.961,
+  "max_gap": 0.36,
+  "peak": 0.984,
+  "dur": 5.74,
+  "ok": 1.0
+ },
+ {
+  "line": "sport3",
+  "take": 2,
+  "seed": 40041,
+  "heard": "In our new world, nobody has a natural advantage. Every 100 meter race could end in a near perfect tie.",
+  "exact": true,
+  "conf": 0.941,
+  "max_gap": 0.46,
+  "peak": 0.99,
+  "dur": 5.6,
+  "ok": 1.0
+ },
+ {
+  "line": "sport3",
+  "chosen": 1
+ },
+ {
+  "line": "sport4",
+  "take": 0,
+  "seed": 41007,
+  "heard": "So what decide two wins? Only training, strategy, teamwork, and willpower. The athlete who practices more and wants it more takes the gold.",
+  "exact": false,
+  "conf": 0.924,
+  "max_gap": 0.5,
+  "peak": 1.035,
+  "dur": 6.93,
+  "ok": false
+ },
+ {
+  "line": "sport4",
+  "take": 1,
+  "seed": 41024,
+  "heard": "So what decides who wins? Only training, strategy, teamwork, and willpower. The athlete who practices more and wants it more takes the gold.",
+  "exact": true,
+  "conf": 0.971,
+  "max_gap": 0.44,
+  "peak": 1.024,
+  "dur": 6.94,
+  "ok": 1.0
+ },
+ {
+  "line": "sport4",
+  "take": 2,
+  "seed": 41041,
+  "heard": "So what decides who wins? Only training, strategy, teamwork, and willpower. The athlete who practices more and wants it more takes the gold.",
+  "exact": true,
+  "conf": 0.944,
+  "max_gap": 0.46,
+  "peak": 0.973,
+  "dur": 7.38,
+  "ok": 1.0
+ },
+ {
+  "line": "sport4",
+  "chosen": 1
+ },
+ {
+  "line": "sport5",
+  "take": 0,
+  "seed": 42007,
+  "heard": "Some people think that would make sports boring. Others think it would make them the most honest competition in history.",
+  "exact": true,
+  "conf": 0.986,
+  "max_gap": 0.36,
+  "peak": 1.037,
+  "dur": 4.56,
+  "ok": 1.0
+ },
+ {
+  "line": "sport5",
+  "take": 1,
+  "seed": 42024,
+  "heard": "Some people think that would make sports boring. Others think it would make them the most honest competition in history.",
+  "exact": true,
+  "conf": 0.983,
+  "max_gap": 0.34,
+  "peak": 0.97,
+  "dur": 4.55,
+  "ok": 1.0
+ },
+ {
+  "line": "sport5",
+  "take": 2,
+  "seed": 42041,
+  "heard": "Some people think that would make sports boring. Others think it would make them the most honest competition in history.",
+  "exact": true,
+  "conf": 0.981,
+  "max_gap": 0.38,
+  "peak": 0.98,
+  "dur": 4.84,
+  "ok": 1.0
+ },
+ {
+  "line": "sport5",
+  "chosen": 0
+ },
+ {
+  "line": "sport5b",
+  "take": 0,
+  "seed": 43007,
+  "heard": "Coaches would become the real superstars because the right plan would matter more than any body.",
+  "exact": true,
+  "conf": 0.917,
+  "max_gap": 0.0,
+  "peak": 0.939,
+  "dur": 4.32,
+  "ok": 1.0
+ },
+ {
+  "line": "sport5b",
+  "take": 1,
+  "seed": 43024,
+  "heard": "coaches would become the real superstars because the right plan would matter more than anybody.",
+  "exact": false,
+  "conf": 0.926,
+  "max_gap": 0.0,
+  "peak": 0.982,
+  "dur": 4.04,
+  "ok": false
+ },
+ {
+  "line": "sport5b",
+  "take": 2,
+  "seed": 43041,
+  "heard": "Coaches would become the real superstars, because the right plan would matter more than any body.",
+  "exact": true,
+  "conf": 0.947,
+  "max_gap": 0.14,
+  "peak": 0.814,
+  "dur": 4.16,
+  "ok": 1.0
+ },
+ {
+  "line": "sport5b",
+  "chosen": 2
+ },
+ {
+  "line": "sport6",
+  "take": 0,
+  "seed": 44007,
+  "heard": "The Olympics might even add new events that test skill and strategy, like archery or team relays, where the smartest plan wins.",
+  "exact": true,
+  "conf": 0.984,
+  "max_gap": 0.28,
+  "peak": 1.049,
+  "dur": 5.27,
+  "ok": 1.0
+ },
+ {
+  "line": "sport6",
+  "take": 1,
+  "seed": 44024,
+  "heard": "The Olympics might even add new events that test skill and strategy, like archery or team relays where the smartest plan wins.",
+  "exact": true,
+  "conf": 0.955,
+  "max_gap": 0.26,
+  "peak": 0.913,
+  "dur": 5.54,
+  "ok": 1.0
+ },
+ {
+  "line": "sport6",
+  "take": 2,
+  "seed": 44041,
+  "heard": "The Olympics might even add new events that test skill and strategy, like archery or team relays where the smartest plan wins.",
+  "exact": true,
+  "conf": 0.971,
+  "max_gap": 0.32,
+  "peak": 1.045,
+  "dur": 5.95,
+  "ok": 1.0
+ },
+ {
+  "line": "sport6",
+  "chosen": 0
+ },
+ {
+  "line": "job1",
+  "take": 0,
+  "seed": 45007,
+  "heard": "Next, the economy. In 1817, the economist David Ricardo explained why people trade.",
+  "exact": true,
+  "conf": 0.94,
+  "max_gap": 0.36,
+  "peak": 0.955,
+  "dur": 5.25,
+  "ok": 1.0
+ },
+ {
+  "line": "job1",
+  "take": 1,
+  "seed": 45024,
+  "heard": "Next, the economy. In 1817, the economist David Ricardo explained why people trade.",
+  "exact": true,
+  "conf": 0.952,
+  "max_gap": 0.5,
+  "peak": 1.071,
+  "dur": 5.13,
+  "ok": 1.0
+ },
+ {
+  "line": "job1",
+  "take": 2,
+  "seed": 45041,
+  "heard": "Next, the economy. In 1817, the economist David Ricardo explained why people trade.",
+  "exact": true,
+  "conf": 0.96,
+  "max_gap": 0.36,
+  "peak": 1.025,
+  "dur": 5.07,
+  "ok": 1.0
+ },
+ {
+  "line": "job1",
+  "chosen": 2
+ },
+ {
+  "line": "job2",
+  "take": 0,
+  "seed": 46007,
+  "heard": "It's called comparative advantage. Even if you're good at everything, you should focus on what you do best and trade for the rest.",
+  "exact": true,
+  "conf": 0.971,
+  "max_gap": 0.42,
+  "peak": 0.99,
+  "dur": 5.34,
+  "ok": 1.0
+ },
+ {
+  "line": "job2",
+  "take": 1,
+  "seed": 46024,
+  "heard": "It's called comparative advantage. Even if you're good at everything, you should focus on what you do best and trade for the rest.",
+  "exact": true,
+  "conf": 0.977,
+  "max_gap": 0.36,
+  "peak": 0.985,
+  "dur": 5.35,
+  "ok": 1.0
+ },
+ {
+  "line": "job2",
+  "take": 2,
+  "seed": 46041,
+  "heard": "It's called comparative advantage. Even if you're good at everything, you should focus on what you do best and trade for the rest.",
+  "exact": true,
+  "conf": 0.976,
+  "max_gap": 0.4,
+  "peak": 0.855,
+  "dur": 6.08,
+  "ok": 1.0
+ },
+ {
+  "line": "job2",
+  "chosen": 1
+ },
+ {
+  "line": "job3",
+  "take": 0,
+  "seed": 47007,
+  "heard": "Our whole economy runs on people being different. One person loves numbers, another loves building things, another loves helping people.",
+  "exact": true,
+  "conf": 0.992,
+  "max_gap": 0.48,
+  "peak": 0.932,
+  "dur": 5.84,
+  "ok": 1.0
+ },
+ {
+  "line": "job3",
+  "take": 1,
+  "seed": 47024,
+  "heard": "Our whole economy runs on people being different. One person loves numbers, another loves building things, another loves helping people.",
+  "exact": true,
+  "conf": 0.975,
+  "max_gap": 0.4,
+  "peak": 0.955,
+  "dur": 5.93,
+  "ok": 1.0
+ },
+ {
+  "line": "job3",
+  "take": 2,
+  "seed": 47041,
+  "heard": "Our whole economy runs on people being different. One person loves numbers, another loves building things, another loves helping people.",
+  "exact": true,
+  "conf": 0.964,
+  "max_gap": 0.4,
+  "peak": 1.01,
+  "dur": 6.04,
+  "ok": 1.0
+ },
+ {
+  "line": "job3",
+  "chosen": 0
+ },
+ {
+  "line": "job3b",
+  "take": 0,
+  "seed": 48007,
+  "heard": "And there's another twist. In studies, people rated as better looking tend to earn a few percent more on average. Economists call it the beauty premium.",
+  "exact": true,
+  "conf": 0.95,
+  "max_gap": 0.5,
+  "peak": 0.997,
+  "dur": 6.89,
+  "ok": 1.0
+ },
+ {
+  "line": "job3b",
+  "take": 1,
+  "seed": 48024,
+  "heard": "there's another twist. In studies, people rated as better -looking tend to earn a few percent more, on average. Economists call it the beauty premium.",
+  "exact": false,
+  "conf": 0.953,
+  "max_gap": 0.54,
+  "peak": 0.984,
+  "dur": 6.36,
+  "ok": false
+ },
+ {
+  "line": "job3b",
+  "take": 2,
+  "seed": 48041,
+  "heard": "And, there's another twist. In studies, people rated as better -looking tend to earn a few percent more, on average. Economists call it the beauty premium.",
+  "exact": true,
+  "conf": 0.936,
+  "max_gap": 0.74,
+  "peak": 1.046,
+  "dur": 8.28,
+  "ok": 1.0
+ },
+ {
+  "line": "job3b",
+  "chosen": 0
+ },
+ {
+  "line": "job3c",
+  "take": 0,
+  "seed": 49007,
+  "heard": "In our new world, the beauty premium disappears overnight. Nobody gets hired or ignored because of their face.",
+  "exact": true,
+  "conf": 0.978,
+  "max_gap": 0.42,
+  "peak": 0.962,
+  "dur": 5.41,
+  "ok": 1.0
+ },
+ {
+  "line": "job3c",
+  "take": 1,
+  "seed": 49024,
+  "heard": "In our new world, the beauty premium disappears overnight. Nobody gets hired or ignored because of their face.",
+  "exact": true,
+  "conf": 0.973,
+  "max_gap": 0.52,
+  "peak": 0.955,
+  "dur": 6.47,
+  "ok": 1.0
+ },
+ {
+  "line": "job3c",
+  "take": 2,
+  "seed": 49041,
+  "heard": "In our new world, the beauty premium disappears overnight. Nobody gets hired or ignored because of their face.",
+  "exact": true,
+  "conf": 0.963,
+  "max_gap": 0.42,
+  "peak": 0.981,
+  "dur": 5.61,
+  "ok": 1.0
+ },
+ {
+  "line": "job3c",
+  "chosen": 0
+ },
+ {
+  "line": "job4",
+  "take": 0,
+  "seed": 50007,
+  "heard": "If everyone has the same strength and the same IQ, those natural differences shrink. And here's the danger. What if everyone wants the same jobs?",
+  "exact": true,
+  "conf": 0.982,
+  "max_gap": 0.42,
+  "peak": 0.992,
+  "dur": 6.78,
+  "ok": 1.0
+ },
+ {
+  "line": "job4",
+  "take": 1,
+  "seed": 50024,
+  "heard": "If everyone has the same string and the same IQ, those natural differences shrink. And here's the danger. What if everyone wants the same jobs?",
+  "exact": false,
+  "conf": 0.96,
+  "max_gap": 0.44,
+  "peak": 0.996,
+  "dur": 6.78,
+  "ok": false
+ },
+ {
+  "line": "job4",
+  "take": 2,
+  "seed": 50041,
+  "heard": "If everyone has the same strength and the same IQ, those natural differences shrink. And here's the danger. What if everyone wants the same jobs?",
+  "exact": true,
+  "conf": 0.984,
+  "max_gap": 0.46,
+  "peak": 1.009,
+  "dur": 7.0,
+  "ok": 1.0
+ },
+ {
+  "line": "job4",
+  "chosen": 2
+ },
+ {
+  "line": "job5",
+  "take": 0,
+  "seed": 51007,
+  "heard": "Millions apply to become doctors and game designers. Almost nobody wants to fix sewers at 3 in the morning.",
+  "exact": true,
+  "conf": 0.969,
+  "max_gap": 0.54,
+  "peak": 0.881,
+  "dur": 5.1,
+  "ok": 1.0
+ },
+ {
+  "line": "job5",
+  "take": 1,
+  "seed": 51024,
+  "heard": "Millions apply to become doctors and game designers. Almost nobody wants to fix sewers at 3 in the morning.",
+  "exact": true,
+  "conf": 0.962,
+  "max_gap": 0.56,
+  "peak": 0.95,
+  "dur": 5.04,
+  "ok": 1.0
+ },
+ {
+  "line": "job5",
+  "take": 2,
+  "seed": 51041,
+  "heard": "Millions apply to become doctors and game designers. Almost nobody wants to fix sewers at 3 in the morning.",
+  "exact": true,
+  "conf": 0.963,
+  "max_gap": 0.44,
+  "peak": 0.948,
+  "dur": 4.66,
+  "ok": 1.0
+ },
+ {
+  "line": "job5",
+  "chosen": 0
+ },
+ {
+  "line": "job6",
+  "take": 0,
+  "seed": 52007,
+  "heard": "So salaries would change, jobs that nobody wants would have to pay a lot more, and the jobs that everyone wants would pay a lot less.",
+  "exact": true,
+  "conf": 0.973,
+  "max_gap": 0.56,
+  "peak": 1.013,
+  "dur": 6.04,
+  "ok": 1.0
+ },
+ {
+  "line": "job6",
+  "take": 1,
+  "seed": 52024,
+  "heard": "though salaries would change, jobs that nobody wants would have to pay a lot more, and the jobs that everyone wants would pay a lot less.",
+  "exact": false,
+  "conf": 0.962,
+  "max_gap": 0.56,
+  "peak": 0.998,
+  "dur": 5.92,
+  "ok": false
+ },
+ {
+  "line": "job6",
+  "take": 2,
+  "seed": 52041,
+  "heard": "So, salaries would change, jobs that nobody wants would have to pay a lot more, and the jobs that everyone wants would pay a lot less.",
+  "exact": true,
+  "conf": 0.974,
+  "max_gap": 0.54,
+  "peak": 1.006,
+  "dur": 5.89,
+  "ok": 1.0
+ },
+ {
+  "line": "job6",
+  "chosen": 2
+ },
+ {
+  "line": "job7",
+  "take": 0,
+  "seed": 53007,
+  "heard": "The difference between people would no longer be talent. It would be choices, effort, and what you care about.",
+  "exact": true,
+  "conf": 0.975,
+  "max_gap": 0.3,
+  "peak": 1.0,
+  "dur": 4.32,
+  "ok": 1.0
+ },
+ {
+  "line": "job7",
+  "take": 1,
+  "seed": 53024,
+  "heard": "The difference between people would no longer be talent. It would be choices, effort, and what you care about.",
+  "exact": true,
+  "conf": 0.981,
+  "max_gap": 0.34,
+  "peak": 1.032,
+  "dur": 4.87,
+  "ok": 1.0
+ },
+ {
+  "line": "job7",
+  "take": 2,
+  "seed": 53041,
+  "heard": "A difference between people would no longer be talent. It would be choices, effort, and what you care about.",
+  "exact": false,
+  "conf": 0.972,
+  "max_gap": 0.34,
+  "peak": 0.978,
+  "dur": 4.61,
+  "ok": false
+ },
+ {
+  "line": "job7",
+  "chosen": 1
+ },
+ {
+  "line": "job8",
+  "take": 0,
+  "seed": 54007,
+  "heard": "Some economists think this world could be more equal, others think people would invent new ways to compete, like who owns the most or who started first.",
+  "exact": true,
+  "conf": 0.98,
+  "max_gap": 0.3,
+  "peak": 0.836,
+  "dur": 6.58,
+  "ok": 1.0
+ },
+ {
+  "line": "job8",
+  "take": 1,
+  "seed": 54024,
+  "heard": "Some economists think this world could be more equal. Others think people would invent new ways to compete, like who owns the most, or who started first.",
+  "exact": true,
+  "conf": 0.988,
+  "max_gap": 0.56,
+  "peak": 0.884,
+  "dur": 6.14,
+  "ok": 1.0
+ },
+ {
+  "line": "job8",
+  "take": 2,
+  "seed": 54041,
+  "heard": "Some economists think this world could be more equal. Others think people would invent new ways to compete, like who owns the most or who started first.",
+  "exact": true,
+  "conf": 0.975,
+  "max_gap": 0.52,
+  "peak": 0.957,
+  "dur": 7.23,
+  "ok": 1.0
+ },
+ {
+  "line": "job8",
+  "chosen": 1
+ },
+ {
+  "line": "sch1",
+  "take": 0,
+  "seed": 55007,
+  "heard": "Then, their school. Today, IQ scores follow a bell curve. Most people land near the middle, around 100.",
+  "exact": false,
+  "conf": 0.959,
+  "max_gap": 0.42,
+  "peak": 1.006,
+  "dur": 6.27,
+  "ok": false
+ },
+ {
+  "line": "sch1",
+  "take": 1,
+  "seed": 55024,
+  "heard": "Then, there's school. Today, IQ scores follow a bell curve. Most people land near the middle, around 100.",
+  "exact": true,
+  "conf": 0.974,
+  "max_gap": 0.5,
+  "peak": 1.034,
+  "dur": 5.78,
+  "ok": 1.0
+ },
+ {
+  "line": "sch1",
+  "take": 2,
+  "seed": 55041,
+  "heard": "than their school. Today, IQ scores follow a bell curve. Most people land near the middle, around 100.",
+  "exact": false,
+  "conf": 0.957,
+  "max_gap": 0.4,
+  "peak": 1.035,
+  "dur": 4.98,
+  "ok": false
+ },
+ {
+  "line": "sch1",
+  "chosen": 1
+ },
+ {
+  "line": "sch2",
+  "take": 0,
+  "seed": 56007,
+  "heard": "A few people score much higher, and a few score much lower. In our world, that curve collapses into a single line.",
+  "exact": true,
+  "conf": 0.962,
+  "max_gap": 0.36,
+  "peak": 0.789,
+  "dur": 5.36,
+  "ok": 1.0
+ },
+ {
+  "line": "sch2",
+  "take": 1,
+  "seed": 56024,
+  "heard": "A few people score much higher and a few score much lower, in our world that curve collapses into a single line.",
+  "exact": true,
+  "conf": 0.937,
+  "max_gap": 0.32,
+  "peak": 0.861,
+  "dur": 5.5,
+  "ok": 1.0
+ },
+ {
+  "line": "sch2",
+  "take": 2,
+  "seed": 56041,
+  "heard": "a few people score much higher and a few score much lower. In our world, that curve collapses into a single line.",
+  "exact": true,
+  "conf": 0.965,
+  "max_gap": 0.24,
+  "peak": 0.947,
+  "dur": 5.56,
+  "ok": 1.0
+ },
+ {
+  "line": "sch2",
+  "chosen": 2
+ },
+ {
+  "line": "sch3",
+  "take": 0,
+  "seed": 57007,
+  "heard": "Every student in every classroom has exactly the same brain power. No one is called gifted and no one is left behind.",
+  "exact": true,
+  "conf": 0.962,
+  "max_gap": 0.28,
+  "peak": 1.005,
+  "dur": 5.35,
+  "ok": 1.0
+ },
+ {
+  "line": "sch3",
+  "take": 1,
+  "seed": 57024,
+  "heard": "Every student in every classroom has exactly the same brain power. No one is called gifted and no one is left behind.",
+  "exact": true,
+  "conf": 0.944,
+  "max_gap": 0.34,
+  "peak": 0.928,
+  "dur": 5.32,
+  "ok": 1.0
+ },
+ {
+  "line": "sch3",
+  "take": 2,
+  "seed": 57041,
+  "heard": "Every student in every classroom has exactly the same brain power. No one is called gifted and no one is left behind.",
+  "exact": true,
+  "conf": 0.953,
+  "max_gap": 0.44,
+  "peak": 0.969,
+  "dur": 5.25,
+  "ok": 1.0
+ },
+ {
+  "line": "sch3",
+  "chosen": 0
+ },
+ {
+  "line": "sch4",
+  "take": 0,
+  "seed": 58007,
+  "heard": "Teachers could finally teach everyone at the same speed, but grades would depend on only one thing how hard you study.",
+  "exact": true,
+  "conf": 0.962,
+  "max_gap": 0.36,
+  "peak": 0.994,
+  "dur": 5.86,
+  "ok": 1.0
+ },
+ {
+  "line": "sch4",
+  "take": 1,
+  "seed": 58024,
+  "heard": "You just could finally teach everyone at the same speed, but grades would depend on only one thing, how hard you study.",
+  "exact": false,
+  "conf": 0.953,
+  "max_gap": 0.36,
+  "peak": 0.898,
+  "dur": 5.65,
+  "ok": false
+ },
+ {
+  "line": "sch4",
+  "take": 2,
+  "seed": 58041,
+  "heard": "Teachers could finally teach everyone at the same speed, but grades would depend on only one thing, how hard you study.",
+  "exact": true,
+  "conf": 0.991,
+  "max_gap": 0.38,
+  "peak": 1.016,
+  "dur": 6.62,
+  "ok": 1.0
+ },
+ {
+  "line": "sch4",
+  "chosen": 2
+ },
+ {
+  "line": "sch5",
+  "take": 0,
+  "seed": 59007,
+  "heard": "That sounds fair, but it's also a little scary. If you fail a test, you can't blame your brain. It was all about your effort.",
+  "exact": true,
+  "conf": 0.994,
+  "max_gap": 0.28,
+  "peak": 0.977,
+  "dur": 4.89,
+  "ok": 1.0
+ },
+ {
+  "line": "sch5",
+  "take": 1,
+  "seed": 59024,
+  "heard": "That sounds fair, but it's also a little scary. If you fail a test, you can't blame your brain. It was all about your effort.",
+  "exact": true,
+  "conf": 0.992,
+  "max_gap": 0.28,
+  "peak": 1.065,
+  "dur": 5.88,
+  "ok": 1.0
+ },
+ {
+  "line": "sch5",
+  "take": 2,
+  "seed": 59041,
+  "heard": "That sounds fair, but it's also a little scary. If you fail a test, you can't blame your brain. It was all about your effort.",
+  "exact": true,
+  "conf": 0.977,
+  "max_gap": 0.46,
+  "peak": 0.978,
+  "dur": 6.57,
+  "ok": 1.0
+ },
+ {
+  "line": "sch5",
+  "chosen": 0
+ },
+ {
+  "line": "sch6",
+  "take": 0,
+  "seed": 60007,
+  "heard": "Schools might stop ranking students altogether and start teaching things a brain score never measured, like creativity, patience, and teamwork.",
+  "exact": true,
+  "conf": 0.942,
+  "max_gap": 0.24,
+  "peak": 0.817,
+  "dur": 5.85,
+  "ok": 1.0
+ },
+ {
+  "line": "sch6",
+  "take": 1,
+  "seed": 60024,
+  "heard": "Schools might stop ranking students altogether and start teaching things a brain score never measured like creativity, patience, and teamwork.",
+  "exact": true,
+  "conf": 0.914,
+  "max_gap": 0.28,
+  "peak": 0.953,
+  "dur": 6.85,
+  "ok": 1.0
+ },
+ {
+  "line": "sch6",
+  "take": 2,
+  "seed": 60041,
+  "heard": "Schools might stop ranking students altogether and start teaching things a brain score never measured, like creativity, patience, and teamwork.",
+  "exact": true,
+  "conf": 0.945,
+  "max_gap": 0.34,
+  "peak": 0.977,
+  "dur": 6.27,
+  "ok": 1.0
+ },
+ {
+  "line": "sch6",
+  "chosen": 2
+ },
+ {
+  "line": "dis1",
+  "take": 0,
+  "seed": 61007,
+  "heard": "But the biggest danger isn't social, it's biological, and to understand it, we need to talk about bananas.",
+  "exact": true,
+  "conf": 0.965,
+  "max_gap": 0.4,
+  "peak": 1.052,
+  "dur": 5.23,
+  "ok": 1.0
+ },
+ {
+  "line": "dis1",
+  "take": 1,
+  "seed": 61024,
+  "heard": "But the biggest danger isn't social, it's biological, and to understand it, we need to talk about bananas.",
+  "exact": true,
+  "conf": 0.988,
+  "max_gap": 0.48,
+  "peak": 0.984,
+  "dur": 5.55,
+  "ok": 1.0
+ },
+ {
+  "line": "dis1",
+  "take": 2,
+  "seed": 61041,
+  "heard": "but the biggest danger isn't social, it's biological. And to understand it, we need to talk about bananas.",
+  "exact": true,
+  "conf": 0.958,
+  "max_gap": 0.52,
+  "peak": 1.031,
+  "dur": 5.36,
+  "ok": 1.0
+ },
+ {
+  "line": "dis1",
+  "chosen": 1
+ },
+ {
+  "line": "dis2",
+  "take": 0,
+  "seed": 62007,
+  "heard": "Until the 1950s, the world's favorite banana was called the Gromi Shell. Every one of them was a clone.",
+  "exact": true,
+  "conf": 0.923,
+  "max_gap": 0.48,
+  "peak": 1.001,
+  "dur": 4.89,
+  "ok": 1.0
+ },
+ {
+  "line": "dis2",
+  "take": 1,
+  "seed": 62024,
+  "heard": "Until the 1950s, the world's favorite banana was called the gromi shell. Every one of them was a clone.",
+  "exact": true,
+  "conf": 0.93,
+  "max_gap": 0.34,
+  "peak": 0.932,
+  "dur": 4.68,
+  "ok": 1.0
+ },
+ {
+  "line": "dis2",
+  "take": 2,
+  "seed": 62041,
+  "heard": "Until the 1950s, the world's favorite banana was called the gromichele. Every one of them was a clone.",
+  "exact": false,
+  "conf": 0.933,
+  "max_gap": 0.32,
+  "peak": 0.929,
+  "dur": 5.44,
+  "ok": false
+ },
+ {
+  "line": "dis2",
+  "chosen": 1
+ },
+ {
+  "line": "dis3",
+  "take": 0,
+  "seed": 63007,
+  "heard": "and a fungus called Panama disease arrived. Because every plant was genetically the same, it spread through farms across Latin America and the gromi shell was wiped out as an export crop.",
+  "exact": false,
+  "conf": 0.937,
+  "max_gap": 0.3,
+  "peak": 1.071,
+  "dur": 8.66,
+  "ok": false
+ },
+ {
+  "line": "dis3",
+  "take": 1,
+  "seed": 63024,
+  "heard": "Then, a fungus called Panama disease arrived. Because every plant was genetically the same, it spread through farms across Latin America and the Gros Michel was wiped out as an export crop.",
+  "exact": true,
+  "conf": 0.932,
+  "max_gap": 0.34,
+  "peak": 0.992,
+  "dur": 8.39,
+  "ok": 1.0
+ },
+ {
+  "line": "dis3",
+  "take": 2,
+  "seed": 63041,
+  "heard": "Then, a fungus called Panama disease arrived, because every plant was genetically the same, it spread through farms across Latin America, and the gourmet shell was wiped out as an export crop.",
+  "exact": false,
+  "conf": 0.96,
+  "max_gap": 0.42,
+  "peak": 0.981,
+  "dur": 8.09,
+  "ok": false
+ },
+ {
+  "line": "dis3",
+  "chosen": 1
+ },
+ {
+  "line": "dis4",
+  "take": 0,
+  "seed": 64007,
+  "heard": "The same thing happened in Ireland in the 1840s. Many farmers grew one type of potato, the lumber, and every plant was a clone.",
+  "exact": true,
+  "conf": 0.967,
+  "max_gap": 0.32,
+  "peak": 1.004,
+  "dur": 6.62,
+  "ok": 1.0
+ },
+ {
+  "line": "dis4",
+  "take": 1,
+  "seed": 64024,
+  "heard": "The same thing happened in Ireland in the 1840s. Many farmers grew one type of potato, the lumber, and every plant was a clone.",
+  "exact": true,
+  "conf": 0.969,
+  "max_gap": 0.4,
+  "peak": 1.004,
+  "dur": 6.28,
+  "ok": 1.0
+ },
+ {
+  "line": "dis4",
+  "take": 2,
+  "seed": 64041,
+  "heard": "The same thing happened in Ireland in the 1840s. Many farmers grew one type of potato, the lumber, and every plant was a clone.",
+  "exact": true,
+  "conf": 0.96,
+  "max_gap": 0.4,
+  "peak": 1.004,
+  "dur": 6.1,
+  "ok": 1.0
+ },
+ {
+  "line": "dis4",
+  "chosen": 1
+ },
+ {
+  "line": "dis5",
+  "take": 0,
+  "seed": 65007,
+  "heard": "When potato blight arrived, the crops failed together, and the famine that followed killed about a million people.",
+  "exact": true,
+  "conf": 0.915,
+  "max_gap": 0.22,
+  "peak": 0.995,
+  "dur": 4.66,
+  "ok": 1.0
+ },
+ {
+  "line": "dis5",
+  "take": 1,
+  "seed": 65024,
+  "heard": "When Potato Blight arrived, the crops failed together, and the famine that followed killed about a million people.",
+  "exact": true,
+  "conf": 0.949,
+  "max_gap": 0.34,
+  "peak": 0.953,
+  "dur": 5.09,
+  "ok": 1.0
+ },
+ {
+  "line": "dis5",
+  "take": 2,
+  "seed": 65041,
+  "heard": "When potato blight arrived, the crop spaled together, and the famine that followed killed about a million people.",
+  "exact": false,
+  "conf": 0.9,
+  "max_gap": 0.16,
+  "peak": 0.882,
+  "dur": 4.49,
+  "ok": false
+ },
+ {
+  "line": "dis5",
+  "chosen": 1
+ },
+ {
+  "line": "dis6",
+  "take": 0,
+  "seed": 66007,
+  "heard": "Even cheetahs have this problem. In one famous study, cheetahs accepted skin grafts from unrelated cheetahs because their genes are so similar.",
+  "exact": true,
+  "conf": 0.97,
+  "max_gap": 0.42,
+  "peak": 0.989,
+  "dur": 6.4,
+  "ok": 1.0
+ },
+ {
+  "line": "dis6",
+  "take": 1,
+  "seed": 66024,
+  "heard": "Even cheetahs have this problem. In one famous study, cheetahs accepted skin graft from unrelated cheetahs because their genes are so similar.",
+  "exact": false,
+  "conf": 0.963,
+  "max_gap": 0.36,
+  "peak": 0.988,
+  "dur": 6.12,
+  "ok": false
+ },
+ {
+  "line": "dis6",
+  "take": 2,
+  "seed": 66041,
+  "heard": "Even cheetahs have this problem. In one famous study, cheetahs accepted skin grafts from unrelated cheetahs because their genes are so similar.",
+  "exact": true,
+  "conf": 0.979,
+  "max_gap": 0.3,
+  "peak": 0.995,
+  "dur": 6.86,
+  "ok": 1.0
+ },
+ {
+  "line": "dis6",
+  "chosen": 2
+ },
+ {
+  "line": "dis7",
+  "take": 0,
+  "seed": 67007,
+  "heard": "Genetic differences are humanity's shield. When a new virus appears, some people are naturally resistant, and that keeps our species alive.",
+  "exact": true,
+  "conf": 0.989,
+  "max_gap": 0.44,
+  "peak": 0.989,
+  "dur": 6.97,
+  "ok": 1.0
+ },
+ {
+  "line": "dis7",
+  "take": 1,
+  "seed": 67024,
+  "heard": "Genetic differences are humanity's shield. When a new virus appears, some people are naturally resistant, and that keeps our species alive.",
+  "exact": true,
+  "conf": 0.991,
+  "max_gap": 0.48,
+  "peak": 1.035,
+  "dur": 6.68,
+  "ok": 1.0
+ },
+ {
+  "line": "dis7",
+  "take": 2,
+  "seed": 67041,
+  "heard": "Genetic differences are humanity's shield. When a new virus appears, some people are naturally resistant, and that keeps our species alive.",
+  "exact": true,
+  "conf": 0.994,
+  "max_gap": 0.46,
+  "peak": 1.013,
+  "dur": 6.92,
+  "ok": 1.0
+ },
+ {
+  "line": "dis7",
+  "chosen": 2
+ },
+ {
+  "line": "dis7b",
+  "take": 0,
+  "seed": 68007,
+  "heard": "That's also why doctors want diverse groups in medical studies. A medicine can work well for one group and very differently for another.",
+  "exact": true,
+  "conf": 0.977,
+  "max_gap": 0.44,
+  "peak": 0.998,
+  "dur": 6.48,
+  "ok": 1.0
+ },
+ {
+  "line": "dis7b",
+  "take": 1,
+  "seed": 68024,
+  "heard": "That's also why doctors want diverse groups in medical studies. A medicine can work well for one group, and very differently for another.",
+  "exact": true,
+  "conf": 0.991,
+  "max_gap": 0.42,
+  "peak": 0.949,
+  "dur": 6.35,
+  "ok": 1.0
+ },
+ {
+  "line": "dis7b",
+  "take": 2,
+  "seed": 68041,
+  "heard": "That's also why doctors want diverse groups in medical studies. A medicine can work well for one group and very differently for another.",
+  "exact": true,
+  "conf": 0.98,
+  "max_gap": 0.28,
+  "peak": 0.976,
+  "dur": 5.78,
+  "ok": 1.0
+ },
+ {
+  "line": "dis7b",
+  "chosen": 1
+ },
+ {
+  "line": "dis8",
+  "take": 0,
+  "seed": 69007,
+  "heard": "In a world where everyone has the same body, one disease could hit all 8 billion people in the same way. That is the real nightmare.",
+  "exact": true,
+  "conf": 0.976,
+  "max_gap": 0.34,
+  "peak": 1.003,
+  "dur": 6.06,
+  "ok": 1.0
+ },
+ {
+  "line": "dis8",
+  "take": 1,
+  "seed": 69024,
+  "heard": "In a world where everyone has the same body, one disease could hit all 8 billion people in the same way. That is the real nightmare.",
+  "exact": true,
+  "conf": 0.968,
+  "max_gap": 0.42,
+  "peak": 1.011,
+  "dur": 6.32,
+  "ok": 1.0
+ },
+ {
+  "line": "dis8",
+  "take": 2,
+  "seed": 69041,
+  "heard": "In a world where everyone has the same body, one disease could hit all 8 billion people in the same way. That is the real nightmare.",
+  "exact": true,
+  "conf": 0.969,
+  "max_gap": 0.5,
+  "peak": 0.999,
+  "dur": 7.22,
+  "ok": 1.0
+ },
+ {
+  "line": "dis8",
+  "chosen": 0
+ },
+ {
+  "line": "dis9",
+  "take": 0,
+  "seed": 70007,
+  "heard": "Scientists already worry about this today. The Cavendish, the banana in your kitchen, is also a clone, and a new strain of the same disease is spreading.",
+  "exact": true,
+  "conf": 0.982,
+  "max_gap": 0.52,
+  "peak": 0.988,
+  "dur": 7.51,
+  "ok": 1.0
+ },
+ {
+  "line": "dis9",
+  "take": 1,
+  "seed": 70024,
+  "heard": "Scientists already worry about this today. The Cavendish, the banana in your kitchen, is also a clone, and a new strain of the same disease is spreading.",
+  "exact": true,
+  "conf": 0.982,
+  "max_gap": 0.44,
+  "peak": 0.956,
+  "dur": 7.31,
+  "ok": 1.0
+ },
+ {
+  "line": "dis9",
+  "take": 2,
+  "seed": 70041,
+  "heard": "Scientists already worry about this today. The Cavendish, the banana in your kitchen, is also a clone, and a new strain of the same disease is spreading.",
+  "exact": true,
+  "conf": 0.978,
+  "max_gap": 0.4,
+  "peak": 0.925,
+  "dur": 7.07,
+  "ok": 1.0
+ },
+ {
+  "line": "dis9",
+  "chosen": 1
+ },
+ {
+  "line": "drift1",
+  "take": 0,
+  "seed": 71007,
+  "heard": "But here's the twist. Even if everyone started out identical, we wouldn't stay that way for long.",
+  "exact": true,
+  "conf": 0.988,
+  "max_gap": 0.36,
+  "peak": 0.997,
+  "dur": 4.36,
+  "ok": 1.0
+ },
+ {
+  "line": "drift1",
+  "take": 1,
+  "seed": 71024,
+  "heard": "But here's the twist, even if everyone started out identical, we wouldn't stay that way for long.",
+  "exact": true,
+  "conf": 0.981,
+  "max_gap": 0.38,
+  "peak": 0.962,
+  "dur": 4.12,
+  "ok": 1.0
+ },
+ {
+  "line": "drift1",
+  "take": 2,
+  "seed": 71041,
+  "heard": "But here's the twist. Even if everyone started out identical, we wouldn't stay that way for long.",
+  "exact": true,
+  "conf": 0.987,
+  "max_gap": 0.52,
+  "peak": 0.998,
+  "dur": 5.08,
+  "ok": 1.0
+ },
+ {
+  "line": "drift1",
+  "chosen": 0
+ },
+ {
+  "line": "drift2",
+  "take": 0,
+  "seed": 72007,
+  "heard": "Scientists studied identical twins and found that young twins have almost the same gene activity, but by middle age, their differences grow much bigger.",
+  "exact": true,
+  "conf": 0.987,
+  "max_gap": 0.26,
+  "peak": 0.981,
+  "dur": 6.96,
+  "ok": 1.0
+ },
+ {
+  "line": "drift2",
+  "take": 1,
+  "seed": 72024,
+  "heard": "Scientists studied identical twins and found that young twins have almost the same gene activity. But by middle age, their differences grow much bigger.",
+  "exact": true,
+  "conf": 0.985,
+  "max_gap": 0.36,
+  "peak": 0.967,
+  "dur": 6.53,
+  "ok": 1.0
+ },
+ {
+  "line": "drift2",
+  "take": 2,
+  "seed": 72041,
+  "heard": "Scientists studied identical twins, and found that young twins have almost the same gene activity, but by middle age, their differences grow much bigger.",
+  "exact": true,
+  "conf": 0.991,
+  "max_gap": 0.24,
+  "peak": 1.004,
+  "dur": 7.62,
+  "ok": 1.0
+ },
+ {
+  "line": "drift2",
+  "chosen": 2
+ },
+ {
+  "line": "drift3",
+  "take": 0,
+  "seed": 73007,
+  "heard": "The food we eat, the places we live, the stress we feel, and the habits we build all change how our genes behave.",
+  "exact": true,
+  "conf": 0.978,
+  "max_gap": 0.22,
+  "peak": 0.835,
+  "dur": 5.06,
+  "ok": 1.0
+ },
+ {
+  "line": "drift3",
+  "take": 1,
+  "seed": 73024,
+  "heard": "The food we eat, the places we live, the stress we feel, and the habits we build all change how our genes behave.",
+  "exact": true,
+  "conf": 0.977,
+  "max_gap": 0.3,
+  "peak": 1.003,
+  "dur": 6.08,
+  "ok": 1.0
+ },
+ {
+  "line": "drift3",
+  "take": 2,
+  "seed": 73041,
+  "heard": "The food we eat, the places we live, the stress we feel, and the habits we build all change how our genes behave.",
+  "exact": true,
+  "conf": 0.983,
+  "max_gap": 0.28,
+  "peak": 1.012,
+  "dur": 5.74,
+  "ok": 1.0
+ },
+ {
+  "line": "drift3",
+  "chosen": 2
+ },
+ {
+  "line": "drift4",
+  "take": 0,
+  "seed": 74007,
+  "heard": "One person runs every morning, another sits all day, one learns piano, another learns to code. In 10 years, their bodies and brains would start to drift apart.",
+  "exact": true,
+  "conf": 0.968,
+  "max_gap": 0.34,
+  "peak": 1.048,
+  "dur": 8.14,
+  "ok": 1.0
+ },
+ {
+  "line": "drift4",
+  "take": 1,
+  "seed": 74024,
+  "heard": "One person runs every morning, another sits all day. One learns piano, another learns to code. In 10 years, their bodies and brains would start to drift apart.",
+  "exact": true,
+  "conf": 0.972,
+  "max_gap": 0.26,
+  "peak": 0.921,
+  "dur": 6.59,
+  "ok": 1.0
+ },
+ {
+  "line": "drift4",
+  "take": 2,
+  "seed": 74041,
+  "heard": "One person runs every morning, another sits all day. One learns piano, another learns to code. In 10 years, their bodies and brains would start to drift apart.",
+  "exact": true,
+  "conf": 0.968,
+  "max_gap": 0.4,
+  "peak": 0.984,
+  "dur": 8.01,
+  "ok": 1.0
+ },
+ {
+  "line": "drift4",
+  "chosen": 1
+ },
+ {
+  "line": "drift5",
+  "take": 0,
+  "seed": 75007,
+  "heard": "Humans are not designed to stay the same. Life itself makes us different.",
+  "exact": true,
+  "conf": 0.971,
+  "max_gap": 0.42,
+  "peak": 1.003,
+  "dur": 3.86,
+  "ok": 1.0
+ },
+ {
+  "line": "drift5",
+  "take": 1,
+  "seed": 75024,
+  "heard": "Humans are not designed to stay the same, life itself makes us different.",
+  "exact": true,
+  "conf": 0.972,
+  "max_gap": 0.34,
+  "peak": 0.912,
+  "dur": 3.8,
+  "ok": 1.0
+ },
+ {
+  "line": "drift5",
+  "take": 2,
+  "seed": 75041,
+  "heard": "Humans are not designed to stay the same. Life itself makes us different.",
+  "exact": true,
+  "conf": 0.972,
+  "max_gap": 0.46,
+  "peak": 0.952,
+  "dur": 3.82,
+  "ok": 1.0
+ },
+ {
+  "line": "drift5",
+  "chosen": 2
+ },
+ {
+  "line": "drift6",
+  "take": 0,
+  "seed": 76007,
+  "heard": "Give it a few hundred years, and new families would form, new mixes would appear, and human variety would slowly come back.",
+  "exact": true,
+  "conf": 0.964,
+  "max_gap": 0.28,
+  "peak": 0.995,
+  "dur": 5.22,
+  "ok": 1.0
+ },
+ {
+  "line": "drift6",
+  "take": 1,
+  "seed": 76024,
+  "heard": "A bit a few hundred years, and new families would form, new mixes would appear, and human variety would slowly come back.",
+  "exact": false,
+  "conf": 0.943,
+  "max_gap": 0.44,
+  "peak": 1.0,
+  "dur": 6.2,
+  "ok": false
+ },
+ {
+  "line": "drift6",
+  "take": 2,
+  "seed": 76041,
+  "heard": "Give it a few hundred years and new families would form, new mixes would appear, and human variety would slowly come back.",
+  "exact": true,
+  "conf": 0.96,
+  "max_gap": 0.28,
+  "peak": 0.82,
+  "dur": 5.65,
+  "ok": 1.0
+ },
+ {
+  "line": "drift6",
+  "chosen": 0
+ },
+ {
+  "line": "end1",
+  "take": 0,
+  "seed": 77007,
+  "heard": "So what would happen if everyone had the same looks, the same strength, and the same IQ?",
+  "exact": true,
+  "conf": 0.967,
+  "max_gap": 0.3,
+  "peak": 0.873,
+  "dur": 4.73,
+  "ok": 1.0
+ },
+ {
+  "line": "end1",
+  "take": 1,
+  "seed": 77024,
+  "heard": "So what would happen if everyone had the same looks, the same strength, and the same IQ?",
+  "exact": true,
+  "conf": 0.972,
+  "max_gap": 0.32,
+  "peak": 0.949,
+  "dur": 4.0,
+  "ok": 1.0
+ },
+ {
+  "line": "end1",
+  "take": 2,
+  "seed": 77041,
+  "heard": "So what would happen if everyone had the same looks, the same strength, and the same IQ?",
+  "exact": true,
+  "conf": 0.975,
+  "max_gap": 0.3,
+  "peak": 0.883,
+  "dur": 3.99,
+  "ok": 1.0
+ },
+ {
+  "line": "end1",
+  "chosen": 2
+ },
+ {
+  "line": "end2",
+  "take": 0,
+  "seed": 78007,
+  "heard": "Faces would stop meaning anything. Fingerprints and voices would become our names. Love would become about conversation and sports about willpower.",
+  "exact": true,
+  "conf": 0.959,
+  "max_gap": 0.44,
+  "peak": 0.962,
+  "dur": 6.6,
+  "ok": 1.0
+ },
+ {
+  "line": "end2",
+  "take": 1,
+  "seed": 78024,
+  "heard": "Bases would stop meaning anything. Fingerprints and voices would become our names. Love would become about conversation and sports about willpower.",
+  "exact": false,
+  "conf": 0.97,
+  "max_gap": 0.52,
+  "peak": 0.968,
+  "dur": 6.68,
+  "ok": false
+ },
+ {
+  "line": "end2",
+  "take": 2,
+  "seed": 78041,
+  "heard": "faces would stop meaning anything. Fingerprints and voices would become our names. Love would become about conversation and sports about willpower.",
+  "exact": true,
+  "conf": 0.932,
+  "max_gap": 0.54,
+  "peak": 0.956,
+  "dur": 6.84,
+  "ok": 1.0
+ },
+ {
+  "line": "end2",
+  "chosen": 0
+ },
+ {
+  "line": "end3",
+  "take": 0,
+  "seed": 79007,
+  "heard": "The economy would reward effort over talent and a single disease could become our greatest threat.",
+  "exact": true,
+  "conf": 0.949,
+  "max_gap": 0.0,
+  "peak": 0.925,
+  "dur": 4.65,
+  "ok": 1.0
+ },
+ {
+  "line": "end3",
+  "take": 1,
+  "seed": 79024,
+  "heard": "The economy would reward effort over talent, and a single disease could become our greatest threat.",
+  "exact": true,
+  "conf": 0.968,
+  "max_gap": 0.36,
+  "peak": 0.988,
+  "dur": 4.41,
+  "ok": 1.0
+ },
+ {
+  "line": "end3",
+  "take": 2,
+  "seed": 79041,
+  "heard": "The economy would reward effort over talent, and a single disease could become our greatest threat.",
+  "exact": true,
+  "conf": 0.965,
+  "max_gap": 0.3,
+  "peak": 0.887,
+  "dur": 4.51,
+  "ok": 1.0
+ },
+ {
+  "line": "end3",
+  "chosen": 1
+ },
+ {
+  "line": "end4",
+  "take": 0,
+  "seed": 80007,
+  "heard": "But maybe the biggest lesson is this. We already spend so much time comparing ourselves by our looks and our scores.",
+  "exact": true,
+  "conf": 0.962,
+  "max_gap": 0.34,
+  "peak": 0.986,
+  "dur": 5.72,
+  "ok": 1.0
+ },
+ {
+  "line": "end4",
+  "take": 1,
+  "seed": 80024,
+  "heard": "But maybe the biggest lesson is this. We already spend so much time comparing ourselves by our looks and our scores.",
+  "exact": true,
+  "conf": 0.982,
+  "max_gap": 0.24,
+  "peak": 1.012,
+  "dur": 5.68,
+  "ok": 1.0
+ },
+ {
+  "line": "end4",
+  "take": 2,
+  "seed": 80041,
+  "heard": "But maybe the biggest lesson is this, we already spend so much time comparing ourselves by our looks and our scores.",
+  "exact": true,
+  "conf": 0.979,
+  "max_gap": 0.26,
+  "peak": 0.878,
+  "dur": 5.6,
+  "ok": 1.0
+ },
+ {
+  "line": "end4",
+  "chosen": 1
+ },
+ {
+  "line": "end5",
+  "take": 0,
+  "seed": 81007,
+  "heard": "In a world where all of that is equal, the only thing that makes you, you, is what you choose to do with it.",
+  "exact": true,
+  "conf": 0.976,
+  "max_gap": 0.32,
+  "peak": 0.771,
+  "dur": 4.59,
+  "ok": 1.0
+ },
+ {
+  "line": "end5",
+  "take": 1,
+  "seed": 81024,
+  "heard": "In a world where all of that is equal, the only thing that makes you, you, is what you choose to do with it.",
+  "exact": true,
+  "conf": 0.98,
+  "max_gap": 0.32,
+  "peak": 0.974,
+  "dur": 4.83,
+  "ok": 1.0
+ },
+ {
+  "line": "end5",
+  "take": 2,
+  "seed": 81041,
+  "heard": "In a world where all of that is equal, the only thing that makes you, you, is what you choose to do with it.",
+  "exact": true,
+  "conf": 0.982,
+  "max_gap": 0.36,
+  "peak": 0.992,
+  "dur": 5.87,
+  "ok": 1.0
+ },
+ {
+  "line": "end5",
+  "chosen": 2
+ },
+ {
+  "line": "end5b",
+  "take": 0,
+  "seed": 82007,
+  "heard": "Your jokes, your kindness, your stories, and the way you treat people would still be completely yours.",
+  "exact": true,
+  "conf": 0.977,
+  "max_gap": 0.36,
+  "peak": 0.95,
+  "dur": 5.11,
+  "ok": 1.0
+ },
+ {
+  "line": "end5b",
+  "take": 1,
+  "seed": 82024,
+  "heard": "Your jokes, your kindness, your stories, and the way you treat people would still be completely yours.",
+  "exact": true,
+  "conf": 0.983,
+  "max_gap": 0.44,
+  "peak": 0.836,
+  "dur": 5.13,
+  "ok": 1.0
+ },
+ {
+  "line": "end5b",
+  "take": 2,
+  "seed": 82041,
+  "heard": "Your jokes, your kindness, your stories, and the way you treat people would still be completely yours.",
+  "exact": true,
+  "conf": 0.976,
+  "max_gap": 0.36,
+  "peak": 0.796,
+  "dur": 4.64,
+  "ok": 1.0
+ },
+ {
+  "line": "end5b",
+  "chosen": 1
+ },
+ {
+  "line": "end6",
+  "take": 0,
+  "seed": 83007,
+  "heard": "And honestly, that was always true.",
+  "exact": true,
+  "conf": 0.942,
+  "max_gap": 0.38,
+  "peak": 0.97,
+  "dur": 2.13,
+  "ok": 1.0
+ },
+ {
+  "line": "end6",
+  "take": 1,
+  "seed": 83024,
+  "heard": "And honestly, that was always true.",
+  "exact": true,
+  "conf": 0.935,
+  "max_gap": 0.26,
+  "peak": 0.727,
+  "dur": 1.97,
+  "ok": 1.0
+ },
+ {
+  "line": "end6",
+  "take": 2,
+  "seed": 83041,
+  "heard": "And honestly, that was always true.",
+  "exact": true,
+  "conf": 0.936,
+  "max_gap": 0.3,
+  "peak": 0.993,
+  "dur": 2.14,
+  "ok": 1.0
+ },
+ {
+  "line": "end6",
+  "chosen": 0
+ },
+ {
+  "line": "end6b",
+  "take": 0,
+  "seed": 84007,
+  "heard": "So the next time you look in the mirror, remember, your face is just the cover, the story is you.",
+  "exact": true,
+  "conf": 0.978,
+  "max_gap": 0.42,
+  "peak": 0.782,
+  "dur": 4.79,
+  "ok": 1.0
+ },
+ {
+  "line": "end6b",
+  "take": 1,
+  "seed": 84024,
+  "heard": "So the next time you look in the mirror, remember, your face is just the cover, the story is you.",
+  "exact": true,
+  "conf": 0.98,
+  "max_gap": 0.46,
+  "peak": 0.97,
+  "dur": 4.53,
+  "ok": 1.0
+ },
+ {
+  "line": "end6b",
+  "take": 2,
+  "seed": 84041,
+  "heard": "So the next time you look in the mirror, remember, your face is just the cover, the story is you.",
+  "exact": true,
+  "conf": 0.983,
+  "max_gap": 0.42,
+  "peak": 0.815,
+  "dur": 4.56,
+  "ok": 1.0
+ },
+ {
+  "line": "end6b",
+  "chosen": 2
+ },
+ {
+  "line": "cta",
+  "take": 0,
+  "seed": 85007,
+  "heard": "Did you learn something new? Like and subscribe for more What If videos.",
+  "exact": true,
+  "conf": 0.925,
+  "max_gap": 0.32,
+  "peak": 1.008,
+  "dur": 3.96,
+  "ok": 1.0
+ },
+ {
+  "line": "cta",
+  "take": 1,
+  "seed": 85024,
+  "heard": "Did you learn something new? Like and subscribe for more What If videos.",
+  "exact": true,
+  "conf": 0.916,
+  "max_gap": 0.72,
+  "peak": 0.958,
+  "dur": 4.44,
+  "ok": 1.0
+ },
+ {
+  "line": "cta",
+  "take": 2,
+  "seed": 85041,
+  "heard": "Did you learn something new? Like and subscribe for more What If videos!",
+  "exact": true,
+  "conf": 0.909,
+  "max_gap": 0.42,
+  "peak": 0.976,
+  "dur": 4.04,
+  "ok": 1.0
+ },
+ {
+  "line": "cta",
+  "chosen": 0
+ }
+]

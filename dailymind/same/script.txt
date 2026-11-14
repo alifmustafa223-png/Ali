@@ -1,0 +1,98 @@
+# hook
+hook1|Tomorrow morning, you wake up, look in the mirror, and the face looking back at you isn't yours.
+hook2|It's the same face your mom has, the same face your boss has, and the same face as every single person on Earth.
+hook3|Overnight, all eight billion of us got the exact same body, the same looks, the same strength, and the same I Q.
+hook4|We're all perfectly average. Same height, same muscles, same brain power. The only thing that's still yours is what's inside.
+hook5|So what would actually happen? Would the world become fair, or would it fall apart? Let's find out.
+hook6|And stay until the end, because the most dangerous part of this new world isn't what you think.
+# morning
+morn1|The first problem hits before breakfast. Your brain has a special area, just for recognizing faces.
+morn2|Scientists estimate the average person knows about five thousand faces. And this morning, every one of them looks exactly the same.
+morn3|You walk into the kitchen, and there are four identical strangers eating cereal. One of them is your little brother. Good luck guessing which one.
+morn4|Outside, it's chaos. Parents can't find their kids at school pickup. Couples hold hands on the street, just to make sure they don't lose each other.
+morn5|Even you would struggle. When every reflection looks the same, you might wave at a stranger in a shop window.
+morn6|There is one group that would barely notice. Newborn babies already recognize their mother's voice, because they hear it for months before they're born.
+morn7|So families would lean on voices, laughs, and little habits, the same way you can recognize someone you love in the dark.
+# identity
+id1|By lunchtime, every security system on the planet is broken. Face unlock on your phone? It opens for anyone.
+id2|Passport photos are useless. Security cameras can see a crime happen, but every suspect looks exactly like every witness.
+id3|But here's the thing. Even identical twins, who share the same genes, don't have the same fingerprints.
+id4|The fine details of your fingerprints are shaped by tiny differences in the womb, like your position and your blood flow. So fingerprints still work.
+id5|Within weeks, the whole world switches to fingerprint scanners, voice checks, and secret passwords. Your name tag becomes the most important thing you own.
+id6|And people get creative. Bright hair colors, wild clothes, tattoos, and hats become the only way to say, this is me.
+id7|Banks, hospitals, and airports would rebuild everything around fingerprints. For the first time in history, your face would be worth nothing, and your fingertips would be worth everything.
+# crime
+crime1|Now imagine trying to solve a crime. Today, one of the strongest pieces of evidence police can find is DNA.
+crime2|But in our world, everyone has the same body. And police have already met this problem, with identical twins.
+crime3|In two thousand nine, thieves broke into a famous department store in Berlin and stole jewelry worth millions.
+crime4|Police found DNA on a glove left at the scene. It matched a pair of identical twin brothers, but the tests could not tell which brother it came from.
+crime5|The court couldn't prove which twin did it, so both brothers walked free. Now imagine that problem with eight billion people.
+crime6|Detectives would go back to old school methods. Fingerprints, voices, receipts, phone records, and witnesses who remember how someone walks.
+crime7|And in a world of identical faces, the perfect disguise would be walking down the street as yourself.
+# love
+love1|Now let's talk about love. If everyone is equally attractive, what happens to dating?
+love2|Here's the surprise. Studies on attraction show that looks matter most for first impressions, and much less once people get to know each other.
+love3|Psychologists call it the mere exposure effect. The more time we spend around someone, the more we tend to like them.
+love4|So in a world where everyone looks the same, dating stops being about the photo. It becomes about the conversation.
+love5|Humor, kindness, shared interests, and how someone makes you feel. Those would be the only things that make one person stand out.
+love6|Dating apps would have to delete profile pictures completely. Every profile would be just words. And honestly, that might work better.
+love7|Some people might fall in love with someone they would have ignored before. In a strange way, this world would be kinder to people who were never noticed.
+# fame
+fame1|And what about fame? Today, millions of people follow influencers partly because of how they look.
+fame2|In this world, every model and every movie star looks exactly like you. Beauty ads disappear overnight, because there's nothing left to sell.
+fame3|Fame would move to the things that are still different, like voices, jokes, ideas, and skills you can actually watch.
+fame4|The most famous people on the planet would be comedians, storytellers, and inventors. Being interesting would become the new being beautiful.
+# sports
+sport1|Sports would be hit the hardest. Think about Michael Phelps. He's six foot four, but his arm span is six foot seven. That's part of why he won twenty eight Olympic medals.
+sport2|Basketball players are tall, sprinters have fast muscle fibers, and gymnasts are small and light. Every sport rewards a different kind of body.
+sport3|In our new world, nobody has a natural advantage. Every one hundred meter race could end in a near perfect tie.
+sport4|So what decides who wins? Only training, strategy, teamwork, and willpower. The athlete who practices more, and wants it more, takes the gold.
+sport5|Some people think that would make sports boring. Others think it would make them the most honest competition in history.
+sport5b|Coaches would become the real superstars, because the right plan would matter more than any body.
+sport6|The Olympics might even add new events that test skill and strategy, like archery or team relays, where the smartest plan wins.
+# jobs
+job1|Next, the economy. In eighteen seventeen, the economist David Ricardo explained why people trade.
+job2|It's called comparative advantage. Even if you're good at everything, you should focus on what you do best, and trade for the rest.
+job3|Our whole economy runs on people being different. One person loves numbers, another loves building things, another loves helping people.
+job3b|And there's another twist. In studies, people rated as better looking tend to earn a few percent more, on average. Economists call it the beauty premium.
+job3c|In our new world, the beauty premium disappears overnight. Nobody gets hired, or ignored, because of their face.
+job4|If everyone has the same strength and the same I Q, those natural differences shrink. And here's the danger. What if everyone wants the same jobs?
+job5|Millions apply to become doctors and game designers. Almost nobody wants to fix sewers at three in the morning.
+job6|So salaries would change. Jobs that nobody wants would have to pay a lot more, and the jobs that everyone wants would pay a lot less.
+job7|The difference between people would no longer be talent. It would be choices, effort, and what you care about.
+job8|Some economists think this world could be more equal. Others think people would invent new ways to compete, like who owns the most, or who started first.
+# school
+sch1|Then there's school. Today, I Q scores follow a bell curve. Most people land near the middle, around one hundred.
+sch2|A few people score much higher, and a few score much lower. In our world, that curve collapses into a single line.
+sch3|Every student in every classroom has exactly the same brain power. No one is called gifted, and no one is left behind.
+sch4|Teachers could finally teach everyone at the same speed. But grades would depend on only one thing, how hard you study.
+sch5|That sounds fair, but it's also a little scary. If you fail a test, you can't blame your brain. It was all about your effort.
+sch6|Schools might stop ranking students altogether, and start teaching things a brain score never measured, like creativity, patience, and teamwork.
+# disease
+dis1|But the biggest danger isn't social. It's biological. And to understand it, we need to talk about bananas.
+dis2|Until the nineteen fifties, the world's favorite banana was called the Gros Michel. Every one of them was a clone.
+dis3|Then a fungus called Panama disease arrived. Because every plant was genetically the same, it spread through farms across Latin America, and the Gros Michel was wiped out as an export crop.
+dis4|The same thing happened in Ireland in the eighteen forties. Many farmers grew one type of potato, the Lumper, and every plant was a clone.
+dis5|When potato blight arrived, the crops failed together, and the famine that followed killed about a million people.
+dis6|Even cheetahs have this problem. In one famous study, cheetahs accepted skin grafts from unrelated cheetahs, because their genes are so similar.
+dis7|Genetic differences are humanity's shield. When a new virus appears, some people are naturally resistant, and that keeps our species alive.
+dis7b|That's also why doctors want diverse groups in medical studies. A medicine can work well for one group, and very differently for another.
+dis8|In a world where everyone has the same body, one disease could hit all eight billion people in the same way. That is the real nightmare.
+dis9|Scientists already worry about this today. The Cavendish, the banana in your kitchen, is also a clone, and a new strain of the same disease is spreading.
+# drift
+drift1|But here's the twist. Even if everyone started out identical, we wouldn't stay that way for long.
+drift2|Scientists studied identical twins and found that young twins have almost the same gene activity. But by middle age, their differences grow much bigger.
+drift3|The food we eat, the places we live, the stress we feel, and the habits we build all change how our genes behave.
+drift4|One person runs every morning, another sits all day. One learns piano, another learns to code. In ten years, their bodies and brains would start to drift apart.
+drift5|Humans are not designed to stay the same. Life itself makes us different.
+drift6|Give it a few hundred years, and new families would form, new mixes would appear, and human variety would slowly come back.
+# ending
+end1|So what would happen if everyone had the same looks, the same strength, and the same I Q?
+end2|Faces would stop meaning anything. Fingerprints and voices would become our names. Love would become about conversation, and sports about willpower.
+end3|The economy would reward effort over talent, and a single disease could become our greatest threat.
+end4|But maybe the biggest lesson is this. We already spend so much time comparing ourselves by our looks and our scores.
+end5|In a world where all of that is equal, the only thing that makes you, you, is what you choose to do with it.
+end5b|Your jokes, your kindness, your stories, and the way you treat people would still be completely yours.
+end6|And honestly, that was always true.
+end6b|So the next time you look in the mirror, remember. Your face is just the cover. The story is you.
+cta|Did you learn something new? Like, and subscribe for more what if videos.

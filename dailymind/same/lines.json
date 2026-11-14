@@ -1,0 +1,525 @@
+[
+ {
+  "key": "hook1",
+  "text": "Tomorrow morning, you wake up, look in the mirror, and the face looking back at you isn't yours.",
+  "gap_before": 0.2,
+  "chapter": "hook"
+ },
+ {
+  "key": "hook2",
+  "text": "It's the same face your mom has, the same face your boss has, and the same face as every single person on Earth.",
+  "gap_before": 0.95,
+  "chapter": "hook"
+ },
+ {
+  "key": "hook3",
+  "text": "Overnight, all eight billion of us got the exact same body, the same looks, the same strength, and the same I Q.",
+  "gap_before": 0.95,
+  "chapter": "hook"
+ },
+ {
+  "key": "hook4",
+  "text": "We're all perfectly average. Same height, same muscles, same brain power. The only thing that's still yours is what's inside.",
+  "gap_before": 0.95,
+  "chapter": "hook"
+ },
+ {
+  "key": "hook5",
+  "text": "So what would actually happen? Would the world become fair, or would it fall apart? Let's find out.",
+  "gap_before": 0.95,
+  "chapter": "hook"
+ },
+ {
+  "key": "hook6",
+  "text": "And stay until the end, because the most dangerous part of this new world isn't what you think.",
+  "gap_before": 0.95,
+  "chapter": "hook"
+ },
+ {
+  "key": "morn1",
+  "text": "The first problem hits before breakfast. Your brain has a special area, just for recognizing faces.",
+  "gap_before": 2.6,
+  "chapter": "morning"
+ },
+ {
+  "key": "morn2",
+  "text": "Scientists estimate the average person knows about five thousand faces. And this morning, every one of them looks exactly the same.",
+  "gap_before": 0.95,
+  "chapter": "morning"
+ },
+ {
+  "key": "morn3",
+  "text": "You walk into the kitchen, and there are four identical strangers eating cereal. One of them is your little brother. Good luck guessing which one.",
+  "gap_before": 0.95,
+  "chapter": "morning"
+ },
+ {
+  "key": "morn4",
+  "text": "Outside, it's chaos. Parents can't find their kids at school pickup. Couples hold hands on the street, just to make sure they don't lose each other.",
+  "gap_before": 0.95,
+  "chapter": "morning"
+ },
+ {
+  "key": "morn5",
+  "text": "Even you would struggle. When every reflection looks the same, you might wave at a stranger in a shop window.",
+  "gap_before": 0.95,
+  "chapter": "morning"
+ },
+ {
+  "key": "morn6",
+  "text": "There is one group that would barely notice. Newborn babies already recognize their mother's voice, because they hear it for months before they're born.",
+  "gap_before": 0.95,
+  "chapter": "morning"
+ },
+ {
+  "key": "morn7",
+  "text": "So families would lean on voices, laughs, and little habits, the same way you can recognize someone you love in the dark.",
+  "gap_before": 0.95,
+  "chapter": "morning"
+ },
+ {
+  "key": "id1",
+  "text": "By lunchtime, every security system on the planet is broken. Face unlock on your phone? It opens for anyone.",
+  "gap_before": 2.6,
+  "chapter": "identity"
+ },
+ {
+  "key": "id2",
+  "text": "Passport photos are useless. Security cameras can see a crime happen, but every suspect looks exactly like every witness.",
+  "gap_before": 0.95,
+  "chapter": "identity"
+ },
+ {
+  "key": "id3",
+  "text": "But here's the thing. Even identical twins, who share the same genes, don't have the same fingerprints.",
+  "gap_before": 0.95,
+  "chapter": "identity"
+ },
+ {
+  "key": "id4",
+  "text": "The fine details of your fingerprints are shaped by tiny differences in the womb, like your position and your blood flow. So fingerprints still work.",
+  "gap_before": 0.95,
+  "chapter": "identity"
+ },
+ {
+  "key": "id5",
+  "text": "Within weeks, the whole world switches to fingerprint scanners, voice checks, and secret passwords. Your name tag becomes the most important thing you own.",
+  "gap_before": 0.95,
+  "chapter": "identity"
+ },
+ {
+  "key": "id6",
+  "text": "And people get creative. Bright hair colors, wild clothes, tattoos, and hats become the only way to say, this is me.",
+  "gap_before": 0.95,
+  "chapter": "identity"
+ },
+ {
+  "key": "id7",
+  "text": "Banks, hospitals, and airports would rebuild everything around fingerprints. For the first time in history, your face would be worth nothing, and your fingertips would be worth everything.",
+  "gap_before": 0.95,
+  "chapter": "identity"
+ },
+ {
+  "key": "crime1",
+  "text": "Now imagine trying to solve a crime. Today, one of the strongest pieces of evidence police can find is DNA.",
+  "gap_before": 2.6,
+  "chapter": "crime"
+ },
+ {
+  "key": "crime2",
+  "text": "But in our world, everyone has the same body. And police have already met this problem, with identical twins.",
+  "gap_before": 0.95,
+  "chapter": "crime"
+ },
+ {
+  "key": "crime3",
+  "text": "In two thousand nine, thieves broke into a famous department store in Berlin and stole jewelry worth millions.",
+  "gap_before": 0.95,
+  "chapter": "crime"
+ },
+ {
+  "key": "crime4",
+  "text": "Police found DNA on a glove left at the scene. It matched a pair of identical twin brothers, but the tests could not tell which brother it came from.",
+  "gap_before": 0.95,
+  "chapter": "crime"
+ },
+ {
+  "key": "crime5",
+  "text": "The court couldn't prove which twin did it, so both brothers walked free. Now imagine that problem with eight billion people.",
+  "gap_before": 0.95,
+  "chapter": "crime"
+ },
+ {
+  "key": "crime6",
+  "text": "Detectives would go back to old school methods. Fingerprints, voices, receipts, phone records, and witnesses who remember how someone walks.",
+  "gap_before": 0.95,
+  "chapter": "crime"
+ },
+ {
+  "key": "crime7",
+  "text": "And in a world of identical faces, the perfect disguise would be walking down the street as yourself.",
+  "gap_before": 0.95,
+  "chapter": "crime"
+ },
+ {
+  "key": "love1",
+  "text": "Now let's talk about love. If everyone is equally attractive, what happens to dating?",
+  "gap_before": 2.6,
+  "chapter": "love"
+ },
+ {
+  "key": "love2",
+  "text": "Here's the surprise. Studies on attraction show that looks matter most for first impressions, and much less once people get to know each other.",
+  "gap_before": 0.95,
+  "chapter": "love"
+ },
+ {
+  "key": "love3",
+  "text": "Psychologists call it the mere exposure effect. The more time we spend around someone, the more we tend to like them.",
+  "gap_before": 0.95,
+  "chapter": "love"
+ },
+ {
+  "key": "love4",
+  "text": "So in a world where everyone looks the same, dating stops being about the photo. It becomes about the conversation.",
+  "gap_before": 0.95,
+  "chapter": "love"
+ },
+ {
+  "key": "love5",
+  "text": "Humor, kindness, shared interests, and how someone makes you feel. Those would be the only things that make one person stand out.",
+  "gap_before": 0.95,
+  "chapter": "love"
+ },
+ {
+  "key": "love6",
+  "text": "Dating apps would have to delete profile pictures completely. Every profile would be just words. And honestly, that might work better.",
+  "gap_before": 0.95,
+  "chapter": "love"
+ },
+ {
+  "key": "love7",
+  "text": "Some people might fall in love with someone they would have ignored before. In a strange way, this world would be kinder to people who were never noticed.",
+  "gap_before": 0.95,
+  "chapter": "love"
+ },
+ {
+  "key": "fame1",
+  "text": "And what about fame? Today, millions of people follow influencers partly because of how they look.",
+  "gap_before": 2.6,
+  "chapter": "fame"
+ },
+ {
+  "key": "fame2",
+  "text": "In this world, every model and every movie star looks exactly like you. Beauty ads disappear overnight, because there's nothing left to sell.",
+  "gap_before": 0.95,
+  "chapter": "fame"
+ },
+ {
+  "key": "fame3",
+  "text": "Fame would move to the things that are still different, like voices, jokes, ideas, and skills you can actually watch.",
+  "gap_before": 0.95,
+  "chapter": "fame"
+ },
+ {
+  "key": "fame4",
+  "text": "The most famous people on the planet would be comedians, storytellers, and inventors. Being interesting would become the new being beautiful.",
+  "gap_before": 0.95,
+  "chapter": "fame"
+ },
+ {
+  "key": "sport1",
+  "text": "Sports would be hit the hardest. Think about Michael Phelps. He's six foot four, but his arm span is six foot seven. That's part of why he won twenty eight Olympic medals.",
+  "gap_before": 2.6,
+  "chapter": "sports"
+ },
+ {
+  "key": "sport2",
+  "text": "Basketball players are tall, sprinters have fast muscle fibers, and gymnasts are small and light. Every sport rewards a different kind of body.",
+  "gap_before": 0.95,
+  "chapter": "sports"
+ },
+ {
+  "key": "sport3",
+  "text": "In our new world, nobody has a natural advantage. Every one hundred meter race could end in a near perfect tie.",
+  "gap_before": 0.95,
+  "chapter": "sports"
+ },
+ {
+  "key": "sport4",
+  "text": "So what decides who wins? Only training, strategy, teamwork, and willpower. The athlete who practices more, and wants it more, takes the gold.",
+  "gap_before": 0.95,
+  "chapter": "sports"
+ },
+ {
+  "key": "sport5",
+  "text": "Some people think that would make sports boring. Others think it would make them the most honest competition in history.",
+  "gap_before": 0.95,
+  "chapter": "sports"
+ },
+ {
+  "key": "sport5b",
+  "text": "Coaches would become the real superstars, because the right plan would matter more than any body.",
+  "gap_before": 0.95,
+  "chapter": "sports"
+ },
+ {
+  "key": "sport6",
+  "text": "The Olympics might even add new events that test skill and strategy, like archery or team relays, where the smartest plan wins.",
+  "gap_before": 0.95,
+  "chapter": "sports"
+ },
+ {
+  "key": "job1",
+  "text": "Next, the economy. In eighteen seventeen, the economist David Ricardo explained why people trade.",
+  "gap_before": 2.6,
+  "chapter": "jobs"
+ },
+ {
+  "key": "job2",
+  "text": "It's called comparative advantage. Even if you're good at everything, you should focus on what you do best, and trade for the rest.",
+  "gap_before": 0.95,
+  "chapter": "jobs"
+ },
+ {
+  "key": "job3",
+  "text": "Our whole economy runs on people being different. One person loves numbers, another loves building things, another loves helping people.",
+  "gap_before": 0.95,
+  "chapter": "jobs"
+ },
+ {
+  "key": "job3b",
+  "text": "And there's another twist. In studies, people rated as better looking tend to earn a few percent more, on average. Economists call it the beauty premium.",
+  "gap_before": 0.95,
+  "chapter": "jobs"
+ },
+ {
+  "key": "job3c",
+  "text": "In our new world, the beauty premium disappears overnight. Nobody gets hired, or ignored, because of their face.",
+  "gap_before": 0.95,
+  "chapter": "jobs"
+ },
+ {
+  "key": "job4",
+  "text": "If everyone has the same strength and the same I Q, those natural differences shrink. And here's the danger. What if everyone wants the same jobs?",
+  "gap_before": 0.95,
+  "chapter": "jobs"
+ },
+ {
+  "key": "job5",
+  "text": "Millions apply to become doctors and game designers. Almost nobody wants to fix sewers at three in the morning.",
+  "gap_before": 0.95,
+  "chapter": "jobs"
+ },
+ {
+  "key": "job6",
+  "text": "So salaries would change. Jobs that nobody wants would have to pay a lot more, and the jobs that everyone wants would pay a lot less.",
+  "gap_before": 0.95,
+  "chapter": "jobs"
+ },
+ {
+  "key": "job7",
+  "text": "The difference between people would no longer be talent. It would be choices, effort, and what you care about.",
+  "gap_before": 0.95,
+  "chapter": "jobs"
+ },
+ {
+  "key": "job8",
+  "text": "Some economists think this world could be more equal. Others think people would invent new ways to compete, like who owns the most, or who started first.",
+  "gap_before": 0.95,
+  "chapter": "jobs"
+ },
+ {
+  "key": "sch1",
+  "text": "Then there's school. Today, I Q scores follow a bell curve. Most people land near the middle, around one hundred.",
+  "gap_before": 2.6,
+  "chapter": "school"
+ },
+ {
+  "key": "sch2",
+  "text": "A few people score much higher, and a few score much lower. In our world, that curve collapses into a single line.",
+  "gap_before": 0.95,
+  "chapter": "school"
+ },
+ {
+  "key": "sch3",
+  "text": "Every student in every classroom has exactly the same brain power. No one is called gifted, and no one is left behind.",
+  "gap_before": 0.95,
+  "chapter": "school"
+ },
+ {
+  "key": "sch4",
+  "text": "Teachers could finally teach everyone at the same speed. But grades would depend on only one thing, how hard you study.",
+  "gap_before": 0.95,
+  "chapter": "school"
+ },
+ {
+  "key": "sch5",
+  "text": "That sounds fair, but it's also a little scary. If you fail a test, you can't blame your brain. It was all about your effort.",
+  "gap_before": 0.95,
+  "chapter": "school"
+ },
+ {
+  "key": "sch6",
+  "text": "Schools might stop ranking students altogether, and start teaching things a brain score never measured, like creativity, patience, and teamwork.",
+  "gap_before": 0.95,
+  "chapter": "school"
+ },
+ {
+  "key": "dis1",
+  "text": "But the biggest danger isn't social. It's biological. And to understand it, we need to talk about bananas.",
+  "gap_before": 2.6,
+  "chapter": "disease"
+ },
+ {
+  "key": "dis2",
+  "text": "Until the nineteen fifties, the world's favorite banana was called the Gros Michel. Every one of them was a clone.",
+  "gap_before": 0.95,
+  "chapter": "disease",
+  "accept": [
+   "Until the nineteen fifties, the world's favorite banana was called the gromi shell. Every one of them was a clone.",
+   "Until the nineteen fifties, the world's favorite banana was called the gros michelle. Every one of them was a clone."
+  ]
+ },
+ {
+  "key": "dis3",
+  "text": "Then a fungus called Panama disease arrived. Because every plant was genetically the same, it spread through farms across Latin America, and the Gros Michel was wiped out as an export crop.",
+  "gap_before": 0.95,
+  "chapter": "disease"
+ },
+ {
+  "key": "dis4",
+  "text": "The same thing happened in Ireland in the eighteen forties. Many farmers grew one type of potato, the Lumper, and every plant was a clone.",
+  "gap_before": 0.95,
+  "chapter": "disease",
+  "accept": [
+   "The same thing happened in Ireland in the eighteen forties. Many farmers grew one type of potato, the lumber, and every plant was a clone."
+  ]
+ },
+ {
+  "key": "dis5",
+  "text": "When potato blight arrived, the crops failed together, and the famine that followed killed about a million people.",
+  "gap_before": 0.95,
+  "chapter": "disease"
+ },
+ {
+  "key": "dis6",
+  "text": "Even cheetahs have this problem. In one famous study, cheetahs accepted skin grafts from unrelated cheetahs, because their genes are so similar.",
+  "gap_before": 0.95,
+  "chapter": "disease"
+ },
+ {
+  "key": "dis7",
+  "text": "Genetic differences are humanity's shield. When a new virus appears, some people are naturally resistant, and that keeps our species alive.",
+  "gap_before": 0.95,
+  "chapter": "disease"
+ },
+ {
+  "key": "dis7b",
+  "text": "That's also why doctors want diverse groups in medical studies. A medicine can work well for one group, and very differently for another.",
+  "gap_before": 0.95,
+  "chapter": "disease"
+ },
+ {
+  "key": "dis8",
+  "text": "In a world where everyone has the same body, one disease could hit all eight billion people in the same way. That is the real nightmare.",
+  "gap_before": 0.95,
+  "chapter": "disease"
+ },
+ {
+  "key": "dis9",
+  "text": "Scientists already worry about this today. The Cavendish, the banana in your kitchen, is also a clone, and a new strain of the same disease is spreading.",
+  "gap_before": 0.95,
+  "chapter": "disease"
+ },
+ {
+  "key": "drift1",
+  "text": "But here's the twist. Even if everyone started out identical, we wouldn't stay that way for long.",
+  "gap_before": 2.6,
+  "chapter": "drift"
+ },
+ {
+  "key": "drift2",
+  "text": "Scientists studied identical twins and found that young twins have almost the same gene activity. But by middle age, their differences grow much bigger.",
+  "gap_before": 0.95,
+  "chapter": "drift"
+ },
+ {
+  "key": "drift3",
+  "text": "The food we eat, the places we live, the stress we feel, and the habits we build all change how our genes behave.",
+  "gap_before": 0.95,
+  "chapter": "drift"
+ },
+ {
+  "key": "drift4",
+  "text": "One person runs every morning, another sits all day. One learns piano, another learns to code. In ten years, their bodies and brains would start to drift apart.",
+  "gap_before": 0.95,
+  "chapter": "drift"
+ },
+ {
+  "key": "drift5",
+  "text": "Humans are not designed to stay the same. Life itself makes us different.",
+  "gap_before": 0.95,
+  "chapter": "drift"
+ },
+ {
+  "key": "drift6",
+  "text": "Give it a few hundred years, and new families would form, new mixes would appear, and human variety would slowly come back.",
+  "gap_before": 0.95,
+  "chapter": "drift"
+ },
+ {
+  "key": "end1",
+  "text": "So what would happen if everyone had the same looks, the same strength, and the same I Q?",
+  "gap_before": 2.6,
+  "chapter": "ending"
+ },
+ {
+  "key": "end2",
+  "text": "Faces would stop meaning anything. Fingerprints and voices would become our names. Love would become about conversation, and sports about willpower.",
+  "gap_before": 0.95,
+  "chapter": "ending"
+ },
+ {
+  "key": "end3",
+  "text": "The economy would reward effort over talent, and a single disease could become our greatest threat.",
+  "gap_before": 0.95,
+  "chapter": "ending"
+ },
+ {
+  "key": "end4",
+  "text": "But maybe the biggest lesson is this. We already spend so much time comparing ourselves by our looks and our scores.",
+  "gap_before": 0.95,
+  "chapter": "ending"
+ },
+ {
+  "key": "end5",
+  "text": "In a world where all of that is equal, the only thing that makes you, you, is what you choose to do with it.",
+  "gap_before": 0.95,
+  "chapter": "ending"
+ },
+ {
+  "key": "end5b",
+  "text": "Your jokes, your kindness, your stories, and the way you treat people would still be completely yours.",
+  "gap_before": 0.95,
+  "chapter": "ending"
+ },
+ {
+  "key": "end6",
+  "text": "And honestly, that was always true.",
+  "gap_before": 0.95,
+  "chapter": "ending"
+ },
+ {
+  "key": "end6b",
+  "text": "So the next time you look in the mirror, remember. Your face is just the cover. The story is you.",
+  "gap_before": 0.95,
+  "chapter": "ending"
+ },
+ {
+  "key": "cta",
+  "text": "Did you learn something new? Like, and subscribe for more what if videos.",
+  "gap_before": 0.95,
+  "chapter": "ending"
+ }
+]

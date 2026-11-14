@@ -16,8 +16,11 @@ from PIL import Image, ImageFilter
 
 import toon as T
 
+import os
+
 FPS = 30
-W, H = 1080, 1920
+# portrait Shorts by default; long-form sets S2D_ASPECT=16:9 BEFORE importing this module
+W, H = (1920, 1080) if os.environ.get("S2D_ASPECT") == "16:9" else (1080, 1920)
 K = 1.25
 WW, WH = int(W * K), int(H * K)
 C, P, S = T.C, T.P, T.S
@@ -167,7 +170,8 @@ def crop(img, z, cx, cy, shake=(0, 0)):
 
 
 # ------------------------------------------------------------------ titles (screen space)
-def fit_size(txt, size, maxw=960):
+def fit_size(txt, size, maxw=None):
+    maxw = maxw or (W - 120)
     while skia.Font(FB, size).measureText(txt) > maxw:
         size -= 2
     return size
@@ -210,7 +214,7 @@ def stamp_layer(t, txt, at, x, y, size=120, col=(220, 35, 45), rot=-8):
     s, c = surf(world=False)
     k = t - at
     if k >= 0:
-        size = fit_size(txt, size, 860)
+        size = fit_size(txt, size, W - 220)
         u = T.out_back(k / (5 / FPS), 1.6)
         sc = 2.2 - 1.2 * u
         a = min(1.0, k / (2 / FPS))

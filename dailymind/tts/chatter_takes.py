@@ -68,9 +68,12 @@ def norm(s):
     s = s.lower().replace("’", "'").replace("-", " ")
     s = re.sub(r"(\d) ?,(\d{3})", r"\1\2", s)          # whisper writes '100 ,000' / '3,000,000'
     s = re.sub(r"(\d) ?,(\d{3})", r"\1\2", s)
+    # decades: 1950s -> nineteen fifties (before the year rule, which would leave a stray "s")
+    s = re.sub(r"\b(\d{2})(\d)0'?s\b", lambda m: " " + two(int(m.group(1))) + " " + TENS[int(m.group(2))][:-1] + "ies ", s)
     s = re.sub(r"\b\d{4}\b", year_words, s)            # years: 1878 -> eighteen seventy eight
     s = re.sub(r"\b\d+\b", lambda m: " " + num_words(int(m.group(0))) + " ", s)
     s = re.sub(r"\ba (hundred|thousand|million|billion)\b", r"one \1", s)
+    s = re.sub(r"\bi\.? ?q\b", "iq", s)          # "I Q" in the script (so the voice spells it) == "IQ" from whisper
     w = re.sub(r"[^a-z' ]", " ", s).split()
     return [{"too": "to", "two": "to", "learnt": "learned"}.get(x, x) for x in w]   # homophones whisper cannot tell apart
 
@@ -94,6 +97,7 @@ def trim(w):
 
 
 card = []
+FAILED = []
 parts, times, words_all, t = [], {}, {}, 0.0
 for li, ln in enumerate(lines):
     want = norm(ln["text"])
@@ -116,7 +120,8 @@ for li, ln in enumerate(lines):
             np.savez(cpath, wav=wav, ws=np.array(ws, dtype=object))
         ws = [dict(x) for x in ws]
         got = norm(" ".join(x["w"] for x in ws))
-        exact = got == want
+        # "accept": alternate spellings whisper uses for names it doesn't know (e.g. Gros Michel -> "gromi shell")
+        exact = got == want or any(got == norm(a) for a in ln.get("accept", []))
         gaps = [ws[i + 1]["start"] - ws[i]["end"] for i in range(len(ws) - 1)]
         max_gap = max(gaps) if gaps else 0.0
         conf = float(np.mean([x["p"] for x in ws])) if ws else 0.0
@@ -133,8 +138,9 @@ for li, ln in enumerate(lines):
         if best is None or score > best[0]:
             best = (score, wav, ws, k)
     score, wav, ws, k = best
-    if not score[0]:
-        sys.exit(f"no clean take for line {ln['key']!r}; see the scorecard")
+    if not score[0]:   # keep going: one run reports every failing line
+        FAILED.append(ln["key"])
+        print(f"NO CLEAN TAKE for line {ln['key']!r}", flush=True)
     card.append(dict(line=ln["key"], chosen=k))
     # dramatic pause in post, cut at the whisper timestamp of a word
     pb = ln.get("pause_before_word")
@@ -163,6 +169,9 @@ for li, ln in enumerate(lines):
         words_all[kk] = round(t + x["start"], 3)
     parts.append(wav.astype(np.float32))
     t += len(wav) / SR
+if FAILED:
+    json.dump(card, open(out + ".takes.json", "w"), indent=1, default=float)
+    sys.exit(f"no clean take for: {FAILED}")
 sf.write(out, np.concatenate(parts), SR)
 json.dump(times, open(out + ".times.json", "w"), indent=1)
 json.dump(words_all, open(out + ".words.json", "w"), indent=1)
