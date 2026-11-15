@@ -212,7 +212,7 @@ def build(plate):
         return Rt, Ht
 
     def harbor(y0=-60, brown=False):
-        water = mat("water", (0.11, 0.05, 0.015) if brown else (0.05, 0.1, 0.13), 0.45)
+        water = mat("water", (0.13, 0.055, 0.015) if brown else (0.05, 0.1, 0.13), 0.75 if brown else 0.45)
         nt = water.node_tree
         n = nt.nodes.new("ShaderNodeTexNoise")
         n.inputs["Scale"].default_value = 0.35
@@ -344,7 +344,7 @@ def build(plate):
         AS.model("wooden_crate_01", "1k", loc=(-6, -2, 0.75), rot=(0, 0, R(8)), scale=1.6)
         for k, x in enumerate(range(-60, 70, 9)):
             box(f"bollard{k}", (x, -5.0, 0.4), (0.4, 0.4, 0.8), steel)
-        aim((0, 9, 2.6), (-8, -60, 1.0), 24)
+        aim((0, -1.5, 2.4), (-6, -40, -0.6), 24)
         meta["quay_y"] = proj((0, -4, 0))[1]
     elif plate == "court":
         wood = AS.texture("dark_wooden_planks", "1k", scale=0.8, tint=(0.75, 0.55, 0.38))
@@ -379,7 +379,13 @@ def build(plate):
                 box(f"pewback{row}{x}", (x, -2.75 - row * 2.2, 1.05), (5.5, 0.12, 1.1), wood)
         for x in (-6.5, 6.5):
             box(f"column{x}", (x, 7.5, 4), (0.8, 0.8, 8), mat("colstone", (0.86, 0.82, 0.74), 0.7))
-        box("seal", (0, 8.8, 5.2), (2.2, 0.1, 2.2), mat("seal", (0.75, 0.6, 0.25), 0.35, 0.8))
+        AS.model("wooden_bookshelf_worn", "1k", loc=(-3.6, 8.6, 0.5), scale=1.2)
+        AS.model("wooden_bookshelf_worn", "1k", loc=(3.6, 8.6, 0.5), scale=1.2)
+        AS.model("vintage_grandfather_clock_01", "1k", loc=(0, 8.4, 0.5), scale=1.15)
+        for k in range(7):     # flag: red / white stripes + blue canton
+            box(f"stripe{k}", (5.9, 8.75, 5.6 - k * 0.22), (1.6, 0.04, 0.22), mat(f"st{k}", (0.7, 0.08, 0.1) if k % 2 == 0 else (0.92, 0.9, 0.86), 0.8))
+        box("canton", (5.45, 8.72, 5.3), (0.7, 0.05, 0.66), mat("canton", (0.1, 0.15, 0.4), 0.8))
+        box("flagpole", (5.0, 8.7, 3.0), (0.06, 0.06, 6.0), mat("pole", (0.75, 0.6, 0.25), 0.35, 0.8))
         w = bpy.data.worlds.new("w")
         SC.world = w
         w.use_nodes = True

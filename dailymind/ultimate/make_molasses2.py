@@ -101,7 +101,11 @@ META = {n: json.load(open(os.path.join(PL_DIR, f"plate_{n}.json"))) for n in
         ("wave", "flood", "tank", "burst", "tankclose", "tankbrown", "harbor", "court", "summer") if os.path.exists(os.path.join(PL_DIR, f"plate_{n}.json"))}
 
 
+MOL_COL = (0.17, 0.075, 0.025)
+
+
 def plate_col(name, x, y):
+    return MOL_COL
     """Average plate colour around (x, y) in 1080-space (the molasses band in front of a waist-deep character)."""
     a = plate(name)
     xi, yi = int(x * K), int(y * K)
@@ -332,7 +336,7 @@ def sc_stuck(t, f):
     img = char(img, EDDIE, x, y, s_, pose, t, shadow=0.0)
     y_surf = y - 330 * s_ / 1.6 * 1.0
     col = plate_col("flood", 540, META["flood"]["surface_y_near"] + 120)
-    img = layer_over(img, lambda c: molasses_band(c, x, y_surf, 330, col, t))
+    img = layer_over(img, lambda c: molasses_band(c, x, y_surf, 760, col, t))
     lays = [E.title_layer(t, [("THICK AS GLUE", 100, 330, E.GOLD, word_t("l04", "glue"))]), E.stamp_layer(t, "STUCK!", ts, 540, 560, 150)]
     return img, push("stuck", 1.05, 1.18, (560, 1050), (560, 1120))(t), lays
 
@@ -342,7 +346,7 @@ def sc_dead(t, f):
     pose = dict(eyes="sad", brows="sad", mouth="frown", hands=[(-15, 140), (15, 140)], tilt=8)
     img = char(img, EDDIE, 330, 1700, 0.95, pose, t, shadow=0.0)
     col = plate_col("flood", 330, 1500)
-    img = layer_over(img, lambda c: (molasses_band(c, 330, 1700 - 190, 200, col, t), snowfall(c, t, 50, 9)))
+    img = layer_over(img, lambda c: (molasses_band(c, 330, 1700 - 190, 700, col, t), snowfall(c, t, 50, 9)))
     lays = [E.title_layer(t, [("21 DEAD", 160, 360, E.WHITE, word_t("l05", "21", "twentyone", "twenty")),
                               ("150 HURT", 110, 520, E.GOLD, word_t("l05", "150", "hundred", "fifty"))])]
     return img, push("dead", 1.0, 1.1, (540, 980), (500, 960))(t), lays
@@ -352,7 +356,7 @@ def sc_harbor(t, f):
     img = plate("harbor")
     img = layer_over(img, lambda c: snowfall(c, t, 50, 11))
     lays = [E.title_layer(t, [("THE HARBOR", 100, 330, E.WHITE, word_t("l06", "harbor")), ("STAYED BROWN", 120, 480, E.GOLD, word_t("l06", "brown"))])]
-    return img, push("harbor", 1.0, 1.12, (540, 960), (520, 1000))(t), lays
+    return img, push("harbor", 1.2, 1.32, (540, 780), (520, 760))(t), lays   # crop out the pale quay at the bottom
 
 
 def sc_crazy(t, f):
@@ -414,7 +418,7 @@ def sc_blame(t, f):
     img = char(img, BOSS, x, y, s_, pose, t, shadow=0.0)
     hx, hy = T.hand_pos(x, y, s_, pose, 1)
     col = plate_col("flood", 560, 1650)
-    img = layer_over(img, lambda c: (molasses_band(c, x, y - 120, 340, col, t), paper(c, hx + 30, hy + 40, 1.0, -6)))
+    img = layer_over(img, lambda c: (molasses_band(c, x, y - 120, 760, col, t), paper(c, hx + 30, hy + 40, 1.0, -6)))
     lays = [E.title_layer(t, [("THEY BLAMED", 100, 330, E.WHITE, word_t("l11", "blamed"))]),
             E.stamp_layer(t, "ANARCHISTS", word_t("l11", "anarchists"), 540, 500, 120)]
     return img, push("blame", 1.0, 1.08, (540, 980), (560, 1000))(t), lays
@@ -458,12 +462,13 @@ def sc_paid(t, f):
 def sc_engineers(t, f):
     img = plate("summer")
     tsg = word_t("l14", "sign")
-    x, y, s_ = 470, 1840, 1.35
+    x, y, s_ = 360, 1840, 1.35
     pose = dict(eyes="open" if t < tsg else "squint", brows="flat" if t < tsg else "up", mouth="smile" if t < tsg else "grin",
-                hands=[(-60, 20), (60, 20)], tilt=-4)
+                hands=[(-20, 120), (120, -10)], tilt=-4)
     img = char(img, EDDIE, x, y, s_, pose, t)
     st = clamp((t - tsg) / (5 / FPS)) if t >= tsg else 0.0
-    img = layer_over(img, lambda c: blueprint(c, x, y - 360 * s_ / 1.35, 1.0, st))
+    hx, hy = T.hand_pos(x, y, s_, pose, 1)
+    img = layer_over(img, lambda c: blueprint(c, hx + 150, hy + 80, 0.95, st))
     lays = [E.title_layer(t, [("NEW RULE:", 100, 330, E.WHITE, word_t("l14", "boston", "after")), ("ENGINEERS SIGN", 104, 470, E.GOLD, tsg)])]
     return img, push("engineers", 1.0, 1.1, (540, 960), (500, 1000))(t), lays
 
