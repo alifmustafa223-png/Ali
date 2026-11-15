@@ -89,3 +89,10 @@ dailymind/canary/vo_add.wav
 dailymind/canary/vo_fix*.wav
 dailymind/canary/*_full.mp4
 dailymind/canary/canary.mp4
+dailymind/molasses/frames/
+dailymind/molasses/_audio/
+dailymind/molasses/_takes_cache/
+dailymind/molasses/_tmp*.wav
+dailymind/molasses/vo_takes.wav
+dailymind/molasses/*.log
+dailymind/molasses/qc/*.wav

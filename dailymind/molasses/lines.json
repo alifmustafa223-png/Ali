@@ -1,0 +1,164 @@
+[
+ {
+  "key": "l00",
+  "text": "A twenty-five-foot wave of molasses is tearing through Boston.",
+  "gap_before": 0.1,
+  "slot": [
+   0.0,
+   3.4
+  ]
+ },
+ {
+  "key": "l01",
+  "text": "January, nineteen nineteen. A giant tank by the harbor just burst.",
+  "gap_before": 0.1,
+  "slot": [
+   3.4,
+   6.6
+  ]
+ },
+ {
+  "key": "l02",
+  "text": "Two point three million gallons. All at once.",
+  "gap_before": 0.1,
+  "slot": [
+   6.6,
+   9.8
+  ]
+ },
+ {
+  "key": "l03",
+  "text": "It flattens buildings. And the freezing cold makes it worse.",
+  "gap_before": 0.1,
+  "slot": [
+   9.8,
+   12.6
+  ]
+ },
+ {
+  "key": "l04",
+  "text": "It thickens like glue, and people get stuck.",
+  "gap_before": 0.1,
+  "slot": [
+   12.6,
+   16.0
+  ]
+ },
+ {
+  "key": "l05",
+  "text": "Twenty-one people die. About a hundred and fifty are hurt.",
+  "gap_before": 0.1,
+  "slot": [
+   16.0,
+   19.4
+  ]
+ },
+ {
+  "key": "l06",
+  "text": "The harbor stays brown for months.",
+  "gap_before": 0.1,
+  "slot": [
+   19.4,
+   22.0
+  ]
+ },
+ {
+  "key": "l07",
+  "text": "But here's the crazy part.",
+  "gap_before": 0.1,
+  "slot": [
+   22.0,
+   24.0
+  ]
+ },
+ {
+  "key": "l08",
+  "text": "The tank leaked from day one. Neighbors collected the drips.",
+  "gap_before": 0.1,
+  "slot": [
+   24.0,
+   27.6
+  ]
+ },
+ {
+  "key": "l09",
+  "text": "The company's fix? They painted it brown... so nobody could see the leaks.",
+  "gap_before": 0.1,
+  "slot": [
+   27.6,
+   32.2
+  ]
+ },
+ {
+  "key": "l10",
+  "text": "It was never even tested with water.",
+  "gap_before": 0.1,
+  "slot": [
+   32.2,
+   35.0
+  ]
+ },
+ {
+  "key": "l11",
+  "text": "Then they blamed anarchists. A bomb, they said.",
+  "gap_before": 0.1,
+  "slot": [
+   35.0,
+   38.2
+  ]
+ },
+ {
+  "key": "l12",
+  "text": "The court didn't buy it.",
+  "gap_before": 0.1,
+  "slot": [
+   38.2,
+   40.4
+  ]
+ },
+ {
+  "key": "l13",
+  "text": "The company was found responsible and paid over six hundred thousand dollars.",
+  "gap_before": 0.1,
+  "slot": [
+   40.4,
+   45.0
+  ]
+ },
+ {
+  "key": "l14",
+  "text": "After that, Boston made engineers sign off on big structures like it.",
+  "gap_before": 0.1,
+  "slot": [
+   45.0,
+   50.0
+  ]
+ },
+ {
+  "key": "l15",
+  "text": "And locals swore that on hot summer days, the North End smelled sweet for decades.",
+  "gap_before": 0.1,
+  "slot": [
+   50.0,
+   55.8
+  ]
+ },
+ {
+  "key": "l16",
+  "text": "All from one leaky tank.",
+  "gap_before": 0.1,
+  "slot": [
+   55.8,
+   58.6
+  ]
+ },
+ {
+  "key": "l17",
+  "text": "So, on a freezing January morning...",
+  "gap_before": 0.1,
+  "slot": [
+   58.6,
+   62.0
+  ]
+ }
+]

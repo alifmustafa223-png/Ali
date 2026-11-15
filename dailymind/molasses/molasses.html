@@ -85,9 +85,10 @@ const LINES = [
   [55.8, 58.6, "All from one leaky tank."],
   [58.6, 62.0, "So, on a freezing January morning..."],
 ];
-// word timings: split each line's span by word length (+ a beat after punctuation)
-const WORDS = [];
-for (const [a, b, txt] of LINES) {
+// word timings: from the narration's whisper timestamps when embedded (WORDS_FIXED), else split by word length
+const WORDS_FIXED = /*WORDS*/null/*END*/;
+const WORDS = WORDS_FIXED ? WORDS_FIXED.slice() : [];
+if (!WORDS_FIXED) for (const [a, b, txt] of LINES) {
   const ws = txt.split(" ");
   const wt = ws.map(w => w.replace(/[^A-Za-z0-9]/g, "").length + 2 + (/[.,?!]|\.\.\./.test(w) ? 3 : 0));
   const span = (b - a) * 0.94, tot = wt.reduce((x, y) => x + y, 0);
@@ -509,7 +510,7 @@ const S = [];
 function shot(o) { S.push(o); }
 const tBurst = wordT("burst", 3.4);
 // 1  0.0-3.4  HOOK: the wave roars down the street at a low angle; Eddie turns and runs, screaming
-shot({ t0: 0.0, t1: 3.4, focus: [11, 2.6, 2], a0: 72, a1: 100, r0: 11, r1: 8.5, y0: -1.8, y1: -1.4, fov: 60, shake: 0.08, hits: [[0.0, 0.35]],
+shot({ t0: 0.0, t1: 3.4, focus: [11, 2.6, 2], a0: 72, a1: 100, r0: 8.2, r1: 6.4, y0: -1.8, y1: -1.4, fov: 60, shake: 0.08, hits: [[0.0, 0.35]],
   world: { tank: "burst", mol: t => ({ mode: "surge", front: lerp(-18, 3, t / 3.4), H: 7.6 }) },
   cast: { eddie: [9, 3, [[0, { eyes: "wide", brows: "up", mouth: "scream", armL: [150, 30], armR: [160, -20], action: "run", lean: 6, look: [-1, 0] }]]] } });
 // 2  3.4-6.6  establishing orbit of the harbor tank; it bursts on "burst"
