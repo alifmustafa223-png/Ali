@@ -439,3 +439,15 @@
   frames evenly across recorders (one recorder was left with 431 of 615 frames).
 - Look at the frame sheets after the QC passes: a pillar and a wall in the lens (orbit angle) passed every automatic check.
 - Build thumbnails from a subtitle-free render (hide #subs), never from a finished frame.
+
+## Molasses Flood v2 (canary look: toon characters in 3D Boston plates, vidIQ Chris voice, 64.5 s, QC ALL PASS)
+- Owner rejected the Three.js version ("style and graphic bad"): the house look is the canary one - real lit Blender
+  plates + the channel toons + title slams/stamps/splats + CTA v2. Never drop the LIKE/SUBSCRIBE end card.
+- vidIQ voice: one `script` call (954 chars = 28 credits); whisper timings drive the cuts; Chris's "Learned" is heard as
+  "learn" by whisper (QC maps it).
+- HDRIs with towns in them (blaubeuren_church_square = German square with festive lights) leak into the background:
+  use a pure-sky HDRI for exteriors. Light street canyons from along the street axis.
+- Never sample the plate for a "molasses" colour: it picked up sky reflections (white box). Use a fixed colour.
+- Impact shakes: <= 14 Hz noise, damped; a 30 Hz shake reads as a per-frame jump (the QC pop detector caught it).
+- draw_cta2 with a negative time draws the button before the card: start the card time at its scene start.
+- Full-HD PNG frames ~3 MB: pack to JPG (q96) as they finish or the cloud disk fills.
