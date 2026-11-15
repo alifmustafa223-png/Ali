@@ -202,13 +202,13 @@ def frame(i):
         turn = ease((t - T_STOP + 0.15) / 0.35)
         pose = dict(eyes="wide" if silent else "open", brows="worried" if silent else "flat", mouth="O" if silent else "flat",
                     look=(lerp(0, 0.9, turn), -0.2), arms=[(150, -20), (165, -40)], head_tilt=lerp(0, 10, turn), sweat=lerp(0, 1, ease((t - T_STOP) / 1.0)))
-        hands = K.miner(fc, 330, 1700, 1.35, pose)
+        hands = K.miner(fc, 300, 1500, 1.45, pose)
         pickaxe(fc, hands["L"][0] / BASE, hands["L"][1] / BASE, -25)
         far = rgba(far_s)
         far_img = Image.fromarray((far * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(5))   # out of focus behind the cage
         far = np.asarray(far_img).astype(np.float32) / 255.0
         world = over(PL["B"].copy(), far)
-        K.cage(c, hook[0], hook[1] + 14, 3.0, "silent" if silent else "sing", t, swing=swing)
+        K.cage(c, hook[0], hook[1] + 14, 2.6, "silent" if silent else "sing", t, swing=swing)
         dust(c, t, 25, 2, (200, 240, 180))
         world = over(world, rgba(s))
         zoom, cx, cy = lerp(1.0, 1.14, ease(k)), lerp(540, hook[0], ease(k)), lerp(960, hook[1] + 220, ease(k))
@@ -238,11 +238,11 @@ def frame(i):
             tt = t - (T_TWO + 0.15)
             hx0, hy0 = fx - 10, fy - 262 * sc - 50 * sc
             g = 3600.0                        # px/s^2 at this scale (a 1.75 m man ~ 750 px)
-            x_ = hx0 - 380 * tt
-            y_ = hy0 - 1400 * tt + 0.5 * g * tt * tt
+            x_ = hx0 + 140 * tt                 # pops up and back over their heads, stays in frame
+            y_ = hy0 - 1250 * tt + 0.5 * g * tt * tt
             c.save()
             c.translate(x_, y_)
-            c.rotate(-540 * tt)
+            c.rotate(-420 * tt)
             c.scale(sc, sc)
             K.helmet(c, 52, True, glow=False)
             c.restore()
@@ -267,7 +267,7 @@ def texts(fr, t):
     if t < S1:
         text_pop(c, "A JOB?!", t, T_JOB, 1580, 150, (255, 214, 50))
     elif t < S2:
-        text_pop(c, "SILENCE...", t, T_STOP + 0.25, 1580, 130, (255, 255, 255), fade=True)
+        text_pop(c, "SILENCE...", t, T_STOP + 0.25, 1700, 130, (255, 255, 255), fade=True)
     else:
         if t < T_RUN:
             text_pop(c, "2 MINUTES", t, T_TWO, 640, 140, (255, 214, 50))
