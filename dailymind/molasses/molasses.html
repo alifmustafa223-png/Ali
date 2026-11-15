@@ -525,7 +525,7 @@ shot({ t0: 6.6, t1: 9.8, focus: [6, FACE, 3], a0: 78, a1: 58, r0: 14, r1: 3.3, y
 shot({ t0: 9.8, t1: 12.6, focus: [-2, 4, -10], a0: 70, a1: 40, r0: 26, r1: 21, y0: -3, y1: -2.4, fov: 54, enter: "whip", shake: 0.1, hits: [[10.2, 0.6]],
   world: { tank: "burst", collapse: 10.1, mol: t => ({ mode: "surge", front: lerp(-14, 10, (t - 9.8) / 2.8), H: 6 }) } });
 // 5  12.6-16.0  Eddie stuck waist-deep; orbit, then push to his face on "stuck"
-shot({ t0: 12.6, t1: 16.0, focus: [5, 1.4, 2], a0: -40, a1: -10, r0: 9, r1: 3.8, y0: 1.2, y1: 0.75, fov: 48, enter: "whip",
+shot({ t0: 12.6, t1: 16.0, focus: [5, 1.4, 2], a0: 135, a1: 165, r0: 9, r1: 3.8, y0: 1.2, y1: 0.75, fov: 48, enter: "whip",
   world: { tank: "burst", mol: () => ({ mode: "flood", level: 0.85 }) },
   cast: { eddie: [5, 2, [[12.6, { action: "stuck", eyes: "squint", brows: "angry", mouth: "frown", armL: [60, 30], armR: [70, -30], sweat: 1 }],
                          [wordT("stuck", 12.6), { action: "stuck", eyes: "wide", brows: "worried", mouth: "scream", armL: [150, 20], armR: [150, -20], sweat: 1, squash: 0.05 }]]] } });
@@ -584,7 +584,7 @@ shot({ t0: 47.6, t1: 50.0, focus: [20, 1.5, 0], a0: -70, a1: -50, r0: 5, r1: 3.4
   cast: { eddie: [20, 0, [[47.6, { eyes: "open", brows: "flat", mouth: "smile", armL: [40, 60], armR: [80, 20], prop: "plans", propT: -1 }],
                           [wordT("sign", 47.6), { eyes: "happy", brows: "up", mouth: "grin", armL: [40, 60], armR: [80, 20], prop: "plans", propT: 1, squash: 0.05 }]]] } });
 // 19 50.0-53.0  summer: warm sun, Eddie sniffs the sweet air
-shot({ t0: 50.0, t1: 53.0, focus: [12, 2, 3], a0: 35, a1: 5, r0: 13, r1: 9, y0: 2.5, y1: 1.2, fov: 50, enter: "whip", season: "summer",
+shot({ t0: 50.0, t1: 53.0, focus: [12, 2, 3], a0: 160, a1: 190, r0: 10.5, r1: 8, y0: 2.5, y1: 1.2, fov: 50, enter: "whip", season: "summer",
   world: { tank: "none", mol: () => ({ mode: "none" }) },
   cast: { eddie: [12, 3, [[50, { eyes: "closed", brows: "up", mouth: "smile", armL: [30, 40], armR: [-30, -40], prop: "smell", tilt: -8 }]]] } });
 // 20 53.0-55.8  close-up: blissful sniff
