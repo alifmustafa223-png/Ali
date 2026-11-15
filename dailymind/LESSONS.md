@@ -429,3 +429,13 @@
 - Cloud disk: 1,936 full-HD PNG frames = 5 GB. Clear caches first; after a disk-full crash, decode-check every frame
   (2 were half-written) and render only the missing ones (SKIP=1).
 - The full CRF 16 master is 400 MB (> GitHub's 100 MB): commit a CRF 20 upload copy + the phone preview.
+
+## Great Molasses Flood (single-file Three.js page -> MP4, 62.0 s, QC ALL PASS)
+- The owner wants a finished MP4 every time, never just an HTML page. A web animation is only a build tool: record it
+  frame by frame (Playwright screenshots at 1080x1920, `window.__seek(t)`), then mix and QC like any other video.
+- Whisper writes numbers as digits ("2 .3", "$600 ,000", "150"): normalise decimals, dollars, spaced thousands and the word
+  "and" before comparing (tts/chatter_takes.py norm). Compare the JOINED transcript - whisper splits "2" ".3" into tokens.
+- Software-GL screenshots can stall: give each screenshot a long timeout and retry; after a crash re-split the MISSING
+  frames evenly across recorders (one recorder was left with 431 of 615 frames).
+- Look at the frame sheets after the QC passes: a pillar and a wall in the lens (orbit angle) passed every automatic check.
+- Build thumbnails from a subtitle-free render (hide #subs), never from a finished frame.
