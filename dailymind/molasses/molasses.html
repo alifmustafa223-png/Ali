@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Molasses Flood</title>
+<!--
+  The DailyMind - "The Great Molasses Flood" (Boston, 15 January 1919). 62.0 s, 9:16, 1080x1920 logical.
+  2D toon characters (billboarded, drawn live on canvas) inside a procedural 3D Three.js set; an orbiting, never-locked
+  camera with whip-rotations and zoom cuts; word-by-word subtitles. Optional voice: put "voice.mp3" next to this file
+  and it plays in sync with the timeline (scrubbing included).
+  Facts: ~2.3 million US gallons; wave up to ~25 ft at ~35 mph; 21 dead, ~150 injured; buildings flattened;
+  harbor brown with molasses for months; the tank leaked from the start, locals collected the drips, it was painted brown
+  to hide the leaks and never tested with water; the company blamed anarchists; the court found it liable (~$628,000 in
+  settlements); Boston then required engineers' calculations to be filed and signed. (Wikipedia, Smithsonian, Boston Globe)
+-->
+<style>
+  :root { --bg: #0b0a0c; --ui: rgba(18, 16, 20, 0.86); --ink: #f4efe6; --accent: #ffd400; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); overflow: hidden; font-family: "Inter", "Segoe UI", Arial, sans-serif; }
+  body.recording { cursor: none; }
+  #wrap { position: fixed; inset: 0; overflow: hidden; }
+  #stage { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 0 0; background: #000; overflow: hidden; }
+  #stage canvas#gl { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+  #subs { position: absolute; left: 60px; right: 60px; top: 1210px; text-align: center; font-weight: 900; font-size: 92px; line-height: 1.12;
+          letter-spacing: 1px; color: #fff; text-transform: uppercase; pointer-events: none; }
+  #subs span { display: inline-block; margin: 0 14px; -webkit-text-stroke: 16px #000; paint-order: stroke fill;
+               text-shadow: 0 8px 18px rgba(0,0,0,0.55); transition: transform 60ms ease-out; }
+  #subs span.on { color: var(--accent); transform: scale(1.12) rotate(-2deg); }
+  #vignette { position: absolute; inset: 0; pointer-events: none;
+              background: radial-gradient(ellipse at 50% 55%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%); }
+  #grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.07; mix-blend-mode: overlay; }
+  #bar { position: fixed; left: 50%; bottom: 14px; transform: translateX(-50%); display: flex; gap: 10px; align-items: center;
+         background: var(--ui); color: var(--ink); padding: 10px 14px; border-radius: 14px; font-size: 14px; z-index: 5;
+         width: min(720px, calc(100vw - 32px)); box-shadow: 0 6px 24px rgba(0,0,0,0.5); }
+  #bar button { background: #2b2730; color: var(--ink); border: 0; border-radius: 9px; padding: 8px 12px; font-size: 14px; cursor: pointer; white-space: nowrap; }
+  #bar button:hover { background: #3a3540; }
+  #bar input[type=range] { flex: 1; min-width: 60px; accent-color: var(--accent); }
+  #time { font-variant-numeric: tabular-nums; min-width: 92px; text-align: right; }
+  body.recording #bar { display: none; }
+  #hint { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); color: var(--ink); background: var(--ui); padding: 6px 12px;
+          border-radius: 10px; font-size: 13px; opacity: 0; transition: opacity 400ms; z-index: 6; pointer-events: none; }
+  #hint.show { opacity: 1; }
+  @media (max-width: 520px) { #bar { gap: 6px; padding: 8px; } #bar button { padding: 7px 8px; font-size: 12px; } #time { min-width: 70px; font-size: 12px; } }
+</style>
+</head>
+<body>
+<div id="wrap"><div id="stage">
+  <canvas id="gl" width="1080" height="1920"></canvas>
+  <div id="vignette"></div>
+  <canvas id="grain" width="270" height="480"></canvas>
+  <div id="subs"></div>
+</div></div>
+<div id="bar">
+  <button id="play">Play</button>
+  <button id="restart">Restart</button>
+  <input id="scrub" type="range" min="0" max="62" step="0.01" value="0">
+  <span id="time">0.00 / 62.00</span>
+  <button id="hide">Hide UI for recording</button>
+</div>
+<div id="hint">Press H to show the controls again</div>
+<audio id="vo" src="voice.mp3" preload="auto"></audio>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+"use strict";
+// =====================================================================================================  SCRIPT (62.0 s)
+const DUR = 62.0;
+const LINES = [
+  [0.0, 3.4, "A twenty-five-foot wave of molasses is tearing through Boston."],
+  [3.4, 6.6, "January, nineteen nineteen. A giant tank by the harbor just burst."],
+  [6.6, 9.8, "Two point three million gallons. All at once."],
+  [9.8, 12.6, "It flattens buildings. And the freezing cold makes it worse."],
+  [12.6, 16.0, "It thickens like glue, and people get stuck."],
+  [16.0, 19.4, "Twenty-one people die. About a hundred and fifty are hurt."],
+  [19.4, 22.0, "The harbor stays brown for months."],
+  [22.0, 24.0, "But here's the crazy part."],
+  [24.0, 27.6, "The tank leaked from day one. Neighbors collected the drips."],
+  [27.6, 32.2, "The company's fix? They painted it brown... so nobody could see the leaks."],
+  [32.2, 35.0, "It was never even tested with water."],
+  [35.0, 38.2, "Then they blamed anarchists. A bomb, they said."],
+  [38.2, 40.4, "The court didn't buy it."],
+  [40.4, 45.0, "The company was found responsible and paid over six hundred thousand dollars."],
+  [45.0, 50.0, "After that, Boston made engineers sign off on big structures like it."],
+  [50.0, 55.8, "And locals swore that on hot summer days, the North End smelled sweet for decades."],
+  [55.8, 58.6, "All from one leaky tank."],
+  [58.6, 62.0, "So, on a freezing January morning..."],
+];
+// word timings: split each line's span by word length (+ a beat after punctuation)
+const WORDS = [];
+for (const [a, b, txt] of LINES) {
+  const ws = txt.split(" ");
+  const wt = ws.map(w => w.replace(/[^A-Za-z0-9]/g, "").length + 2 + (/[.,?!]|\.\.\./.test(w) ? 3 : 0));
+  const span = (b - a) * 0.94, tot = wt.reduce((x, y) => x + y, 0);
+  let t = a + 0.04;
+  ws.forEach((w, i) => { WORDS.push({ w, t0: t, t1: t + span * wt[i] / tot, line: a }); t += span * wt[i] / tot; });
+}
+const wordT = (word, after = 0) => { const x = WORDS.find(o => o.t0 >= after - 0.01 && o.w.toLowerCase().replace(/[^a-z0-9]/g, "") === word); return x ? x.t0 : after; };
+
+// =====================================================================================================  HELPERS
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const lerp = (a, b, u) => a + (b - a) * u;
+const ease = x => { x = clamp(x); return x * x * (3 - 2 * x); };
+const easeIO = x => { x = clamp(x); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const outBack = (x, s = 1.7) => { x = clamp(x) - 1; return 1 + x * x * ((s + 1) * x + s); };
+const D2R = Math.PI / 180;
+function noise(t, seed) { // smooth 1D value noise in [-1, 1]
+  const i = Math.floor(t), f = t - i, u = f * f * (3 - 2 * f);
+  const h = n => { const s = Math.sin((n + seed * 157.31) * 12.9898) * 43758.5453; return (s - Math.floor(s)) * 2 - 1; };
+  return lerp(h(i), h(i + 1), u);
+}
+
+// =====================================================================================================  THREE SETUP
+const glCanvas = document.getElementById("gl");
+const renderer = new THREE.WebGLRenderer({ canvas: glCanvas, antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(1080, 1920, false);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(50, 1080 / 1920, 0.1, 600);
+
+function canvasTex(w, h, draw, repeat) {
+  const c = document.createElement("canvas"); c.width = w; c.height = h;
+  draw(c.getContext("2d"), w, h);
+  const t = new THREE.CanvasTexture(c);
+  t.encoding = THREE.sRGBEncoding;
+  t.anisotropy = 8;
+  if (repeat) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(repeat[0], repeat[1]); }
+  return t;
+}
+function rnd(seed) { let s = seed; return () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }; }
+
+// sky (winter / summer), swapped per shot
+function skyTex(top, mid, bot) {
+  return canvasTex(16, 512, (g, w, h) => {
+    const gr = g.createLinearGradient(0, 0, 0, h);
+    gr.addColorStop(0, top); gr.addColorStop(0.55, mid); gr.addColorStop(1, bot);
+    g.fillStyle = gr; g.fillRect(0, 0, w, h);
+  });
+}
+const SKY = { winter: skyTex("#6f86a6", "#b8c3cf", "#e9e2d6"), summer: skyTex("#3f8fe0", "#8cc3f0", "#f7e0a8"),
+              dusk: skyTex("#2b2c4a", "#8a5c74", "#f0a86c") };
+
+const hemi = new THREE.HemisphereLight(0xdfe8f5, 0x5a4a3a, 0.75);
+scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xfff0dc, 1.35);
+sun.position.set(-60, 55, 40);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -90, right: 90, top: 70, bottom: -70, near: 1, far: 260 });
+sun.shadow.bias = -0.0006;
+scene.add(sun);
+scene.add(sun.target);
+
+// ---------------------------------------------------------------- ground: cobbled street, sidewalks, snow edges
+const cobble = canvasTex(1024, 1024, (g, w, h) => {
+  g.fillStyle = "#5a5450"; g.fillRect(0, 0, w, h);
+  const r = rnd(7);
+  for (let y = 0; y < h; y += 34) for (let x = (y / 34) % 2 ? 0 : 20; x < w; x += 42) {
+    const c = 92 + r() * 40;
+    g.fillStyle = `rgb(${c},${c - 6},${c - 12})`;
+    g.beginPath(); g.ellipse(x + 20, y + 16, 18 + r() * 3, 14 + r() * 2, r() * 0.4, 0, Math.PI * 2); g.fill();
+  }
+}, [10, 3]);
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(240, 70), new THREE.MeshStandardMaterial({ map: cobble, roughness: 0.92 }));
+ground.rotation.x = -Math.PI / 2; ground.position.set(10, 0, -4); ground.receiveShadow = true;
+scene.add(ground);
+const snowMat = new THREE.MeshStandardMaterial({ color: 0xf2f4f7, roughness: 1 });
+for (const z of [10.2, -11.2]) {
+  const walk = new THREE.Mesh(new THREE.BoxGeometry(240, 0.3, 3.2), new THREE.MeshStandardMaterial({ color: 0x8b8278, roughness: 0.95 }));
+  walk.position.set(10, 0.15, z); walk.receiveShadow = true; scene.add(walk);
+  const sn = new THREE.Mesh(new THREE.BoxGeometry(240, 0.06, 1.1), snowMat);
+  sn.position.set(10, 0.33, z + (z > 0 ? 1.0 : -1.0)); scene.add(sn);
+}
+// harbor water
+const harborMat = new THREE.MeshStandardMaterial({ color: 0x3d5566, roughness: 0.18, metalness: 0.2 });
+const harbor = new THREE.Mesh(new THREE.PlaneGeometry(400, 220), harborMat);
+harbor.rotation.x = -Math.PI / 2; harbor.position.set(0, -0.8, -150); scene.add(harbor);
+const quay = new THREE.Mesh(new THREE.BoxGeometry(400, 1.2, 4), new THREE.MeshStandardMaterial({ color: 0x6b625a, roughness: 0.9 }));
+quay.position.set(0, -0.2, -40); scene.add(quay);
+
+// ---------------------------------------------------------------- brick buildings
+function brickTex(seed, wallCol) {
+  return canvasTex(512, 1024, (g, w, h) => {
+    g.fillStyle = wallCol; g.fillRect(0, 0, w, h);
+    const r = rnd(seed);
+    for (let y = 0; y < h; y += 16) for (let x = (y / 16) % 2 ? -16 : 0; x < w; x += 32) {
+      const k = 0.82 + r() * 0.3;
+      g.fillStyle = `rgba(${150 * k | 0},${70 * k | 0},${52 * k | 0},0.55)`; g.fillRect(x + 1, y + 1, 30, 14);
+    }
+    for (let fy = 0; fy < 4; fy++) for (let fx = 0; fx < 3; fx++) {    // windows with sills, some lit
+      const x = 60 + fx * 150, y = 120 + fy * 230;
+      g.fillStyle = "#e9e2d2"; g.fillRect(x - 8, y - 8, 96, 156);
+      g.fillStyle = r() < 0.3 ? "#f3d27a" : "#253040"; g.fillRect(x, y, 80, 140);
+      g.fillStyle = "#e9e2d2"; g.fillRect(x + 37, y, 6, 140); g.fillRect(x, y + 66, 80, 6);
+      g.fillStyle = "#cfc6b4"; g.fillRect(x - 14, y + 144, 108, 12);
+    }
+    g.fillStyle = "#3a2c22"; g.fillRect(0, h - 140, w, 10);
+  });
+}
+const buildings = [];
+function building(x, z, w, d, hgt, seed, col) {
+  const tex = brickTex(seed, col);
+  const side = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.9 });
+  const roof = new THREE.MeshStandardMaterial({ color: 0xe8ecf0, roughness: 1 });
+  const g = new THREE.Group();
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, hgt, d), [side, side, roof, side, side, side]);
+  m.position.y = hgt / 2; m.castShadow = m.receiveShadow = true; g.add(m);
+  const corn = new THREE.Mesh(new THREE.BoxGeometry(w + 0.6, 0.5, d + 0.6), new THREE.MeshStandardMaterial({ color: 0xcfc4b0, roughness: 0.8 }));
+  corn.position.y = hgt; corn.castShadow = true; g.add(corn);
+  g.position.set(x, 0, z);
+  scene.add(g); buildings.push(g);
+  return g;
+}
+const COLS = ["#8a3b2c", "#7a4a36", "#9a5040", "#6e3a30", "#8c6048"];
+for (let i = 0; i < 12; i++) building(-8 + i * 10.5, 17, 9.6, 10, 11 + (i * 7) % 6, 11 + i, COLS[i % 5]);
+for (let i = 0; i < 9; i++) building(4 + i * 10.5, -17, 9.6, 8, 9 + (i * 5) % 5, 41 + i, COLS[(i + 2) % 5]);
+const victim = building(-4, -16.5, 8, 7, 8, 99, "#7d4634");     // the building the wave flattens
+victim.userData.pivot = true;
+// courthouse facade (columns + pediment) at the east end
+const court = new THREE.Group();
+const stone = new THREE.MeshStandardMaterial({ color: 0xd9d2c4, roughness: 0.8 });
+const cb = new THREE.Mesh(new THREE.BoxGeometry(16, 12, 6), stone); cb.position.set(0, 6, 3); court.add(cb);
+for (let i = 0; i < 6; i++) { const col = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.6, 10, 16), stone); col.position.set(-6.5 + i * 2.6, 5, -0.8); col.castShadow = true; court.add(col); }
+const ped = new THREE.Mesh(new THREE.CylinderGeometry(9.8, 9.8, 2.4, 3, 1, false, Math.PI / 2, Math.PI), stone);
+ped.rotation.set(Math.PI / 2, 0, Math.PI / 2); ped.scale.set(1, 1, 0.35); ped.position.set(0, 12.6, -0.8); court.add(ped);
+court.position.set(96, 0, 14); scene.add(court);
+
+// ---------------------------------------------------------------- elevated railway (girders) + a railcar
+const steel = new THREE.MeshStandardMaterial({ color: 0x3b3f44, roughness: 0.6, metalness: 0.6 });
+for (let i = 0; i < 18; i++) {
+  const x = -30 + i * 8;
+  for (const z of [6.5, 9]) { const p = new THREE.Mesh(new THREE.BoxGeometry(0.5, 6.5, 0.5), steel); p.position.set(x, 3.25, z); p.castShadow = true; scene.add(p); }
+}
+const deck = new THREE.Mesh(new THREE.BoxGeometry(150, 0.7, 3.4), steel); deck.position.set(40, 6.8, 7.75); deck.castShadow = true; scene.add(deck);
+const railcar = new THREE.Group();
+const carBody = new THREE.Mesh(new THREE.BoxGeometry(12, 3, 2.8), new THREE.MeshStandardMaterial({ color: 0x5f2a24, roughness: 0.6 }));
+carBody.position.y = 1.5; carBody.castShadow = true; railcar.add(carBody);
+for (let i = 0; i < 5; i++) { const wdw = new THREE.Mesh(new THREE.BoxGeometry(1.4, 1, 0.05), new THREE.MeshStandardMaterial({ color: 0xf3d27a, emissive: 0x6b5520 })); wdw.position.set(-4.4 + i * 2.2, 2, -1.42); railcar.add(wdw); }
+railcar.position.set(6, 7.15, 7.75); scene.add(railcar);
+
+// ---------------------------------------------------------------- the molasses tank (riveted plates that can burst outward)
+const TANK = new THREE.Vector3(-40, 0, -24), TR = 13.5, TH = 15;
+const tank = new THREE.Group(); tank.position.copy(TANK); scene.add(tank);
+const tankMat = new THREE.MeshStandardMaterial({ color: 0x8f969c, roughness: 0.55, metalness: 0.55 });
+const plates = [];
+const NP = 24;
+for (let i = 0; i < NP; i++) {
+  const a = (i / NP) * Math.PI * 2;
+  const piv = new THREE.Group();
+  piv.position.set(Math.sin(a) * TR, 0, Math.cos(a) * TR); piv.rotation.y = a;
+  const pl = new THREE.Mesh(new THREE.BoxGeometry(2 * Math.PI * TR / NP + 0.05, TH, 0.3), tankMat);
+  pl.position.y = TH / 2; pl.castShadow = pl.receiveShadow = true; piv.add(pl);
+  for (let k = 0; k < 5; k++) {   // rivet bands
+    const band = new THREE.Mesh(new THREE.BoxGeometry(2 * Math.PI * TR / NP + 0.06, 0.18, 0.4), new THREE.MeshStandardMaterial({ color: 0x5c6166, metalness: 0.7, roughness: 0.5 }));
+    band.position.y = 1 + k * 3.2; piv.add(band);
+  }
+  tank.add(piv); plates.push(piv);
+}
+const tankTop = new THREE.Mesh(new THREE.ConeGeometry(TR + 0.3, 3, NP, 1, true), tankMat);
+tankTop.position.y = TH + 1.5; tank.add(tankTop);
+const drips = [];
+for (let i = 0; i < 10; i++) {
+  const d = new THREE.Mesh(new THREE.SphereGeometry(0.16, 10, 8), new THREE.MeshStandardMaterial({ color: 0x3a1806, roughness: 0.15 }));
+  scene.add(d); drips.push(d);
+}
+
+// ---------------------------------------------------------------- the molasses (CPU-displaced glossy sheet)
+const MW = 170, MD = 60;
+const molGeo = new THREE.PlaneGeometry(MW, MD, 170, 60);
+molGeo.rotateX(-Math.PI / 2);
+const molMat = new THREE.MeshStandardMaterial({ color: 0x3b1806, roughness: 0.16, metalness: 0.08, emissive: 0x120500 });
+const mol = new THREE.Mesh(molGeo, molMat);
+mol.position.set(5, 0, -12); mol.receiveShadow = true; mol.castShadow = true;
+scene.add(mol);
+const molBase = molGeo.attributes.position.array.slice();
+function profile(d, H) {   // d = distance behind the wave front (m). crest + sloping level behind it
+  if (d < -1.2) return -1;
+  const lead = clamp((d + 1.2) / 1.2);
+  return lead * (H * Math.exp(-Math.pow((d - 3.5) / 4.2, 2)) + (1.1 + 2.2 * Math.exp(-Math.max(0, d) / 22)));
+}
+function updateMolasses(st, t) {
+  const p = molGeo.attributes.position.array;
+  if (st.mode === "none") { mol.visible = false; return; }
+  mol.visible = true;
+  for (let i = 0; i < p.length; i += 3) {
+    const x = molBase[i] + mol.position.x, z = molBase[i + 2] + mol.position.z;
+    let y = -1;
+    if (st.mode === "flood") y = st.level + 0.08 * Math.sin(x * 0.7 + t * 1.3) * Math.cos(z * 0.6 - t);
+    else if (st.mode === "surge") {          // front moving +x down the street
+      const d = st.front - x + 2 * Math.sin(z * 0.35 + t * 2);
+      y = profile(d, st.H) * (Math.abs(z + 1) < 14 ? 1 : clamp(1 - (Math.abs(z + 1) - 14) / 6));
+      if (y >= 0) y += 0.25 * Math.sin(x * 0.9 - t * 9) * Math.exp(-Math.pow((d - 3.5) / 5, 2));
+    } else if (st.mode === "radial") {       // bursting out of the tank
+      const r = Math.hypot(x - TANK.x, z - TANK.z);
+      const d = st.front - r;
+      y = r < TR ? Math.max(0.5, st.inner) : profile(d, st.H);
+    }
+    p[i + 1] = y < 0 ? -1.5 : y;
+  }
+  molGeo.attributes.position.needsUpdate = true;
+  molGeo.computeVertexNormals();
+}
+
+// ---------------------------------------------------------------- snow
+const SN = 1400;
+const snowGeo = new THREE.BufferGeometry();
+const snowPos = new Float32Array(SN * 3), snowSeed = new Float32Array(SN * 3);
+const rs = rnd(3);
+for (let i = 0; i < SN; i++) { snowSeed[i * 3] = rs() * 160 - 70; snowSeed[i * 3 + 1] = rs() * 30; snowSeed[i * 3 + 2] = rs() * 60 - 36; }
+snowGeo.setAttribute("position", new THREE.BufferAttribute(snowPos, 3));
+const snowDot = canvasTex(32, 32, (g) => { const gr = g.createRadialGradient(16, 16, 0, 16, 16, 16); gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 32, 32); });
+const snow = new THREE.Points(snowGeo, new THREE.PointsMaterial({ size: 0.28, map: snowDot, transparent: true, depthWrite: false }));
+scene.add(snow);
+function updateSnow(t, on) {
+  snow.visible = on;
+  if (!on) return;
+  for (let i = 0; i < SN; i++) {
+    const s = snowSeed.subarray(i * 3, i * 3 + 3);
+    snowPos[i * 3] = s[0] + Math.sin(t * 0.6 + i) * 0.8 + t * 0.6;
+    snowPos[i * 3 + 1] = ((s[1] - t * 1.6) % 30 + 30) % 30;
+    snowPos[i * 3 + 2] = s[2] + Math.cos(t * 0.5 + i * 1.3) * 0.6;
+  }
+  snowGeo.attributes.position.needsUpdate = true;
+}
+
+// =====================================================================================================  2D TOON CHARACTERS
+// Flat cartoon people drawn live on a canvas (thick outlines, big heads, expressive brows/eyes/mouths, posable arms),
+// mapped onto a plane that always turns to face the lens (billboard, yaw only) and casts a real shadow.
+const CW = 768, CH = 1152, SPRITE_H = 2.4, SPRITE_W = SPRITE_H * CW / CH;
+const LOOKS = {
+  eddie: { skin: "#f1c7a0", coat: "#4f6a8a", pants: "#3a3a44", hat: "cap", hatCol: "#5b5148", hair: "#4a3020" },
+  boss: { skin: "#f3cdb0", coat: "#2f2f38", pants: "#26262c", hat: "bowler", hatCol: "#1d1d22", hair: "#2a2020", mustache: true, vest: "#7a2a2a" },
+  judge: { skin: "#ecc29c", coat: "#151518", pants: "#151518", hat: null, hair: "#d8d8dc", robe: true, glasses: true },
+};
+function mkChar(name) {
+  const c = document.createElement("canvas"); c.width = CW; c.height = CH;
+  const tex = new THREE.CanvasTexture(c); tex.encoding = THREE.sRGBEncoding; tex.anisotropy = 8;
+  const geo = new THREE.PlaneGeometry(SPRITE_W, SPRITE_H); geo.translate(0, SPRITE_H / 2, 0);
+  const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, alphaTest: 0.35, side: THREE.DoubleSide, toneMapped: false });
+  const m = new THREE.Mesh(geo, mat);
+  m.castShadow = true;
+  m.customDepthMaterial = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, map: tex, alphaTest: 0.35 });
+  scene.add(m);
+  return { name, c, g: c.getContext("2d"), tex, mesh: m, look: LOOKS[name] };
+}
+const CHARS = { eddie: mkChar("eddie"), boss: mkChar("boss"), judge: mkChar("judge") };
+const OUT = "#1c1310";
+
+function limb(g, x0, y0, a1, l1, a2, l2, w, col) {   // angles in degrees, 0 = straight down, positive = toward +x
+  const x1 = x0 + Math.sin(a1 * D2R) * l1, y1 = y0 + Math.cos(a1 * D2R) * l1;
+  const x2 = x1 + Math.sin((a1 + a2) * D2R) * l2, y2 = y1 + Math.cos((a1 + a2) * D2R) * l2;
+  g.lineCap = g.lineJoin = "round";
+  g.strokeStyle = OUT; g.lineWidth = w + 18; g.beginPath(); g.moveTo(x0, y0); g.lineTo(x1, y1); g.lineTo(x2, y2); g.stroke();
+  g.strokeStyle = col; g.lineWidth = w; g.beginPath(); g.moveTo(x0, y0); g.lineTo(x1, y1); g.lineTo(x2, y2); g.stroke();
+  return [x2, y2];
+}
+function blob(g, fill, lw = 12) { g.fillStyle = fill; g.fill(); g.lineWidth = lw; g.strokeStyle = OUT; g.stroke(); }
+
+function drawProp(g, prop, x, y, t) {
+  g.save(); g.translate(x, y);
+  if (prop === "can") {
+    g.beginPath(); g.rect(-40, -20, 80, 96); blob(g, "#9aa2a8", 9);
+    g.beginPath(); g.ellipse(0, -20, 40, 12, 0, 0, 7); blob(g, "#3a1806", 7);
+  } else if (prop === "brush") {
+    g.rotate(-0.5 + 0.25 * Math.sin(t * 10));
+    g.beginPath(); g.rect(-9, -150, 18, 140); blob(g, "#b07a44", 8);
+    g.beginPath(); g.rect(-34, -210, 68, 64); blob(g, "#5a2e10", 8);
+  } else if (prop === "paper") {
+    g.rotate(-0.12);
+    g.beginPath(); g.rect(-120, -150, 240, 170); blob(g, "#eee6d4", 9);
+    g.fillStyle = OUT; g.font = "900 40px Arial"; g.textAlign = "center"; g.fillText("ANARCHIST", 0, -95); g.fillText("BOMB?!", 0, -45);
+    for (let k = 0; k < 3; k++) g.fillRect(-95, -20 + k * 0 - 0, 190, 6);
+  } else if (prop === "gavel") {
+    g.rotate(-0.9 + 0.9 * clamp(Math.sin(t * 6) * 2));
+    g.beginPath(); g.rect(-8, -130, 16, 130); blob(g, "#7a4a24", 8);
+    g.beginPath(); g.rect(-50, -170, 100, 46); blob(g, "#5a3418", 8);
+  } else if (prop === "bag") {
+    g.beginPath(); g.ellipse(0, 10, 70, 80, 0, 0, 7); blob(g, "#c9b07a", 9);
+    g.fillStyle = OUT; g.font = "900 70px Arial"; g.textAlign = "center"; g.fillText("$", 0, 36);
+  } else if (prop === "plans") {
+    g.rotate(-0.08);
+    g.beginPath(); g.rect(-150, -170, 300, 200); blob(g, "#2c5d9a", 9);
+    g.strokeStyle = "#cfe2ff"; g.lineWidth = 4;
+    for (let k = 0; k < 5; k++) { g.beginPath(); g.moveTo(-120, -140 + k * 34); g.lineTo(120, -140 + k * 34); g.stroke(); }
+    g.beginPath(); g.arc(30, -80, 50, 0, 7); g.stroke();
+    if (t > 0) { g.save(); g.rotate(-0.2); g.strokeStyle = "#e0262c"; g.lineWidth = 9; g.strokeRect(-110, -120, 220, 70);
+      g.fillStyle = "#e0262c"; g.font = "900 46px Arial"; g.textAlign = "center"; g.fillText("APPROVED", 0, -70); g.restore(); }
+  }
+  g.restore();
+}
+
+function drawToon(ch, pose, t) {
+  const g = ch.g, L = ch.look;
+  g.clearRect(0, 0, CW, CH);
+  const sq = pose.squash || 0;
+  const bob = (pose.action === "run" ? Math.abs(Math.sin(t * 11)) * 18 : 0) + Math.sin(t * 2.2) * 4;
+  g.save();
+  g.translate(CW / 2, CH - 20);
+  g.scale(1 + sq, 1 - sq);
+  g.translate(0, -bob);
+  if (pose.action === "stuck") g.rotate(Math.sin(t * 7) * 0.08);
+  g.rotate((pose.lean || 0) * D2R);
+  // legs
+  const run = pose.action === "run" ? Math.sin(t * 11) * 32 : 0;
+  limb(g, -50, -330, run, 150, Math.max(0, -run), 150, 56, L.pants);
+  limb(g, 50, -330, -run, 150, Math.max(0, run), 150, 56, L.pants);
+  for (const [x, a] of [[-50, run], [50, -run]]) { g.beginPath(); g.ellipse(x + Math.sin(a * D2R) * 300 + 12, -6, 52, 26, 0, 0, 7); blob(g, "#2a1d16", 10); }
+  // body (coat / robe)
+  g.beginPath();
+  if (L.robe) { g.moveTo(-160, -610); g.quadraticCurveTo(-200, -300, -180, -40); g.lineTo(180, -40); g.quadraticCurveTo(200, -300, 160, -610); g.closePath(); }
+  else { g.moveTo(-150, -620); g.quadraticCurveTo(-185, -420, -150, -300); g.lineTo(150, -300); g.quadraticCurveTo(185, -420, 150, -620); g.closePath(); }
+  blob(g, L.coat, 13);
+  if (L.vest) { g.beginPath(); g.moveTo(-60, -610); g.lineTo(60, -610); g.lineTo(40, -330); g.lineTo(-40, -330); g.closePath(); blob(g, L.vest, 8); }
+  g.beginPath(); g.moveTo(-55, -620); g.lineTo(0, -540); g.lineTo(55, -620); g.closePath(); blob(g, "#f4f0e6", 8);   // collar
+  // arms (+ prop in the right hand)
+  const [al, ar] = [pose.armL || [12, 10], pose.armR || [-12, -10]];
+  const wave = pose.wave ? Math.sin(t * 9) * 25 : 0;
+  const hl = limb(g, -150, -590, -al[0], 120, -al[1], 115, 46, L.coat);
+  const hr = limb(g, 150, -590, -ar[0] + wave, 120, -ar[1], 115, 46, L.coat);
+  for (const h of [hl, hr]) { g.beginPath(); g.arc(h[0], h[1], 34, 0, 7); blob(g, L.skin, 10); }
+  if (pose.prop) drawProp(g, pose.prop, hr[0], hr[1], pose.propT === undefined ? t : pose.propT);
+  // head
+  g.save();
+  g.translate(0, -800);
+  g.rotate((pose.tilt || 0) * D2R);
+  const R = 205;
+  if (L.hair && !L.hat) { g.beginPath(); g.ellipse(0, -40, R + 30, R + 10, 0, Math.PI, 0); blob(g, L.hair, 12); }
+  for (const s of [-1, 1]) { g.beginPath(); g.ellipse(s * R * 0.98, 20, 34, 46, 0, 0, 7); blob(g, L.skin, 10); }
+  g.beginPath(); g.arc(0, 0, R, 0, 7); blob(g, L.skin, 14);
+  g.fillStyle = "rgba(255,120,110,0.28)"; for (const s of [-1, 1]) { g.beginPath(); g.ellipse(s * 120, 70, 44, 28, 0, 0, 7); g.fill(); }
+  // eyes
+  const eyes = pose.eyes || "open", lk = pose.look || [0, 0];
+  for (const s of [-1, 1]) {
+    const ex = s * 78, ey = -10;
+    if (eyes === "closed" || (eyes === "wink" && s > 0) || pose.blink) {
+      g.beginPath(); g.arc(ex, ey + 6, 36, Math.PI * 1.1, Math.PI * 1.9); g.lineWidth = 12; g.strokeStyle = OUT; g.stroke();
+    } else if (eyes === "happy") {
+      g.beginPath(); g.arc(ex, ey + 22, 36, Math.PI * 1.15, Math.PI * 1.85); g.lineWidth = 12; g.strokeStyle = OUT; g.stroke();
+    } else {
+      const k = eyes === "wide" ? 1.35 : eyes === "squint" ? 0.5 : 1.0;
+      g.beginPath(); g.ellipse(ex, ey, 46 * (eyes === "wide" ? 1.12 : 1), 56 * k, 0, 0, 7); blob(g, "#ffffff", 9);
+      const pr = eyes === "wide" ? 16 : 22;
+      g.fillStyle = OUT; g.beginPath(); g.arc(ex + lk[0] * 18, ey + lk[1] * 18 * k, pr, 0, 7); g.fill();
+      g.fillStyle = "#fff"; g.beginPath(); g.arc(ex + lk[0] * 18 - 7, ey + lk[1] * 18 * k - 8, pr * 0.35, 0, 7); g.fill();
+    }
+    if (L.glasses) { g.beginPath(); g.arc(ex, ey, 56, 0, 7); g.lineWidth = 9; g.strokeStyle = OUT; g.stroke(); }
+  }
+  // brows
+  const BR = { up: [-30, -26, -26], flat: [0, 0, -4], angry: [18, -4, -10], sad: [-20, 12, -12], worried: [-14, 16, -18], smug: [10, -20, -6] }[pose.brows || "flat"];
+  for (const s of [-1, 1]) {
+    const by = -96 + BR[2] - (pose.brows === "up" ? 18 : 0);
+    g.beginPath(); g.moveTo(s * 30, by + BR[1] * 0.6 * (pose.brows === "smug" && s > 0 ? -1 : 1)); g.lineTo(s * 125, by + BR[0] * 0.6);
+    g.lineWidth = 22; g.lineCap = "round"; g.strokeStyle = L.hair && L.hair !== "#d8d8dc" ? L.hair : OUT; g.stroke();
+  }
+  // nose + mustache
+  g.beginPath(); g.ellipse(0, 52, 22, 16, 0, 0, 7); g.fillStyle = "rgba(200,110,90,0.55)"; g.fill();
+  // mouth
+  const m = pose.mouth || "smile", my = 118, talk = pose.talking ? (0.5 + 0.5 * Math.sin(t * 22)) : 0;
+  g.lineWidth = 12; g.strokeStyle = OUT; g.lineCap = "round";
+  if (m === "smile") { g.beginPath(); g.arc(0, my - 40, 70, Math.PI * 0.18, Math.PI * 0.82); g.stroke(); }
+  else if (m === "frown") { g.beginPath(); g.arc(0, my + 50, 60, Math.PI * 1.2, Math.PI * 1.8); g.stroke(); }
+  else if (m === "flat") { g.beginPath(); g.moveTo(-45, my); g.lineTo(45, my); g.stroke(); }
+  else if (m === "smirk") { g.beginPath(); g.moveTo(-50, my + 6); g.quadraticCurveTo(10, my + 20, 60, my - 18); g.stroke(); }
+  else {
+    const [mw, mh] = { grin: [90, 50], O: [42, 56], scream: [70, 90], talk: [55, 20 + 40 * talk] }[m] || [55, 30];
+    g.beginPath();
+    if (m === "grin") { g.moveTo(-mw, my - 20); g.quadraticCurveTo(0, my + 90, mw, my - 20); g.closePath(); }
+    else g.ellipse(0, my + mh * 0.3, mw, mh, 0, 0, 7);
+    blob(g, "#6a1620", 11);
+    g.save(); g.clip(); g.fillStyle = "#e05568"; g.beginPath(); g.ellipse(0, my + mh * 0.95, mw * 0.7, mh * 0.5, 0, 0, 7); g.fill();
+    if (m === "grin") { g.fillStyle = "#fff"; g.fillRect(-mw, my - 26, mw * 2, 26); }
+    g.restore();
+  }
+  if (L.mustache) { g.beginPath(); g.moveTo(-90, 88); g.quadraticCurveTo(-40, 60, 0, 80); g.quadraticCurveTo(40, 60, 90, 88); g.quadraticCurveTo(40, 100, 0, 92); g.quadraticCurveTo(-40, 100, -90, 88); blob(g, L.hair, 8); }
+  if (pose.sweat) { g.beginPath(); g.moveTo(190, -80); g.quadraticCurveTo(215, -20, 190, -5); g.quadraticCurveTo(165, -20, 190, -80); blob(g, "#9fd6ff", 7); }
+  // hats
+  if (L.hat === "cap") {
+    g.beginPath(); g.ellipse(0, -120, R * 1.02, 120, 0, Math.PI, 0); blob(g, L.hatCol, 13);
+    g.beginPath(); g.ellipse(30, -118, R * 0.95, 34, 0.05, 0, 7); blob(g, L.hatCol, 12);
+    g.beginPath(); g.arc(0, -232, 14, 0, 7); blob(g, L.hatCol, 8);
+  } else if (L.hat === "bowler") {
+    g.beginPath(); g.ellipse(0, -150, R * 1.25, 34, 0, 0, 7); blob(g, L.hatCol, 12);
+    g.beginPath(); g.ellipse(0, -160, R * 0.8, 150, 0, Math.PI, 0); blob(g, L.hatCol, 12);
+    g.fillStyle = "#6a1a1a"; g.fillRect(-R * 0.8, -192, R * 1.6, 26);
+  }
+  g.restore();
+  if (pose.prop === "smell") {   // sweet-smell squiggles drifting up past the nose
+    g.strokeStyle = "rgba(140,70,20,0.9)"; g.lineWidth = 12;
+    for (let k = 0; k < 3; k++) { const ph = (t * 0.7 + k / 3) % 1; g.globalAlpha = Math.sin(Math.PI * ph);
+      g.beginPath(); for (let j = 0; j < 30; j++) { const yy = -760 - ph * 260 - j * 7, xx = 230 + k * 40 + Math.sin(j * 0.5 + t * 3) * 22; j ? g.lineTo(xx, yy) : g.moveTo(xx, yy); } g.stroke(); }
+    g.globalAlpha = 1;
+  }
+  g.restore();
+  ch.tex.needsUpdate = true;
+}
+
+// =====================================================================================================  SHOTS (21)
+// focus: world point the camera orbits; a0/a1: orbit angle (deg, around +y, 0 = from +z); r0/r1: distance; y0/y1: camera
+// height relative to focus; fov; enter: "whip" | "zoom" | "cut"; shake: handheld amplitude (m); hits: [time, strength]
+// world: tank ("intact" | "burst" | "bursting"), paint 0..1 (grey->brown), mol: molasses state, sky, harborBrown, snow
+// cast: { who: [x, z, poseKeys: [[t, pose], ...]] }
+const E = (x, z) => new THREE.Vector3(x, 0, z);
+const FACE = 1.38;   // aim a little below the face: close-ups keep the face in the upper half, clear of the subtitles
+const S = [];
+function shot(o) { S.push(o); }
+const tBurst = wordT("burst", 3.4);
+// 1  0.0-3.4  HOOK: the wave roars down the street at a low angle; Eddie turns and runs, screaming
+shot({ t0: 0.0, t1: 3.4, focus: [11, 2.6, 2], a0: 72, a1: 100, r0: 11, r1: 8.5, y0: -1.8, y1: -1.4, fov: 60, shake: 0.08, hits: [[0.0, 0.35]],
+  world: { tank: "burst", mol: t => ({ mode: "surge", front: lerp(-18, 3, t / 3.4), H: 7.6 }) },
+  cast: { eddie: [9, 3, [[0, { eyes: "wide", brows: "up", mouth: "scream", armL: [150, 30], armR: [160, -20], action: "run", lean: 6, look: [-1, 0] }]]] } });
+// 2  3.4-6.6  establishing orbit of the harbor tank; it bursts on "burst"
+shot({ t0: 3.4, t1: 6.6, focus: [-40, 9, -24], a0: 55, a1: 20, r0: 62, r1: 54, y0: 6, y1: 4, fov: 50, enter: "whip", hits: [[tBurst, 0.5]],
+  world: { tank: t => (t < tBurst ? "intact" : "bursting"), tBurst, mol: t => (t < tBurst ? { mode: "none" } : { mode: "radial", front: TR + (t - tBurst) * 15.6, H: 7.6, inner: 6 }) } });
+// 3  6.6-9.8  wave pours toward camera, dolly push-in to Eddie's face on "All at once"
+shot({ t0: 6.6, t1: 9.8, focus: [6, FACE, 3], a0: 78, a1: 58, r0: 14, r1: 3.3, y0: 1.5, y1: 0.1, fov: 46, push: true, enter: "zoom",
+  world: { tank: "burst", mol: t => ({ mode: "surge", front: lerp(-30, -6, (t - 6.6) / 3.2), H: 7.6 }) },
+  cast: { eddie: [6, 3, [[6.6, { eyes: "open", brows: "worried", mouth: "O", armL: [20, 10], armR: [-20, -10], look: [-1, 0] }],
+                         [wordT("all", 6.6), { eyes: "wide", brows: "up", mouth: "scream", armL: [160, 20], armR: [170, -20], squash: 0.06 }]]] } });
+// 4  9.8-12.6  low tilt: the wave flattens a building and shakes the elevated railway
+shot({ t0: 9.8, t1: 12.6, focus: [-2, 4, -10], a0: 70, a1: 40, r0: 26, r1: 21, y0: -3, y1: -2.4, fov: 54, enter: "whip", shake: 0.1, hits: [[10.2, 0.6]],
+  world: { tank: "burst", collapse: 10.1, mol: t => ({ mode: "surge", front: lerp(-14, 10, (t - 9.8) / 2.8), H: 6 }) } });
+// 5  12.6-16.0  Eddie stuck waist-deep; orbit, then push to his face on "stuck"
+shot({ t0: 12.6, t1: 16.0, focus: [5, 1.4, 2], a0: -40, a1: -10, r0: 9, r1: 3.8, y0: 1.2, y1: 0.2, fov: 48, enter: "whip",
+  world: { tank: "burst", mol: () => ({ mode: "flood", level: 1.15 }) },
+  cast: { eddie: [5, 2, [[12.6, { action: "stuck", eyes: "squint", brows: "angry", mouth: "frown", armL: [60, 30], armR: [70, -30], sweat: 1 }],
+                         [wordT("stuck", 12.6), { action: "stuck", eyes: "wide", brows: "worried", mouth: "scream", armL: [150, 20], armR: [150, -20], sweat: 1, squash: 0.05 }]]] } });
+// 6  16.0-19.4  slow, high, somber orbit over the flooded street
+shot({ t0: 16.0, t1: 19.4, focus: [6, 0, -2], a0: 95, a1: 125, r0: 34, r1: 30, y0: 26, y1: 22, fov: 46, enter: "cut",
+  world: { tank: "burst", mol: () => ({ mode: "flood", level: 0.9 }) },
+  cast: { eddie: [8, 3, [[16, { eyes: "sad", brows: "sad", mouth: "frown", armL: [10, 5], armR: [-10, -5], tilt: 8 }]]] } });
+// 7  19.4-22.0  the harbor, brown
+shot({ t0: 19.4, t1: 22.0, focus: [-20, 0, -48], a0: 140, a1: 175, r0: 45, r1: 40, y0: 10, y1: 7, fov: 50, enter: "whip",
+  world: { tank: "burst", harborBrown: true, mol: () => ({ mode: "flood", level: 0.7 }) } });
+// 8  22.0-24.0  fast push to Eddie's face: "here's the crazy part" (brows up, finger up)
+shot({ t0: 22.0, t1: 24.0, focus: [6, FACE, 3], a0: -18, a1: 6, r0: 6, r1: 3.1, y0: 0.4, y1: 0.05, fov: 42, push: true, enter: "zoom",
+  world: { tank: "burst", mol: () => ({ mode: "flood", level: 0.4 }) },
+  cast: { eddie: [6, 3, [[22, { eyes: "open", brows: "up", mouth: "smirk", armL: [10, 5], armR: [150, 30], look: [0.4, 0] }],
+                         [wordT("crazy", 22), { eyes: "wide", brows: "up", mouth: "grin", armL: [10, 5], armR: [160, 40], squash: 0.05 }]]] } });
+// 9  24.0-27.6  flashback: the leaking tank; Eddie catches drips in a can
+shot({ t0: 24.0, t1: 27.6, focus: [-30, 1.8, -8.5], a0: 48, a1: 22, r0: 8, r1: 5.8, y0: 1.0, y1: 1.6, fov: 50, enter: "whip", sepia: true,
+  world: { tank: "intact", leak: true, mol: () => ({ mode: "none" }) },
+  cast: { eddie: [-30, -8.5, [[24, { eyes: "happy", brows: "up", mouth: "grin", armL: [10, 5], armR: [60, -40], prop: "can", look: [-0.6, -0.5] }]]] } });
+// 10 27.6-30.2  the company man paints the tank brown
+shot({ t0: 27.6, t1: 30.2, focus: [-28, 2.0, -9], a0: 30, a1: 58, r0: 9, r1: 7, y0: 0.6, y1: 1.2, fov: 50, enter: "whip", sepia: true,
+  world: { tank: "intact", paint: t => ease((t - 27.6) / 2.4), mol: () => ({ mode: "none" }) },
+  cast: { boss: [-28, -9, [[27.6, { eyes: "squint", brows: "smug", mouth: "smirk", armL: [10, 5], armR: [110, 30], prop: "brush" }]]] } });
+// 11 30.2-32.2  close-up: the wink ("so nobody could see the leaks")
+shot({ t0: 30.2, t1: 32.2, focus: [-28, FACE, -9], a0: 25, a1: 5, r0: 5, r1: 3.1, y0: 0.2, y1: 0, fov: 42, push: true, enter: "zoom", sepia: true,
+  world: { tank: "intact", paint: () => 1, mol: () => ({ mode: "none" }) },
+  cast: { boss: [-28, -9, [[30.2, { eyes: "wink", brows: "smug", mouth: "grin", armL: [10, 5], armR: [140, 60], prop: "brush", propT: 0 }]]] } });
+// 12 32.2-35.0  dramatic low angle up the (never water-tested) tank; Eddie shrugs
+shot({ t0: 32.2, t1: 35.0, focus: [-34, 9, -14], a0: 10, a1: -25, r0: 20, r1: 17, y0: -8, y1: -8.4, fov: 60, enter: "whip", sepia: true,
+  world: { tank: "intact", paint: () => 1, mol: () => ({ mode: "none" }) },
+  cast: { eddie: [-30, -6, [[32.2, { eyes: "open", brows: "worried", mouth: "flat", armL: [70, 80], armR: [70, -80], tilt: -10 }]]] } });
+// 13 35.0-38.2  the boss blames anarchists (newspaper)
+shot({ t0: 35.0, t1: 38.2, focus: [0, 1.6, -6], a0: -35, a1: -5, r0: 9, r1: 6.5, y0: 0.8, y1: 0.4, fov: 48, enter: "whip",
+  world: { tank: "burst", mol: () => ({ mode: "flood", level: 0.3 }) },
+  cast: { boss: [0, -6, [[35, { eyes: "wide", brows: "angry", mouth: "talk", talking: true, armL: [120, 40], armR: [80, 30], prop: "paper" }]]] } });
+// 14 38.2-40.4  low angle on the judge: gavel
+shot({ t0: 38.2, t1: 40.4, focus: [96, 1.3, 1], a0: 200, a1: 170, r0: 6.5, r1: 5, y0: -2.2, y1: -2.0, fov: 54, enter: "whip", hits: [[wordT("buy", 38.2), 0.4]],
+  world: { tank: "burst", mol: () => ({ mode: "none" }) },
+  cast: { judge: [96, 1, [[38.2, { eyes: "squint", brows: "angry", mouth: "frown", armL: [10, 5], armR: [120, 30], prop: "gavel" }]]] } });
+// 15 40.4-42.8  wide: judge and boss; the verdict
+shot({ t0: 40.4, t1: 42.8, focus: [93, 1.4, 0.2], a0: 165, a1: 192, r0: 13.5, r1: 12, y0: 1, y1: 0.6, fov: 50, enter: "whip",
+  world: { tank: "burst", mol: () => ({ mode: "none" }) },
+  cast: { judge: [94.6, 1, [[40.4, { eyes: "open", brows: "angry", mouth: "talk", talking: true, armL: [10, 5], armR: [100, 40] }]]],
+          boss: [91.4, -0.5, [[40.4, { eyes: "wide", brows: "worried", mouth: "O", armL: [10, 5], armR: [-10, -5], sweat: 1 }]]] } });
+// 16 42.8-45.0  close-up: the boss pays (money bag), sweating
+shot({ t0: 42.8, t1: 45.0, focus: [90, FACE, -1.5], a0: 200, a1: 175, r0: 5.4, r1: 3.2, y0: 0.2, y1: 0, fov: 44, push: true, enter: "zoom",
+  world: { tank: "burst", mol: () => ({ mode: "none" }) },
+  cast: { boss: [90, -1.5, [[42.8, { eyes: "squint", brows: "sad", mouth: "frown", armL: [10, 5], armR: [70, 30], prop: "bag", sweat: 1 }]]] } });
+// 17 45.0-47.6  wide orbit: rebuilt street, Eddie the engineer with plans
+shot({ t0: 45.0, t1: 47.6, focus: [20, 2, 0], a0: -80, a1: -55, r0: 13, r1: 10, y0: 2, y1: 1, fov: 50, enter: "whip",
+  world: { tank: "none", mol: () => ({ mode: "none" }) },
+  cast: { eddie: [20, 0, [[45, { eyes: "open", brows: "flat", mouth: "smile", armL: [40, 60], armR: [80, 20], prop: "plans", propT: -1 }]]] } });
+// 18 47.6-50.0  close-up: APPROVED stamp
+shot({ t0: 47.6, t1: 50.0, focus: [20, 1.5, 0], a0: -70, a1: -50, r0: 5, r1: 3.4, y0: 0.3, y1: 0.1, fov: 46, push: true, enter: "zoom", hits: [[wordT("sign", 47.6), 0.25]],
+  world: { tank: "none", mol: () => ({ mode: "none" }) },
+  cast: { eddie: [20, 0, [[47.6, { eyes: "open", brows: "flat", mouth: "smile", armL: [40, 60], armR: [80, 20], prop: "plans", propT: -1 }],
+                          [wordT("sign", 47.6), { eyes: "happy", brows: "up", mouth: "grin", armL: [40, 60], armR: [80, 20], prop: "plans", propT: 1, squash: 0.05 }]]] } });
+// 19 50.0-53.0  summer: warm sun, Eddie sniffs the sweet air
+shot({ t0: 50.0, t1: 53.0, focus: [12, 2, 3], a0: 35, a1: 5, r0: 13, r1: 9, y0: 2.5, y1: 1.2, fov: 50, enter: "whip", season: "summer",
+  world: { tank: "none", mol: () => ({ mode: "none" }) },
+  cast: { eddie: [12, 3, [[50, { eyes: "closed", brows: "up", mouth: "smile", armL: [30, 40], armR: [-30, -40], prop: "smell", tilt: -8 }]]] } });
+// 20 53.0-55.8  close-up: blissful sniff
+shot({ t0: 53.0, t1: 55.8, focus: [12, FACE, 3], a0: -15, a1: 10, r0: 5, r1: 3.2, y0: 0.2, y1: 0.05, fov: 44, push: true, enter: "zoom", season: "summer",
+  world: { tank: "none", mol: () => ({ mode: "none" }) },
+  cast: { eddie: [12, 3, [[53, { eyes: "happy", brows: "up", mouth: "grin", armL: [30, 40], armR: [-30, -40], prop: "smell", tilt: 6 }]]] } });
+// 21 55.8-62.0  dusk -> freezing dawn: the intact tank, slow push that tightens and starts to rumble (loops into shot 1)
+shot({ t0: 55.8, t1: 62.0, focus: [-40, 8, -24], a0: -10, a1: 35, r0: 72, r1: 50, y0: 2, y1: 0, fov: 52, enter: "whip", season: "dusk", shake: 0.0, rumble: true,
+  world: { tank: "intact", paint: () => 1, mol: () => ({ mode: "none" }) } });
+
+// =====================================================================================================  FRAME EVALUATION
+const harborBlue = new THREE.Color(0x3d5566), harborMol = new THREE.Color(0x4a2410);
+const grey = new THREE.Color(0x8f969c), brown = new THREE.Color(0x4a2a14);
+function shotAt(t) { for (let i = 0; i < S.length; i++) if (t < S[i].t1 || i === S.length - 1) return i; return S.length - 1; }
+function poseAt(keys, t) {
+  let p = keys[0][1], since = t - keys[0][0];
+  for (const [k, ps] of keys) if (t >= k) { p = ps; since = t - k; }
+  const o = Object.assign({}, p);
+  const pop = since < 0.18 ? Math.sin(Math.PI * since / 0.18) * 0.06 : 0;   // a little squash-and-stretch on every reaction
+  o.squash = (o.squash || 0) * (since < 0.5 ? 1 - since / 0.5 : 0) + pop;
+  o.blink = !["closed", "happy", "wink"].includes(o.eyes) && ((t * 1000) % 3700) < 110;
+  return o;
+}
+let lastSeason = null;
+function setSeason(s) {
+  if (s === lastSeason) return;
+  lastSeason = s;
+  scene.background = SKY[s];
+  if (s === "summer") { scene.fog = new THREE.Fog(0xf2dcae, 60, 260); sun.color.set(0xfff1c8); sun.intensity = 1.8; sun.position.set(-30, 80, 50); hemi.intensity = 0.95; }
+  else if (s === "dusk") { scene.fog = new THREE.Fog(0x8a6a76, 50, 240); sun.color.set(0xffb27a); sun.intensity = 1.0; sun.position.set(-90, 18, -40); hemi.intensity = 0.55; }
+  else { scene.fog = new THREE.Fog(0xcfd5dc, 45, 230); sun.color.set(0xfff0dc); sun.intensity = 1.3; sun.position.set(-60, 55, 40); hemi.intensity = 0.75; }
+}
+
+function evalFrame(t) {
+  const i = shotAt(t), s = S[i], u = clamp((t - s.t0) / (s.t1 - s.t0));
+  const w = s.world || {};
+  setSeason(s.season || "winter");
+  // tank
+  const tst = typeof w.tank === "function" ? w.tank(t) : (w.tank || "burst");
+  tank.visible = tst !== "none";
+  const open = tst === "intact" ? 0 : tst === "bursting" ? ease((t - w.tBurst) / 0.7) : 1;
+  plates.forEach((p, k) => { p.rotation.x = -open * (1.25 + 0.25 * Math.sin(k * 2.3)); p.position.y = 0; });
+  tankTop.visible = open < 0.05; tankTop.position.y = TH + 1.5 - open * 8;
+  const paint = w.paint ? (typeof w.paint === "function" ? w.paint(t) : w.paint) : (tst === "intact" ? 0 : 1);
+  tankMat.color.copy(grey).lerp(brown, paint);
+  // drips from the leaking seams
+  drips.forEach((d, k) => {
+    d.visible = !!w.leak;
+    if (!w.leak) return;
+    const a = (-0.15 + k * 0.03) * Math.PI * 2 + Math.PI * 0.35, ph = ((t * 0.9 + k * 0.37) % 1);
+    d.position.set(TANK.x + Math.sin(a) * (TR + 0.3), 9 - ph * ph * 9 * 1.0, TANK.z + Math.cos(a) * (TR + 0.3));
+  });
+  // building collapse (pivot at its base, falls away from the street)
+  if (w.collapse !== undefined) { const k = ease((t - w.collapse) / 1.2); victim.rotation.x = -k * 1.35; victim.position.y = -k * 0.5; }
+  else { victim.rotation.x = s.t0 > 10 && (w.tank === "burst" || typeof w.tank === "function") && s.t0 < 45 ? -1.35 : 0; victim.position.y = victim.rotation.x ? -0.5 : 0; }
+  railcar.rotation.x = w.collapse !== undefined ? Math.sin(Math.max(0, t - 10.2) * 9) * 0.12 * Math.exp(-Math.max(0, t - 10.2) * 1.4) : 0;
+  // harbor + molasses + snow
+  harborMat.color.copy(w.harborBrown ? harborMol : harborBlue);
+  updateMolasses(w.mol ? w.mol(t) : { mode: "none" }, t);
+  updateSnow(t, (s.season || "winter") === "winter");
+  // characters
+  for (const name in CHARS) {
+    const ch = CHARS[name], spec = s.cast && s.cast[name];
+    ch.mesh.visible = !!spec;
+    if (!spec) continue;
+    const [x, z, keys] = spec;
+    const p = poseAt(keys, t);
+    let px = x;
+    if (p.action === "run") px = x + (t - s.t0) * 1.8;
+    ch.mesh.position.set(px, 0, z);
+    drawToon(ch, p, t);
+  }
+  // camera: orbit around the focus (never locked), push-ins, whip / zoom entries, handheld + impact shake
+  const f = new THREE.Vector3(...s.focus);
+  let a = lerp(s.a0, s.a1, easeIO(u)), r = lerp(s.r0, s.r1, s.push ? easeIO(Math.pow(u, 0.8)) : easeIO(u)), y = lerp(s.y0, s.y1, easeIO(u));
+  let fov = s.fov, blur = 0;
+  const into = t - s.t0, left = s.t1 - t, next = S[i + 1];
+  if (s.enter === "whip" && into < 0.2) { const k = 1 - ease(into / 0.2); a -= 58 * k * Math.sign(s.a1 - s.a0 || 1); blur = Math.max(blur, 10 * k); }
+  if (s.enter === "zoom" && into < 0.16) { const k = 1 - ease(into / 0.16); fov *= 1 + 0.55 * k; blur = Math.max(blur, 5 * k); }
+  if (next && next.enter === "whip" && left < 0.14) { const k = ease(1 - left / 0.14); a += 48 * k * Math.sign(s.a1 - s.a0 || 1); blur = Math.max(blur, 9 * k); }
+  if (next && next.enter === "zoom" && left < 0.12) { const k = ease(1 - left / 0.12); r *= 1 - 0.35 * k; }
+  const cam = new THREE.Vector3(f.x + Math.sin(a * D2R) * r, f.y + y, f.z + Math.cos(a * D2R) * r);
+  let amp = (s.shake || 0) + 0.012;   // a breath of handheld always
+  for (const [th, st] of s.hits || []) if (t >= th) amp += st * Math.exp(-(t - th) * 4.5);
+  if (s.rumble) amp += 0.12 * ease((t - 59.6) / 2.4);
+  cam.x += amp * noise(t * 11, 1); cam.y += amp * noise(t * 13, 2); cam.z += amp * noise(t * 12, 3);
+  camera.position.copy(cam);
+  camera.fov = fov; camera.updateProjectionMatrix();
+  camera.lookAt(f.x + amp * 0.4 * noise(t * 9, 4), f.y + amp * 0.4 * noise(t * 8, 5), f.z);
+  camera.rotateZ(amp * 0.05 * noise(t * 7, 6));
+  sun.target.position.copy(f); sun.position.copy(f).add(lastSeason === "dusk" ? new THREE.Vector3(-50, 16, -40) : lastSeason === "summer" ? new THREE.Vector3(-30, 80, 50) : new THREE.Vector3(-60, 55, 40));
+  // billboards: yaw toward the lens
+  for (const name in CHARS) { const m = CHARS[name].mesh; if (m.visible) m.rotation.y = Math.atan2(camera.position.x - m.position.x, camera.position.z - m.position.z); }
+  glCanvas.style.filter = (blur > 0.3 ? `blur(${blur.toFixed(1)}px) ` : "") + (s.sepia ? "sepia(0.45) saturate(0.9)" : "");
+  renderer.render(scene, camera);
+  updateSubs(t);
+}
+
+// =====================================================================================================  SUBTITLES
+const subs = document.getElementById("subs");
+let lastKey = "";
+function updateSubs(t) {
+  const k = WORDS.findIndex(o => t >= o.t0 && t < o.t1 + 0.02);
+  if (k < 0) { if (lastKey) { subs.innerHTML = ""; lastKey = ""; } return; }
+  const line = WORDS.filter(o => o.line === WORDS[k].line);
+  const idx = line.indexOf(WORDS[k]);
+  const groups = [];                                   // chunks of <= 3 words and <= 17 characters (max 2 lines)
+  for (const o of line) { const gp = groups[groups.length - 1];
+    if (gp && gp.length < 3 && gp.map(x => x.w).join(" ").length + 1 + o.w.length <= 17) gp.push(o); else groups.push([o]); }
+  const chunk = groups.find(gp => gp.includes(WORDS[k]));
+  const start = line.indexOf(chunk[0]);
+  const key = WORDS[k].line + ":" + start + ":" + idx;
+  if (key === lastKey) return;
+  lastKey = key;
+  subs.innerHTML = chunk.map((o, j) => `<span class="${start + j === idx ? "on" : ""}">${o.w.replace(/[<>&]/g, "")}</span>`).join("");
+}
+
+// =====================================================================================================  GRAIN
+const grain = document.getElementById("grain").getContext("2d");
+const gImg = grain.createImageData(270, 480);
+function updateGrain() {
+  for (let i = 0; i < gImg.data.length; i += 4) { const v = Math.random() * 255; gImg.data[i] = gImg.data[i + 1] = gImg.data[i + 2] = v; gImg.data[i + 3] = 255; }
+  grain.putImageData(gImg, 0, 0);
+}
+
+// =====================================================================================================  PLAYBACK
+const playBtn = document.getElementById("play"), scrub = document.getElementById("scrub"), timeEl = document.getElementById("time");
+const vo = document.getElementById("vo");
+let voOK = false;
+vo.addEventListener("canplaythrough", () => { voOK = true; });
+vo.addEventListener("error", () => { voOK = false; });
+let T = 0, playing = false, lastNow = 0, scrubbing = false;
+function setPlaying(p) {
+  playing = p; playBtn.textContent = p ? "Pause" : "Play"; lastNow = performance.now();
+  if (voOK) { if (p) { vo.currentTime = T; vo.play().catch(() => {}); } else vo.pause(); }
+}
+function seek(t) { T = clamp(t, 0, DUR); if (voOK) vo.currentTime = T; render(); }
+function render() { evalFrame(T); scrub.value = T.toFixed(2); timeEl.textContent = `${T.toFixed(2)} / ${DUR.toFixed(2)}`; }
+playBtn.onclick = () => { if (T >= DUR) T = 0; setPlaying(!playing); };
+document.getElementById("restart").onclick = () => { seek(0); setPlaying(true); };
+scrub.addEventListener("input", () => { scrubbing = true; seek(parseFloat(scrub.value)); });
+scrub.addEventListener("change", () => { scrubbing = false; });
+const hint = document.getElementById("hint");
+document.getElementById("hide").onclick = () => {
+  document.body.classList.add("recording");
+  hint.classList.add("show"); setTimeout(() => hint.classList.remove("show"), 1600);
+};
+window.addEventListener("keydown", e => {
+  if (e.key === "h" || e.key === "H") document.body.classList.toggle("recording");
+  else if (e.key === " ") { e.preventDefault(); playBtn.click(); }
+  else if (e.key === "r" || e.key === "R") document.getElementById("restart").click();
+});
+function loop(now) {
+  if (playing && !scrubbing) {
+    T += (now - lastNow) / 1000;
+    if (voOK && Math.abs(vo.currentTime - T) > 0.08) T = vo.currentTime;   // the voice is the master clock when present
+    if (T >= DUR) { T = 0; if (voOK) vo.currentTime = 0; }                  // seamless loop
+  }
+  lastNow = now;
+  render();
+  if (Math.floor(now / 50) % 2 === 0) updateGrain();
+  requestAnimationFrame(loop);
+}
+// fit the 1080x1920 stage to the window
+const stage = document.getElementById("stage");
+function fit() {
+  const sc = Math.min(window.innerWidth / 1080, window.innerHeight / 1920);
+  const x = (window.innerWidth - 1080 * sc) / 2, y = (window.innerHeight - 1920 * sc) / 2;
+  stage.style.transform = `translate(${x}px, ${y}px) scale(${sc})`;
+}
+window.addEventListener("resize", fit);
+fit();
+window.__seek = t => { playing = false; seek(t); };   // for frame checks / rendering tools
+updateGrain();
+render();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
