@@ -418,3 +418,14 @@
 170. Two characters walking across each other must be at different depths (smaller + higher + drawn first) or they walk
      through each other.
 171. With grain on every frame, CRF 16 is ~330 MB per minute: keep the master local (GitHub's 100 MB limit); commit scripts + QC.
+
+## Canary in the coal mine (toon characters in 3D mine plates, 64.5 s, QC ALL PASS)
+- Chatterbox ran 46 s on the first script: write ~170 words for 61-65 s, or add true facts as extra lines and splice
+  them in (keeps already-verified takes). Whisper caught "singing" -> "zinging": best-of-4 takes fixed it (LESSONS 166 CTA wording reused).
+- Rotate fallen props about their CENTRE and place them by their lowest outline point (`rest_y`): rotating a lying bird
+  about its feet sank its head through the cage floor. The QC sweeps the whole fall and asserts it never goes below.
+- Flying debris that lands behind the actors must be drawn BEFORE them (it crossed a miner's face otherwise).
+- Poly Haven .blend files carry helper objects ("Sphere_stash", rig widgets): hide them, or a 1 m white ball appears.
+- Cloud disk: 1,936 full-HD PNG frames = 5 GB. Clear caches first; after a disk-full crash, decode-check every frame
+  (2 were half-written) and render only the missing ones (SKIP=1).
+- The full CRF 16 master is 400 MB (> GitHub's 100 MB): commit a CRF 20 upload copy + the phone preview.

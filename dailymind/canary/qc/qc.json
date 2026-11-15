@@ -1,0 +1,57 @@
+[
+ {
+  "check": "frame count",
+  "ok": true,
+  "detail": "1936 / 1936"
+ },
+ {
+  "check": "length 61-65 s",
+  "ok": true,
+  "detail": "64.54 s"
+ },
+ {
+  "check": "no 1-frame pops",
+  "ok": true,
+  "detail": "0 suspects []"
+ },
+ {
+  "check": "canary fall: never below the floor, rests exactly on it",
+  "ok": true,
+  "detail": "rest 146.000000 floor 146.0"
+ },
+ {
+  "check": "revived canary hop lands where it took off",
+  "ok": true,
+  "detail": "v0 542.5 u/s, air 0.221 s"
+ },
+ {
+  "check": "cage swing = real pendulum",
+  "ok": true,
+  "detail": "period 1.102 s for a 30 cm hanger"
+ },
+ {
+  "check": "loudness -14 +-0.5 LUFS",
+  "ok": true,
+  "detail": "-14.2 LUFS"
+ },
+ {
+  "check": "true peak <= -1.5 dBTP",
+  "ok": true,
+  "detail": "-2.7 dBTP"
+ },
+ {
+  "check": "no clipped samples",
+  "ok": true,
+  "detail": "0 samples"
+ },
+ {
+  "check": "every SFX within 1 frame",
+  "ok": true,
+  "detail": "39 cues, off: []"
+ },
+ {
+  "check": "final mix transcript == script",
+  "ok": true,
+  "detail": "heard: \"This tiny yellow bird saved countless miners, and it worked underground for 75 years.  Down in the coal mines, the deadliest killer was invisible, carbon monoxide,  no smell, no color. By the time a miner felt dizzy, it was usually too late.  After an explosion, this poison spread through the tunnels and it often killed more miners  than the blast itself. So in the 1890s, a scientist named John Haldane tested those  poison gases on himself. He tried mice too, but a canary was easier to watch,  and it sang all day long. And he found the perfect alarm, a canary. Canaries are tiny  and breathe really fast, so the gas hits them first. If the canary stopped singing, or fell  off its perch, everyone got out, fast. By 1911, British law made the bigger mines keep birds  underground. But here's the twist, the miners didn't want them to die, they used a special  cage with an oxygen tank to bring them back to life. When the bird fainted, a miner shut  the little door, opened the oxygen valve, and the canary woke right back up. The canaries  kept their jobs until 1986, when electronic detectors finally took over. Did you learn  something new? Like and subscribe!\""
+ }
+]
