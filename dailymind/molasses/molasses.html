@@ -525,8 +525,8 @@ shot({ t0: 6.6, t1: 9.8, focus: [6, FACE, 3], a0: 78, a1: 58, r0: 14, r1: 3.3, y
 shot({ t0: 9.8, t1: 12.6, focus: [-2, 4, -10], a0: 70, a1: 40, r0: 26, r1: 21, y0: -3, y1: -2.4, fov: 54, enter: "whip", shake: 0.1, hits: [[10.2, 0.6]],
   world: { tank: "burst", collapse: 10.1, mol: t => ({ mode: "surge", front: lerp(-14, 10, (t - 9.8) / 2.8), H: 6 }) } });
 // 5  12.6-16.0  Eddie stuck waist-deep; orbit, then push to his face on "stuck"
-shot({ t0: 12.6, t1: 16.0, focus: [5, 1.4, 2], a0: -40, a1: -10, r0: 9, r1: 3.8, y0: 1.2, y1: 0.2, fov: 48, enter: "whip",
-  world: { tank: "burst", mol: () => ({ mode: "flood", level: 1.15 }) },
+shot({ t0: 12.6, t1: 16.0, focus: [5, 1.4, 2], a0: -40, a1: -10, r0: 9, r1: 3.8, y0: 1.2, y1: 0.75, fov: 48, enter: "whip",
+  world: { tank: "burst", mol: () => ({ mode: "flood", level: 0.85 }) },
   cast: { eddie: [5, 2, [[12.6, { action: "stuck", eyes: "squint", brows: "angry", mouth: "frown", armL: [60, 30], armR: [70, -30], sweat: 1 }],
                          [wordT("stuck", 12.6), { action: "stuck", eyes: "wide", brows: "worried", mouth: "scream", armL: [150, 20], armR: [150, -20], sweat: 1, squash: 0.05 }]]] } });
 // 6  16.0-19.4  slow, high, somber orbit over the flooded street
