@@ -265,7 +265,7 @@ def measure(p):
 
 
 video = os.path.join(WORK, "video.mp4")
-subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-framerate", str(M.FPS), "-i", os.path.join(M.D, "frames", "%04d.png"),
+subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-framerate", str(M.FPS), "-i", os.path.join(M.D, "frames", "%04d.jpg"),
                 "-c:v", "libx264", "-crf", "16", "-preset", "slow", "-pix_fmt", "yuv420p", "-t", f"{DUR:.3f}", video], check=True)
 I0, _ = measure(pre)
 gain, ceil = -14.0 - I0, -3.1
