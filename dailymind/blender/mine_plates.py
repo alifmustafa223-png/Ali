@@ -32,6 +32,8 @@ def build(plate):
     import dm_assets as AS
     importlib.reload(AS)
     SC = bpy.context.scene
+    if plate == "D":
+        return build_lab(SC, AS)
     rr = random.Random(3)
     rock = AS.texture("dark_rock", "2k", scale=0.9, tint=(0.6, 0.55, 0.5))
     rp = rock.node_tree.nodes["Principled BSDF"]
@@ -126,13 +128,21 @@ def build(plate):
         return root
     # lanterns hanging from the cap beams (each with a warm light)
     lamps = []
+    electric = plate == "E"
     for k_, y in enumerate((1.2, 5.6, 10.0, 14.4, 18.8)):
         lx = 0.75 if k_ % 2 == 0 else -0.75
-        AS.model("wooden_lantern_01", "1k", loc=(lx, y, 1.3), scale=0.8)
+        if electric:
+            lx = 0.0
+            AS.model("hanging_industrial_lamp", "1k", loc=(0.0, y, 2.15), scale=0.6)
+        else:
+            AS.model("wooden_lantern_01", "1k", loc=(lx, y, 1.3), scale=0.8)
         L_ = bpy.data.objects.new("lamp", bpy.data.lights.new("lamp", "POINT"))
         SC.collection.objects.link(L_)
         L_.location = (lx, y, 1.5)
         L_.data.energy, L_.data.color, L_.data.shadow_soft_size = 140, (1.0, 0.62, 0.28), 0.06
+        if electric:
+            L_.location = (0.0, y, 1.25)
+            L_.data.energy, L_.data.color = 90, (0.82, 0.9, 1.0)
         lamps.append(L_)
 
     def fog(center, size, density, col, anis=0.5):
@@ -173,7 +183,7 @@ def build(plate):
         cd.dof.aperture_fstop = fstop
         cd.dof.focus_distance = focus
 
-    if plate == "A":
+    if plate in ("A", "E"):
         cart((-0.0, 6.5, -0.12), 2)
         fog((0, 8, 1), (3.4, 26, 3), 0.03, (1.0, 0.85, 0.7), 0.6)
         # a hard beam of light from a shaft above, cutting through dust
@@ -217,6 +227,89 @@ def build(plate):
         json.dump({"hook_px": [q.x * 1080, (1 - q.y) * 1920]}, open(os.path.join(OUTDIR, "plate_B.json"), "w"))
         print("HOOK", q.x * 1080, (1 - q.y) * 1920)
     SC.render.filepath = os.path.join(OUTDIR, f"plate_{plate}.png")
+    bpy.ops.render.render(write_still=True)
+
+
+def build_lab(SC, AS):
+    """1890s physiologist's lab at night: desk with microscope, bottles, books; oil-lamp light; bookshelf and clock."""
+    floor = AS.texture("old_wooden_floor_02", "1k", scale=0.8, tint=(0.6, 0.45, 0.32))
+    wall = AS.texture("painted_plaster_wall", "1k", scale=0.6, tint=(0.55, 0.5, 0.42))
+    bpy.ops.mesh.primitive_plane_add(size=1, location=(0, 1.5, 0))
+    o = bpy.context.active_object
+    o.scale = (8, 8, 1)
+    o.data.materials.append(floor)
+    for loc, rot, sc in (((0, 3.6, 1.6), (R(90), 0, 0), (8, 3.2, 1)), ((-2.4, 1.5, 1.6), (R(90), 0, R(90)), (8, 3.2, 1)),
+                         ((2.4, 1.5, 1.6), (R(90), 0, R(90)), (8, 3.2, 1))):
+        bpy.ops.mesh.primitive_plane_add(size=1, location=loc, rotation=rot)
+        o = bpy.context.active_object
+        o.scale = sc
+        o.data.materials.append(wall)
+    bpy.ops.mesh.primitive_plane_add(size=1, location=(0, 1.5, 3.0))
+    o = bpy.context.active_object
+    o.scale = (8, 8, 1)
+    o.data.materials.append(wall)
+    AS.model("wooden_bookshelf_worn", "1k", loc=(-1.4, 3.45, 0), rot=(0, 0, 0))
+    rb = random.Random(9)
+    cols = [(0.35, 0.08, 0.06), (0.1, 0.18, 0.3), (0.12, 0.25, 0.12), (0.4, 0.3, 0.12), (0.2, 0.12, 0.08)]
+    for shelf_z in (0.12, 0.58, 1.04, 1.5):
+        x = -2.0
+        while x < -0.82:
+            w_, h_ = rb.uniform(0.035, 0.07), rb.uniform(0.25, 0.36)
+            bpy.ops.mesh.primitive_cube_add(size=1, location=(x + w_ / 2, 3.42, shelf_z + h_ / 2))
+            b = bpy.context.active_object
+            b.scale = (w_, 0.22, h_)
+            m = bpy.data.materials.new("book")
+            m.use_nodes = True
+            m.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (*cols[rb.randrange(5)], 1)
+            m.node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0.6
+            b.data.materials.append(m)
+            x += w_ + 0.004
+    AS.model("vintage_grandfather_clock_01", "1k", loc=(1.7, 3.3, 0), rot=(0, 0, 0))
+    AS.model("wooden_table_02", "1k", loc=(0.25, 2.2, 0))
+    bpy.context.view_layer.update()
+    top = 0.78
+    AS.model("vintage_microscope", "1k", loc=(0.75, 2.25, top))
+    AS.model("vintage_oil_lamp", "1k", loc=(-0.35, 2.35, top), scale=0.55)
+    AS.model("wine_bottles_01", "1k", loc=(0.2, 2.45, top), scale=0.6)
+    AS.model("book_encyclopedia_set_01", "1k", loc=(-1.75, 3.25, 1.05), scale=0.35)
+    for o in bpy.data.objects:   # Poly Haven files ship helper objects (a 1 m "Sphere_stash", rig widgets): never render them
+        if o.name.startswith(("Sphere_stash", "wdg_", "rig_")):
+            o.hide_render = o.hide_viewport = True
+    lamp = bpy.data.objects.new("oil", bpy.data.lights.new("oil", "POINT"))
+    SC.collection.objects.link(lamp)
+    lamp.location = (-0.35, 2.3, top + 0.28)
+    lamp.data.energy, lamp.data.color, lamp.data.shadow_soft_size = 160, (1.0, 0.65, 0.32), 0.05
+    fill = bpy.data.objects.new("fill", bpy.data.lights.new("fill", "AREA"))
+    SC.collection.objects.link(fill)
+    fill.location = (0.5, -2.0, 2.2)
+    fill.rotation_euler = (R(70), 0, 0)
+    fill.data.energy, fill.data.color, fill.data.size = 70, (1.0, 0.82, 0.62), 2.0
+    moon = bpy.data.objects.new("moon", bpy.data.lights.new("moon", "AREA"))
+    SC.collection.objects.link(moon)
+    moon.location = (2.3, 1.2, 2.4)
+    moon.rotation_euler = (0, R(-70), 0)
+    moon.data.energy, moon.data.color, moon.data.size = 60, (0.55, 0.65, 1.0), 1.0
+    w = bpy.data.worlds.new("w")
+    SC.world = w
+    w.use_nodes = True
+    w.node_tree.nodes["Background"].inputs["Color"].default_value = (0.01, 0.01, 0.012, 1)
+    cd = bpy.data.cameras.new("cam")
+    cam = bpy.data.objects.new("cam", cd)
+    SC.collection.objects.link(cam)
+    SC.camera = cam
+    cam.location = (0.1, -0.6, 1.3)
+    cam.rotation_euler = (V((0.1, 2.4, 1.05)) - V(cam.location)).to_track_quat("-Z", "Y").to_euler()
+    cd.lens = 24
+    cd.dof.use_dof = True
+    cd.dof.aperture_fstop = 4.0
+    cd.dof.focus_distance = 2.6
+    SC.render.engine = "CYCLES"
+    SC.cycles.samples = SAMPLES
+    SC.cycles.use_denoising = True
+    SC.view_settings.view_transform = "AgX"
+    SC.view_settings.look = "AgX - Medium High Contrast"
+    SC.render.resolution_x, SC.render.resolution_y, SC.render.resolution_percentage = 1080, 1920, RES
+    SC.render.filepath = os.path.join(OUTDIR, "plate_D.png")
     bpy.ops.render.render(write_still=True)
 
 
