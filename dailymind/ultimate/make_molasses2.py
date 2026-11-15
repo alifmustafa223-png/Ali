@@ -493,9 +493,9 @@ def sc_cta(t, f):
     from cta2 import draw_cta2
     img = plate("summer", blur=10 * K)
     img[..., :3] *= 0.6
-    t0 = TIMES["cta"] - 0.12
+    t0 = span("cta")[0]          # the card starts with the scene (a negative card time drew the button before the card)
     s, c = E.surf(world=False)
-    draw_cta2(c, t - t0, word_t("cta", "like") - t0, word_t("cta", "subscribe") - t0)
+    draw_cta2(c, max(0.0, t - t0), word_t("cta", "like") - t0, word_t("cta", "subscribe") - t0)
     return img, (1.08, 540, 1000), [E.arr(s)]
 
 

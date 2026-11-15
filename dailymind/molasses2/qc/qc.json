@@ -1,0 +1,52 @@
+[
+ {
+  "check": "frame count",
+  "ok": true,
+  "detail": "1934 / 1934"
+ },
+ {
+  "check": "length 61-65 s",
+  "ok": true,
+  "detail": "64.47 s"
+ },
+ {
+  "check": "no 1-frame pops",
+  "ok": true,
+  "detail": "0 suspects []"
+ },
+ {
+  "check": "drips: free fall time matches g",
+  "ok": true,
+  "detail": "0.590 s at g=3600.0 px/s^2"
+ },
+ {
+  "check": "planks rest on the molasses surface",
+  "ok": true,
+  "detail": "y 1062.8"
+ },
+ {
+  "check": "loudness -14 +-0.5 LUFS",
+  "ok": true,
+  "detail": "-14.1 LUFS"
+ },
+ {
+  "check": "true peak <= -1.5 dBTP",
+  "ok": true,
+  "detail": "-1.7 dBTP"
+ },
+ {
+  "check": "no clipped samples",
+  "ok": true,
+  "detail": "0 samples"
+ },
+ {
+  "check": "every SFX within 1 frame",
+  "ok": true,
+  "detail": "40 cues, off: []"
+ },
+ {
+  "check": "final mix transcript == script",
+  "ok": true,
+  "detail": "heard: \"A 25-foot wave of molasses is tearing through Boston. January, 1919. A giant tank by the harbor just burst. 2.3 million gallons. All at once, it flattens buildings, and the freezing cold makes it worse. It thickens like glue, and people get stuck. 21 people die. About 150 are hurt. The harbor stays brown for months. But here's the crazy part. The tank leaked from day one. Neighbors collected the drips. The company's fix? They painted it brown, so nobody could see the leaks. It was never even tested with water. Then they blamed anarchists. A bomb, they said. The court didn't buy it. The company was found responsible and paid over $600,000. After that, Boston made engineers sign off on big structures like it. And locals swore that on hot summer days, the north end smelled sweet for decades. All from one leaky tank. Learn something new? Like and subscribe.\""
+ }
+]
