@@ -1,0 +1,54 @@
+[
+ {
+  "line": "stopped",
+  "take": 0,
+  "seed": 7,
+  "heard": "If the canary stopped singing or fell off its perch, everyone got out. FAST.",
+  "exact": true,
+  "conf": 0.915,
+  "max_gap": 0.3,
+  "peak": 1.033,
+  "dur": 3.75,
+  "ok": 1.0
+ },
+ {
+  "line": "stopped",
+  "take": 1,
+  "seed": 24,
+  "heard": "If the canary stopped singing, or fell off its perch, everyone got out. Fast.",
+  "exact": true,
+  "conf": 0.954,
+  "max_gap": 0.32,
+  "peak": 1.0,
+  "dur": 3.98,
+  "ok": 1.0
+ },
+ {
+  "line": "stopped",
+  "take": 2,
+  "seed": 41,
+  "heard": "If the canary stopped singing, or fell off its perch, everyone got out, fast.",
+  "exact": true,
+  "conf": 0.935,
+  "max_gap": 0.32,
+  "peak": 1.017,
+  "dur": 4.41,
+  "ok": 1.0
+ },
+ {
+  "line": "stopped",
+  "take": 3,
+  "seed": 58,
+  "heard": "If the canary stopped singing or fell off its perch, everyone got out. Fast.",
+  "exact": true,
+  "conf": 0.923,
+  "max_gap": 0.44,
+  "peak": 1.019,
+  "dur": 4.11,
+  "ok": 1.0
+ },
+ {
+  "line": "stopped",
+  "chosen": 1
+ }
+]

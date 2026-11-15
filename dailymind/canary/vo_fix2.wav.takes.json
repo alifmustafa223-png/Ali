@@ -1,0 +1,54 @@
+[
+ {
+  "line": "cta",
+  "take": 0,
+  "seed": 7,
+  "heard": "Did you learn something new? Like and subscribe!",
+  "exact": true,
+  "conf": 0.942,
+  "max_gap": 0.42,
+  "peak": 0.964,
+  "dur": 2.54,
+  "ok": 1.0
+ },
+ {
+  "line": "cta",
+  "take": 1,
+  "seed": 24,
+  "heard": "Did you learn something new? Like and subscribe!",
+  "exact": true,
+  "conf": 0.948,
+  "max_gap": 0.54,
+  "peak": 0.981,
+  "dur": 2.58,
+  "ok": 1.0
+ },
+ {
+  "line": "cta",
+  "take": 2,
+  "seed": 41,
+  "heard": "Did you learn something new? Like and subscribe!",
+  "exact": true,
+  "conf": 0.957,
+  "max_gap": 0.46,
+  "peak": 0.955,
+  "dur": 2.46,
+  "ok": 1.0
+ },
+ {
+  "line": "cta",
+  "take": 3,
+  "seed": 58,
+  "heard": "Did you learn something new? Like and subscribe!",
+  "exact": true,
+  "conf": 0.943,
+  "max_gap": 0.44,
+  "peak": 0.892,
+  "dur": 2.59,
+  "ok": 1.0
+ },
+ {
+  "line": "cta",
+  "chosen": 2
+ }
+]

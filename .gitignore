@@ -78,3 +78,13 @@ dailymind/same/same.mp4
 dailymind/canary_test/_*
 dailymind/canary_test/*.words.json
 dailymind/canary_test/*_full.mp4
+dailymind/canary/frames/
+dailymind/canary/stills/
+dailymind/canary/_audio/
+dailymind/canary/_takes_cache/
+dailymind/canary/qc/*.wav
+dailymind/canary/*.log
+dailymind/canary/vo.wav
+dailymind/canary/vo_add.wav
+dailymind/canary/vo_fix*.wav
+dailymind/canary/*_full.mp4
