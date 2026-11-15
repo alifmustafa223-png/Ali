@@ -75,3 +75,5 @@ dailymind/same/_audio/
 dailymind/same/*.log
 dailymind/same/qc/*.wav
 dailymind/same/same.mp4
+dailymind/canary_test/_*
+dailymind/canary_test/*.words.json

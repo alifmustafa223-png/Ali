@@ -1,0 +1,3 @@
+[{"key": "job", "text": "This tiny bird? It had a job... in a coal mine.", "gap_before": 0.15, "exaggeration": 0.6},
+ {"key": "stopped", "text": "Because if the canary stopped singing...", "gap_before": 0.35, "exaggeration": 0.55},
+ {"key": "minutes", "text": "the miners had about two minutes... to run!", "gap_before": 0.5, "exaggeration": 0.85}]
