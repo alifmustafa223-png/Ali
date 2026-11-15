@@ -77,3 +77,4 @@ dailymind/same/qc/*.wav
 dailymind/same/same.mp4
 dailymind/canary_test/_*
 dailymind/canary_test/*.words.json
+dailymind/canary_test/*_full.mp4
