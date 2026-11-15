@@ -34,18 +34,15 @@ from faster_whisper import WhisperModel
 m = WhisperModel("small.en", device="cpu", compute_type="int8")
 a16 = np.interp(np.arange(0, len(out), sr / 16000), np.arange(len(out)), out).astype(np.float32)
 segs, _ = m.transcribe(a16, language="en", word_timestamps=True, beam_size=5)
-heard = [(w.word.strip(), w.start, w.end) for s in segs for w in s.words if w.word.strip()]
-NUM = {"1919": "nineteen nineteen", "2.3": "two point three", "25": "twenty five", "21": "twenty one", "150": "a hundred and fifty",
-       "600,000": "six hundred thousand"}
+raw = [w for s in segs for w in s.words]
+heard = [(w.word.strip(), w.start, w.end) for w in raw if w.word.strip()]
+src = open("../tts/chatter_takes.py").read()          # the same normaliser the takes check uses
+ns = {"re": re}
+exec(src[src.index("ONES ="):src.index("def transcribe")], ns)
 def norm(x):
-    x = x.lower().replace("-", " ")
-    o = []
-    for w in x.split():
-        w2 = re.sub(r"[^a-z0-9.,]", "", w).strip(".,")
-        o += NUM.get(w2, re.sub(r"[^a-z0-9]", "", w2)).split() if w2 else []
-    return [w for w in o if w]
+    return ns["norm"](x)
 exp = [w for l in L for w in norm(l["text"])]
-got = [w for h in heard for w in norm(h[0])]
+got = norm("".join(w.word for w in raw))      # join first: whisper splits "2" ".3" and "$600" ",000"
 ok = exp == got
 print("WHISPER", "MATCH" if ok else "MISMATCH")
 if not ok:

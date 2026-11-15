@@ -1,0 +1,722 @@
+[
+ {
+  "line": "l00",
+  "take": 0,
+  "seed": 7,
+  "heard": "A 25 -foot wave of molasses is tearing through Boston.",
+  "exact": true,
+  "conf": 0.952,
+  "max_gap": 0.0,
+  "peak": 0.988,
+  "dur": 3.3,
+  "ok": 1.0
+ },
+ {
+  "line": "l00",
+  "take": 1,
+  "seed": 24,
+  "heard": "A 25 -foot wave of molasses is tearing through Boston.",
+  "exact": true,
+  "conf": 0.962,
+  "max_gap": 0.0,
+  "peak": 0.97,
+  "dur": 3.1,
+  "ok": 1.0
+ },
+ {
+  "line": "l00",
+  "take": 2,
+  "seed": 41,
+  "heard": "A 25 -foot wave of molasses is tearing through Boston.",
+  "exact": true,
+  "conf": 0.958,
+  "max_gap": 0.0,
+  "peak": 0.971,
+  "dur": 2.71,
+  "ok": 1.0
+ },
+ {
+  "line": "l00",
+  "chosen": 1
+ },
+ {
+  "line": "l01",
+  "take": 0,
+  "seed": 1007,
+  "heard": "January 1919. A giant tank by the harbor just burst.",
+  "exact": true,
+  "conf": 0.935,
+  "max_gap": 0.56,
+  "peak": 1.005,
+  "dur": 3.45,
+  "ok": 1.0
+ },
+ {
+  "line": "l01",
+  "take": 1,
+  "seed": 1024,
+  "heard": "January 1919. A giant tank by the harbor just burst.",
+  "exact": true,
+  "conf": 0.95,
+  "max_gap": 0.56,
+  "peak": 1.027,
+  "dur": 3.59,
+  "ok": 1.0
+ },
+ {
+  "line": "l01",
+  "take": 2,
+  "seed": 1041,
+  "heard": "January 1919. A giant tank by the harbor just burst.",
+  "exact": true,
+  "conf": 0.969,
+  "max_gap": 0.66,
+  "peak": 0.949,
+  "dur": 3.62,
+  "ok": 1.0
+ },
+ {
+  "line": "l01",
+  "chosen": 2
+ },
+ {
+  "line": "l02",
+  "take": 0,
+  "seed": 2007,
+  "heard": "2 .3 million gallons, all at once!",
+  "exact": true,
+  "conf": 0.987,
+  "max_gap": 0.26,
+  "peak": 0.972,
+  "dur": 2.5,
+  "ok": 1.0
+ },
+ {
+  "line": "l02",
+  "take": 1,
+  "seed": 2024,
+  "heard": "2 .3 million gallons, all at once.",
+  "exact": true,
+  "conf": 0.981,
+  "max_gap": 0.24,
+  "peak": 0.987,
+  "dur": 2.66,
+  "ok": 1.0
+ },
+ {
+  "line": "l02",
+  "take": 2,
+  "seed": 2041,
+  "heard": "2 .3 million gallons, all at once.",
+  "exact": true,
+  "conf": 0.982,
+  "max_gap": 0.22,
+  "peak": 1.014,
+  "dur": 2.41,
+  "ok": 1.0
+ },
+ {
+  "line": "l02",
+  "chosen": 0
+ },
+ {
+  "line": "l03",
+  "take": 0,
+  "seed": 3007,
+  "heard": "It flattens buildings, and the freezing cold makes it worse.",
+  "exact": true,
+  "conf": 0.952,
+  "max_gap": 0.54,
+  "peak": 1.001,
+  "dur": 3.21,
+  "ok": 1.0
+ },
+ {
+  "line": "l03",
+  "take": 1,
+  "seed": 3024,
+  "heard": "It flattens buildings, and the freezing cold makes it worse.",
+  "exact": true,
+  "conf": 0.945,
+  "max_gap": 0.46,
+  "peak": 0.983,
+  "dur": 3.18,
+  "ok": 1.0
+ },
+ {
+  "line": "l03",
+  "take": 2,
+  "seed": 3041,
+  "heard": "It flattens buildings, and the freezing cold makes it worse.",
+  "exact": true,
+  "conf": 0.972,
+  "max_gap": 0.34,
+  "peak": 0.994,
+  "dur": 3.06,
+  "ok": 1.0
+ },
+ {
+  "line": "l03",
+  "chosen": 2
+ },
+ {
+  "line": "l04",
+  "take": 0,
+  "seed": 4007,
+  "heard": "It thickens like glue and people get stuck.",
+  "exact": true,
+  "conf": 0.937,
+  "max_gap": 0.0,
+  "peak": 0.751,
+  "dur": 2.3,
+  "ok": 1.0
+ },
+ {
+  "line": "l04",
+  "take": 1,
+  "seed": 4024,
+  "heard": "It thickens like glue, and people get stuck.",
+  "exact": true,
+  "conf": 0.957,
+  "max_gap": 0.34,
+  "peak": 0.915,
+  "dur": 2.31,
+  "ok": 1.0
+ },
+ {
+  "line": "l04",
+  "take": 2,
+  "seed": 4041,
+  "heard": "It thickens like glue and people get stuck.",
+  "exact": true,
+  "conf": 0.942,
+  "max_gap": 0.0,
+  "peak": 0.879,
+  "dur": 2.11,
+  "ok": 1.0
+ },
+ {
+  "line": "l04",
+  "chosen": 1
+ },
+ {
+  "line": "l05",
+  "take": 0,
+  "seed": 5007,
+  "heard": "21 people die, about 150 are hurt.",
+  "exact": true,
+  "conf": 0.954,
+  "max_gap": 0.34,
+  "peak": 0.87,
+  "dur": 2.8,
+  "ok": 1.0
+ },
+ {
+  "line": "l05",
+  "take": 1,
+  "seed": 5024,
+  "heard": "21 people die about 150 are hurt",
+  "exact": true,
+  "conf": 0.838,
+  "max_gap": 0.0,
+  "peak": 0.735,
+  "dur": 2.82,
+  "ok": 1.0
+ },
+ {
+  "line": "l05",
+  "take": 2,
+  "seed": 5041,
+  "heard": "21 people die, about 150 are hurt.",
+  "exact": true,
+  "conf": 0.958,
+  "max_gap": 0.36,
+  "peak": 0.889,
+  "dur": 2.91,
+  "ok": 1.0
+ },
+ {
+  "line": "l05",
+  "chosen": 2
+ },
+ {
+  "line": "l06",
+  "take": 0,
+  "seed": 6007,
+  "heard": "The harbor stays brown for months.",
+  "exact": true,
+  "conf": 0.919,
+  "max_gap": 0.0,
+  "peak": 0.81,
+  "dur": 1.72,
+  "ok": 1.0
+ },
+ {
+  "line": "l06",
+  "take": 1,
+  "seed": 6024,
+  "heard": "The Harbor stays brown for months.",
+  "exact": true,
+  "conf": 0.883,
+  "max_gap": 0.0,
+  "peak": 0.755,
+  "dur": 1.3,
+  "ok": 1.0
+ },
+ {
+  "line": "l06",
+  "take": 2,
+  "seed": 6041,
+  "heard": "The hopper stays brown for months.",
+  "exact": false,
+  "conf": 0.885,
+  "max_gap": 0.0,
+  "peak": 0.962,
+  "dur": 1.52,
+  "ok": false
+ },
+ {
+  "line": "l06",
+  "chosen": 0
+ },
+ {
+  "line": "l07",
+  "take": 0,
+  "seed": 7007,
+  "heard": "But here's the crazy part.",
+  "exact": true,
+  "conf": 0.969,
+  "max_gap": 0.0,
+  "peak": 0.783,
+  "dur": 1.28,
+  "ok": 1.0
+ },
+ {
+  "line": "l07",
+  "take": 1,
+  "seed": 7024,
+  "heard": "But here's the crazy part.",
+  "exact": true,
+  "conf": 0.97,
+  "max_gap": 0.0,
+  "peak": 0.714,
+  "dur": 1.13,
+  "ok": 1.0
+ },
+ {
+  "line": "l07",
+  "take": 2,
+  "seed": 7041,
+  "heard": "But here's the crazy part.",
+  "exact": true,
+  "conf": 0.96,
+  "max_gap": 0.0,
+  "peak": 0.787,
+  "dur": 1.52,
+  "ok": 1.0
+ },
+ {
+  "line": "l07",
+  "chosen": 1
+ },
+ {
+  "line": "l08",
+  "take": 0,
+  "seed": 8007,
+  "heard": "The tank leaked from day one. Neighbors collected the drips.",
+  "exact": true,
+  "conf": 0.939,
+  "max_gap": 0.44,
+  "peak": 0.852,
+  "dur": 3.05,
+  "ok": 1.0
+ },
+ {
+  "line": "l08",
+  "take": 1,
+  "seed": 8024,
+  "heard": "The tank leaked from day one. Neighbors collected the drips.",
+  "exact": true,
+  "conf": 0.959,
+  "max_gap": 0.44,
+  "peak": 0.84,
+  "dur": 3.06,
+  "ok": 1.0
+ },
+ {
+  "line": "l08",
+  "take": 2,
+  "seed": 8041,
+  "heard": "The tank leaked from day one, neighbors collected the drips.",
+  "exact": true,
+  "conf": 0.966,
+  "max_gap": 0.24,
+  "peak": 0.997,
+  "dur": 2.74,
+  "ok": 1.0
+ },
+ {
+  "line": "l08",
+  "chosen": 2
+ },
+ {
+  "line": "l09",
+  "take": 0,
+  "seed": 9007,
+  "heard": "The company's fix? They painted it brown so nobody could see the leaks.",
+  "exact": true,
+  "conf": 0.944,
+  "max_gap": 0.36,
+  "peak": 0.999,
+  "dur": 3.44,
+  "ok": 1.0
+ },
+ {
+  "line": "l09",
+  "take": 1,
+  "seed": 9024,
+  "heard": "The companies fix, they painted it brown so nobody could see the leaks.",
+  "exact": false,
+  "conf": 0.92,
+  "max_gap": 0.48,
+  "peak": 0.762,
+  "dur": 3.42,
+  "ok": false
+ },
+ {
+  "line": "l09",
+  "take": 2,
+  "seed": 9041,
+  "heard": "The company's fix. They painted it brown so nobody could see the leaks.",
+  "exact": true,
+  "conf": 0.926,
+  "max_gap": 0.44,
+  "peak": 0.794,
+  "dur": 3.67,
+  "ok": 1.0
+ },
+ {
+  "line": "l09",
+  "chosen": 0
+ },
+ {
+  "line": "l10",
+  "take": 0,
+  "seed": 10007,
+  "heard": "It was never even tested with water.",
+  "exact": true,
+  "conf": 0.958,
+  "max_gap": 0.0,
+  "peak": 0.915,
+  "dur": 1.59,
+  "ok": 1.0
+ },
+ {
+  "line": "l10",
+  "take": 1,
+  "seed": 10024,
+  "heard": "It was never even tested with water.",
+  "exact": true,
+  "conf": 0.943,
+  "max_gap": 0.0,
+  "peak": 0.785,
+  "dur": 1.69,
+  "ok": 1.0
+ },
+ {
+  "line": "l10",
+  "take": 2,
+  "seed": 10041,
+  "heard": "It was never even tested with water.",
+  "exact": true,
+  "conf": 0.957,
+  "max_gap": 0.0,
+  "peak": 0.765,
+  "dur": 1.38,
+  "ok": 1.0
+ },
+ {
+  "line": "l10",
+  "chosen": 0
+ },
+ {
+  "line": "l11",
+  "take": 0,
+  "seed": 11007,
+  "heard": "Then they blamed anarchists. A bomb, they said.",
+  "exact": true,
+  "conf": 0.926,
+  "max_gap": 0.56,
+  "peak": 0.973,
+  "dur": 2.7,
+  "ok": 1.0
+ },
+ {
+  "line": "l11",
+  "take": 1,
+  "seed": 11024,
+  "heard": "Then they blamed anarchists. A bomb, they said.",
+  "exact": true,
+  "conf": 0.907,
+  "max_gap": 0.4,
+  "peak": 0.692,
+  "dur": 2.79,
+  "ok": 1.0
+ },
+ {
+  "line": "l11",
+  "take": 2,
+  "seed": 11041,
+  "heard": "Then they blamed anarchists, a bomb, they said.",
+  "exact": true,
+  "conf": 0.964,
+  "max_gap": 0.4,
+  "peak": 0.954,
+  "dur": 2.58,
+  "ok": 1.0
+ },
+ {
+  "line": "l11",
+  "chosen": 2
+ },
+ {
+  "line": "l12",
+  "take": 0,
+  "seed": 12007,
+  "heard": "The court didn't buy it.",
+  "exact": true,
+  "conf": 0.942,
+  "max_gap": 0.0,
+  "peak": 0.76,
+  "dur": 0.95,
+  "ok": 1.0
+ },
+ {
+  "line": "l12",
+  "take": 1,
+  "seed": 12024,
+  "heard": "The court didn't buy it.",
+  "exact": true,
+  "conf": 0.886,
+  "max_gap": 0.0,
+  "peak": 0.638,
+  "dur": 1.37,
+  "ok": 1.0
+ },
+ {
+  "line": "l12",
+  "take": 2,
+  "seed": 12041,
+  "heard": "The court didn't buy it.",
+  "exact": true,
+  "conf": 0.929,
+  "max_gap": 0.0,
+  "peak": 0.809,
+  "dur": 1.08,
+  "ok": 1.0
+ },
+ {
+  "line": "l12",
+  "chosen": 0
+ },
+ {
+  "line": "l13",
+  "take": 0,
+  "seed": 13007,
+  "heard": "The company was found responsible and paid over $600 ,000.",
+  "exact": true,
+  "conf": 0.953,
+  "max_gap": 0.0,
+  "peak": 0.905,
+  "dur": 3.16,
+  "ok": 1.0
+ },
+ {
+  "line": "l13",
+  "take": 1,
+  "seed": 13024,
+  "heard": "The company was found responsible and paid over $600 ,000.",
+  "exact": true,
+  "conf": 0.973,
+  "max_gap": 0.0,
+  "peak": 0.924,
+  "dur": 3.37,
+  "ok": 1.0
+ },
+ {
+  "line": "l13",
+  "take": 2,
+  "seed": 13041,
+  "heard": "The company was found responsible and paid over $600 ,000.",
+  "exact": true,
+  "conf": 0.962,
+  "max_gap": 0.0,
+  "peak": 0.968,
+  "dur": 3.64,
+  "ok": 1.0
+ },
+ {
+  "line": "l13",
+  "chosen": 1
+ },
+ {
+  "line": "l14",
+  "take": 0,
+  "seed": 14007,
+  "heard": "After that, Boston -made engineers sign off on big structures like it.",
+  "exact": true,
+  "conf": 0.976,
+  "max_gap": 0.32,
+  "peak": 1.025,
+  "dur": 3.44,
+  "ok": 1.0
+ },
+ {
+  "line": "l14",
+  "take": 1,
+  "seed": 14024,
+  "heard": "After that, Boston made engineers sign off on big structures like it.",
+  "exact": true,
+  "conf": 0.961,
+  "max_gap": 0.42,
+  "peak": 0.998,
+  "dur": 3.64,
+  "ok": 1.0
+ },
+ {
+  "line": "l14",
+  "take": 2,
+  "seed": 14041,
+  "heard": "After that, Boston made engineers sign off on big structures like it.",
+  "exact": true,
+  "conf": 0.986,
+  "max_gap": 0.38,
+  "peak": 0.978,
+  "dur": 3.75,
+  "ok": 1.0
+ },
+ {
+  "line": "l14",
+  "chosen": 2
+ },
+ {
+  "line": "l15",
+  "take": 0,
+  "seed": 15007,
+  "heard": "And local swore that on hot summer days, the North End smelled sweet for decades.",
+  "exact": false,
+  "conf": 0.893,
+  "max_gap": 0.16,
+  "peak": 0.971,
+  "dur": 4.16,
+  "ok": false
+ },
+ {
+  "line": "l15",
+  "take": 1,
+  "seed": 15024,
+  "heard": "and local swore that on hot summer days, the north end smelled sweet for decades.",
+  "exact": false,
+  "conf": 0.933,
+  "max_gap": 0.2,
+  "peak": 0.948,
+  "dur": 4.34,
+  "ok": false
+ },
+ {
+  "line": "l15",
+  "take": 2,
+  "seed": 15041,
+  "heard": "and locals swore that on hot summer days, the north end smelled sweet for decades.",
+  "exact": true,
+  "conf": 0.943,
+  "max_gap": 0.16,
+  "peak": 1.039,
+  "dur": 3.99,
+  "ok": 1.0
+ },
+ {
+  "line": "l15",
+  "chosen": 2
+ },
+ {
+  "line": "l16",
+  "take": 0,
+  "seed": 16007,
+  "heard": "all from one leaky tank.",
+  "exact": true,
+  "conf": 0.912,
+  "max_gap": 0.0,
+  "peak": 0.883,
+  "dur": 1.44,
+  "ok": 1.0
+ },
+ {
+  "line": "l16",
+  "take": 1,
+  "seed": 16024,
+  "heard": "all from one leaky tank.",
+  "exact": true,
+  "conf": 0.925,
+  "max_gap": 0.0,
+  "peak": 0.924,
+  "dur": 1.57,
+  "ok": 1.0
+ },
+ {
+  "line": "l16",
+  "take": 2,
+  "seed": 16041,
+  "heard": "All from one leaky tank.",
+  "exact": true,
+  "conf": 0.823,
+  "max_gap": 0.0,
+  "peak": 0.712,
+  "dur": 1.17,
+  "ok": 1.0
+ },
+ {
+  "line": "l16",
+  "chosen": 1
+ },
+ {
+  "line": "l17",
+  "take": 0,
+  "seed": 17007,
+  "heard": "So, on a freezing January morning,",
+  "exact": true,
+  "conf": 0.977,
+  "max_gap": 0.26,
+  "peak": 0.717,
+  "dur": 2.13,
+  "ok": 1.0
+ },
+ {
+  "line": "l17",
+  "take": 1,
+  "seed": 17024,
+  "heard": "So, on a freezing January morning,",
+  "exact": true,
+  "conf": 0.981,
+  "max_gap": 0.26,
+  "peak": 0.71,
+  "dur": 2.09,
+  "ok": 1.0
+ },
+ {
+  "line": "l17",
+  "take": 2,
+  "seed": 17041,
+  "heard": "So, on a freezing January morning,",
+  "exact": true,
+  "conf": 0.976,
+  "max_gap": 0.24,
+  "peak": 0.689,
+  "dur": 2.11,
+  "ok": 1.0
+ },
+ {
+  "line": "l17",
+  "chosen": 1
+ }
+]

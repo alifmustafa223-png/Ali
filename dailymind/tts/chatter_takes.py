@@ -66,15 +66,18 @@ def num_words(n):
 
 def norm(s):
     s = s.lower().replace("’", "'").replace("-", " ")
-    s = re.sub(r"(\d) ?,(\d{3})", r"\1\2", s)          # whisper writes '100 ,000' / '3,000,000'
-    s = re.sub(r"(\d) ?,(\d{3})", r"\1\2", s)
+    s = re.sub(r"(\d) ?, ?(\d{3})", r"\1\2", s)       # whisper writes '100 ,000' / '600, 000' / '3,000,000'
+    s = re.sub(r"(\d) ?, ?(\d{3})", r"\1\2", s)
+    s = re.sub(r"\$ ?(\d+)", r"\1 dollars", s)        # '$600000' -> '600000 dollars'
+    s = re.sub(r"(\d) ?\. ?(\d)\b", r"\1 point \2", s)     # '2 .3' / '2.3' -> '2 point 3'
+
     # decades: 1950s -> nineteen fifties (before the year rule, which would leave a stray "s")
     s = re.sub(r"\b(\d{2})(\d)0'?s\b", lambda m: " " + two(int(m.group(1))) + " " + TENS[int(m.group(2))][:-1] + "ies ", s)
     s = re.sub(r"\b\d{4}\b", year_words, s)            # years: 1878 -> eighteen seventy eight
     s = re.sub(r"\b\d+\b", lambda m: " " + num_words(int(m.group(0))) + " ", s)
     s = re.sub(r"\ba (hundred|thousand|million|billion)\b", r"one \1", s)
     s = re.sub(r"\bi\.? ?q\b", "iq", s)          # "I Q" in the script (so the voice spells it) == "IQ" from whisper
-    w = re.sub(r"[^a-z' ]", " ", s).split()
+    w = [x for x in re.sub(r"[^a-z' ]", " ", s).split() if x != "and"]   # "a hundred and fifty" == "150"
     return [{"too": "to", "two": "to", "learnt": "learned"}.get(x, x) for x in w]   # homophones whisper cannot tell apart
 
 

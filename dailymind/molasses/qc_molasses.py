@@ -102,18 +102,12 @@ if WPY:
     code = ("import sys,json,numpy as np,soundfile as sf;from faster_whisper import WhisperModel;"
             "a,sr=sf.read(sys.argv[1],always_2d=True);a=a.mean(1);a=np.interp(np.arange(0,len(a),sr/16000),np.arange(len(a)),a).astype(np.float32);"
             "m=WhisperModel('small.en',device='cpu',compute_type='int8');s,_=m.transcribe(a,language='en',beam_size=5);"
-            "print(json.dumps(' '.join(x.text for x in s)))")
+            "print(json.dumps(''.join(x.text for x in s)))")
     heard = json.loads(subprocess.check_output([WPY, "-c", code, wav], stderr=subprocess.DEVNULL).decode().strip().splitlines()[-1])
-    NUM = {"1919": "nineteen nineteen", "2.3": "two point three", "25": "twenty five", "21": "twenty one", "150": "a hundred and fifty", "600,000": "six hundred thousand", "$600,000": "six hundred thousand"}
-
-    def norm(s):
-        s = s.lower().replace("-", " ")
-        out = []
-        for x in s.split():
-            x = re.sub(r"[^a-z0-9.,$]", "", x).strip(".,")
-            if x:
-                out += [re.sub(r"[^a-z0-9]", "", y) for y in NUM.get(x, x).split() if re.sub(r"[^a-z0-9]", "", y)]
-        return out
+    src = open(os.path.join(HERE, "..", "tts", "chatter_takes.py")).read()
+    ns = {"re": re}
+    exec(src[src.index("ONES ="):src.index("def transcribe")], ns)
+    norm = ns["norm"]
     script = " ".join(l["text"] for l in M.LINES)
     check("final mix transcript == script", norm(heard) == norm(script), f"heard: {heard.strip()!r}")
 fails = [x for x in res if not x[1]]
