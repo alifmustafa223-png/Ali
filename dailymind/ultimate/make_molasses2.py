@@ -280,7 +280,7 @@ def sc_tank(t, f):
     z, cx, cy = push("tank", 1.0, 1.1, (540, 960), (520, 940))(t)
     if t >= tb:
         a = 22 * math.exp(-(t - tb) / 0.35)
-        cx, cy = cx + a * noise1(t, 3, 30), cy + a * noise1(t, 4, 30)
+        cx, cy = cx + a * noise1(t, 3, 14), cy + a * noise1(t, 4, 14)
     return img, (z, cx, cy), lays
 
 
@@ -322,8 +322,8 @@ def sc_flatten(t, f):
             E.title_layer(t, [("FREEZING COLD", 90, 330, E.WHITE, word_t("l03", "freezing"))])]
     z, cx, cy = push("flatten", 1.0, 1.08, (540, 960), (560, 940))(t)
     if tf <= t < tf + 0.6:
-        a = (1 - (t - tf) / 0.6) * 16
-        cx, cy = cx + a * noise1(t, 5, 30), cy + a * noise1(t, 6, 30)
+        a = (1 - (t - tf) / 0.6) * 11          # a damped rumble (14 Hz), not a per-frame jump
+        cx, cy = cx + a * noise1(t, 5, 14), cy + a * noise1(t, 6, 14)
     return img, (z, cx, cy), lays
 
 
@@ -436,7 +436,7 @@ def sc_court(t, f):
     lays = [E.title_layer(t, [("THE COURT", 110, 330, E.WHITE, word_t("l12", "court"))]), E.stamp_layer(t, "DIDN'T BUY IT", tb, 540, 520, 110)]
     z, cx, cy = push("court", 1.0, 1.1, (540, 960), (540, 1000))(t)
     if tb <= t < tb + 0.3:
-        cy += 10 * (1 - (t - tb) / 0.3) * noise1(t, 8, 40)
+        cy += 8 * (1 - (t - tb) / 0.3) * noise1(t, 8, 14)
     return img, (z, cx, cy), lays
 
 

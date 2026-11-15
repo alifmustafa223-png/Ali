@@ -221,7 +221,7 @@ place("ting_crazy", pitch(ting, 1.3), w("l07", "crazy"), -18)
 ld = M.span("leak")
 period, n_ = 0.9, 4
 for k in range(int((ld[1] - ld[0]) / period * n_) + 1):      # every drop lands at (k / n) * period + fall time
-    t = ld[0] + (k / n_) * period - ((ld[0] / period) % (1 / n_)) * period + M.PHYS["drip_fall_s"]
+    t = ld[0] + (k / n_) * period - ((ld[0] / period) % (1 / n_)) * period + PH["drip_fall_s"]
     if ld[0] + 0.05 < t < ld[1] - 0.05:
         place("drip", drip(), t, -24, stem=k == 1)
 for k, t in enumerate(np.arange(sp("paint")[0] + 0.15, sp("paint")[1] - 0.2, 0.35)):
