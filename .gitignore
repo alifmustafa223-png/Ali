@@ -97,3 +97,9 @@ dailymind/molasses/vo_takes.wav
 dailymind/molasses/*.log
 dailymind/molasses/qc/*.wav
 dailymind/molasses/molasses.mp4
+dailymind/molasses2/frames/
+dailymind/molasses2/stills/
+dailymind/molasses2/_audio/
+dailymind/molasses2/*.log
+dailymind/molasses2/qc/*.wav
+dailymind/molasses2/molasses2.mp4
