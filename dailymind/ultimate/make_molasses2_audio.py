@@ -243,7 +243,7 @@ for name in ("hook", "gallons", "flatten", "stuck", "dead", "blame"):        # c
     a, b = sp(name)
     bed(lowpass(rng.normal(0, 1, int((b - a) * SR)), 60), a, b, -42)
 
-v, vsr = sf.read(os.path.join(M.D, "vo_final.wav"), always_2d=True)
+v, vsr = sf.read(os.path.join(M.D, "chris.wav"), always_2d=True)
 v = v.mean(axis=1)
 v = np.interp(np.arange(0, len(v), vsr / SR), np.arange(len(v)), v)
 vb = np.zeros(N)

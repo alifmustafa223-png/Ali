@@ -1,6 +1,6 @@
 """YouTube Short: "The Great Molasses Flood" (Boston, 15 Jan 1919) - in the canary-video look: the channel's toon
 characters inside real lit 3D Blender plates (blender/boston_plates.py), the approved 2D engine finish, title slams,
-stamps, gold splats, and the CTA v2 end card.
+stamps, gold splats, and the CTA v2 end card. Voice: vidIQ "Chris" (chris.wav, timings by faster-whisper: chris_timing.py).
 
 Facts: a 2.3-million-gallon tank by Boston's harbor burst; a wave up to ~25 ft swept the North End; the cold thickened it;
 21 dead, ~150 hurt; the harbor stayed brown for months. The tank leaked from the start (neighbours collected the
@@ -50,9 +50,15 @@ def word_t(line, *cands, nth=1):
     raise KeyError(f"none of {cands} in line {line!r}")
 
 
-SCENES = [("hook", 0.0), ("tank", 3.4), ("gallons", 6.6), ("flatten", 9.8), ("stuck", 12.6), ("dead", 16.0), ("harbor", 19.4),
-          ("crazy", 22.0), ("leak", 24.0), ("paint", 27.6), ("wink", 30.2), ("tested", 32.2), ("blame", 35.0), ("court", 38.2),
-          ("verdict", 40.4), ("paid", 42.8), ("engineers", 45.0), ("smell", 50.0), ("leaky", 55.8), ("cta", TIMES["cta"] - 0.3)]
+def _cut(key):
+    return TIMES[key] - 0.12
+
+
+SCENES = [("hook", 0.0), ("tank", _cut("l01")), ("gallons", _cut("l02")), ("flatten", _cut("l03")), ("stuck", _cut("l04")),
+          ("dead", _cut("l05")), ("harbor", _cut("l06")), ("crazy", _cut("l07")), ("leak", _cut("l08")), ("paint", _cut("l09")),
+          ("wink", word_t("l09", "so") - 0.12), ("tested", _cut("l10")), ("blame", _cut("l11")), ("court", _cut("l12")),
+          ("verdict", _cut("l13")), ("paid", word_t("l13", "paid") - 0.12), ("engineers", _cut("l14")), ("smell", _cut("l15")),
+          ("leaky", _cut("l16")), ("cta", TIMES["cta"] - 0.3)]
 CUTS = [t for _, t in SCENES] + [DUR]
 
 
@@ -92,7 +98,7 @@ def plate(name, blur=0.0):
 
 
 META = {n: json.load(open(os.path.join(PL_DIR, f"plate_{n}.json"))) for n in
-        ("wave", "flood", "tank", "burst", "tankclose", "tankbrown", "harbor", "court", "summer")}
+        ("wave", "flood", "tank", "burst", "tankclose", "tankbrown", "harbor", "court", "summer") if os.path.exists(os.path.join(PL_DIR, f"plate_{n}.json"))}
 
 
 def plate_col(name, x, y):
@@ -353,7 +359,7 @@ def sc_crazy(t, f):
     img = plate("tank", blur=8 * K)
     tc = word_t("l07", "crazy")
     pose = dict(eyes="open" if t < tc else "wide", brows="up", mouth="smile" if t < tc else "grin", look=(0.3, -0.2),
-                hands=[(-20, 120), (35, -170)], tilt=-8, squash=0.05 * math.exp(-max(0, t - tc) / 0.2) if t > tc else 0)
+                hands=[(-20, 120), (110, -120)], tilt=-8, squash=0.05 * math.exp(-max(0, t - tc) / 0.2) if t > tc else 0)
     img = char(img, EDDIE, 540, 2080, 2.2, pose, t, shadow=0.0)
     lays = [E.title_layer(t, [("THE CRAZY PART", 110, 380, E.GOLD, tc)])]
     return img, push("crazy", 1.0, 1.1, (540, 960), (540, 1010))(t), lays
@@ -539,6 +545,8 @@ def render(f, out=None):
 
 
 def physics_report():
+    if not os.path.exists(os.path.join(PL_DIR, "plate_tankclose.png")):
+        return dict(partial=True)
     sc_leak(span("leak")[0] + 0.5, 0)
     sc_flatten(word_t("l03", "flattens") + 3.0, 0)
     return dict(drip_fall_s=PHYS["drip_fall_s"], planks_land_y=PHYS["planks_land_y"], g_px=G_PX, scenes=[(n, round(a, 3)) for n, a in SCENES], dur=DUR)
