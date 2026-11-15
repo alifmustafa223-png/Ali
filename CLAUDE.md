@@ -20,6 +20,10 @@ Format: surprising history of everyday things, English, natural male narrator.
 - **Voice: Chatterbox (free, MIT) on the PC GPU**, exaggeration 0.7 / cfg 0.3, best of 3 takes per line verified by
   faster-whisper: `tts/chatter_takes.py lines.json out.wav 3 0.7 0.3` (venv `C:/Users/AliFM/tts_env`). Word timestamps drive
   every animation cue and SFX. Do NOT clone vidIQ's "Chris".
+- **Voice update (owner, 2026-11-15): use the vidIQ "Chris" voice while vidIQ credits last** (vidIQ account alividiq99,
+  150 credits/month, resets on the 15th). Cost: 28 credits per 1,000 characters, ROUNDED UP PER CALL/LINE -> keep each
+  script <= 1,000 chars and send it as ONE `script` (never `scriptLines`: each line rounds up on its own). ~5 videos/month.
+  Re-takes cost again. When credits run out, fall back to free Chatterbox (above).
 - **Sound:** real CC0 foley (`cove_test/sfx/`, BigSoundBank) placed on frames, `ultimate/make_style2d_audio.py`
   (mastered + verified on the encoded MP4). Music optional (the approved test had none).
 - **QC:** `ultimate/qc_style2d.py` must print ALL PASS, then look at its sheets/strips. Physics is solved and asserted in code.
