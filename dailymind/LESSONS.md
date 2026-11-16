@@ -473,3 +473,9 @@
   multiply the toon by a heavily blurred copy of the plate (the set's light field: lamp side warm, far side shaded),
   light-wrap the background round the silhouette edge, a tight dark contact shadow under the soles, and the cast shadow
   anchored at the real sole row (not the `y` argument - that left a floating gap). Dark/earthy costume colours; no pure white.
+- OWNER (3rd note, final): "change it completely, make it like the fortune cookies style, it was so much better".
+  => The owner's favourite is the ALL-2D fortune look (make_fortune.py), NOT toons-in-Blender. Default for new videos:
+  Skia-drawn sets cached with lru_cache, a counter/bench/table front at y=1500 covering legs, BIG close-up toons
+  (scale ~2.0, head well above the counter), props in front, catmull camera, titles/stamps/splats, CTA v2.
+  The chip-can v4 (make_pringles.py) reuses the same voice/timings/audio/QC - only the picture changed.
+- Toon behind a counter: feet y ~1760-1800 for scale 2.0 (1930 hid everything below the chin).

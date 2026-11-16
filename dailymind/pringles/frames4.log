@@ -1,0 +1,16 @@
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/05-reset-dirs-sample.conf", line 6: unknown element "reset-dirs"
+duration 62.82 s, 1885 frames; [('hook', 0.0), ('fred', 5.68), ('bags', 12.3), ('plan', 18.12), ('tube', 27.04), ('patent', 32.58), ('twist', 38.96), ('died', 45.68), ('ashes', 50.66), ('end', 55.0), ('cta', 58.62)]
+frame 0 / 1885
+frame 150 / 1885
+frame 300 / 1885
+frame 450 / 1885
+frame 600 / 1885
+frame 750 / 1885
+frame 900 / 1885
+frame 1050 / 1885
+frame 1200 / 1885
+frame 1350 / 1885
+frame 1500 / 1885
+frame 1650 / 1885
+frame 1800 / 1885
+done
