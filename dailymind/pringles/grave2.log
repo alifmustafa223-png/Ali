@@ -1,0 +1,6 @@
+/home/user/Ali/dailymind/blender/pringles_plates.py:65: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m.use_nodes = True
+/home/user/Ali/dailymind/blender/pringles_plates.py:189: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  fm.use_nodes = True
+META grave {'can': [524.2, 1173.6], 'ground_y': 2532.5, 'slab_front_y': 1741.7}
+01:25.316  render           | Saved: '/home/user/Ali/dailymind/pringles/plates/plate_grave.png'

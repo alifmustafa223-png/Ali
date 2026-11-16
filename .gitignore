@@ -104,3 +104,8 @@ dailymind/molasses2/*.log
 dailymind/molasses2/qc/*.wav
 dailymind/molasses2/molasses2.mp4
 dailymind/molasses2/molasses2.mp4
+
+dailymind/pringles/frames/
+dailymind/pringles/stills/
+dailymind/pringles/_audio/
+dailymind/pringles/qc/final.wav
