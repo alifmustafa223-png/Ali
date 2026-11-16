@@ -1,0 +1,14 @@
+/home/user/Ali/dailymind/blender/pringles_plates.py:65: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m.use_nodes = True
+/home/user/Ali/dailymind/blender/pringles_plates.py:205: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  fm.use_nodes = True
+META grave {'can': [524.2, 1173.6], 'ground_y': 2532.5, 'slab_front_y': 1741.7}
+00:38.250  render           | Saved: '/home/user/Ali/dailymind/pringles/plates/plate_grave.png'
+/home/user/Ali/dailymind/blender/pringles_plates.py:137: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  hm.use_nodes = True
+META store {'floor_y': 2070.0, 'shelf_mid': [540.0, 1036.2]}
+01:50.648  render           | Saved: '/home/user/Ali/dailymind/pringles/plates/plate_store.png'
+META factory {'belt_left': [-23143.0, 14233.1], 'belt_right': [756.1, 856.9], 'floor_y': 5470.1}
+03:05.597  render           | Saved: '/home/user/Ali/dailymind/pringles/plates/plate_factory.png'
+META home {'floor_y': 1935.2}
+03:59.662  render           | Saved: '/home/user/Ali/dailymind/pringles/plates/plate_home.png'

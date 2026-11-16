@@ -128,6 +128,20 @@ def build(plate):
         q = world_to_camera_view(SC, cam, V(p))
         return [round(q.x * 1080, 1), round((1 - q.y) * 1920, 1)]
 
+    def haze(density):
+        """Thin warm room haze so the lamps make visible pools and beams (the canary mine look)."""
+        bpy.ops.mesh.primitive_cube_add(size=1, location=(0, 0, 2.0))
+        hz = bpy.context.active_object
+        hz.scale = (14, 14, 4.2)
+        hm = bpy.data.materials.new("haze")
+        hm.use_nodes = True
+        hm.node_tree.nodes.remove(hm.node_tree.nodes["Principled BSDF"])
+        vv = hm.node_tree.nodes.new("ShaderNodeVolumePrincipled")
+        vv.inputs["Density"].default_value = density
+        vv.inputs["Color"].default_value = (1.0, 0.9, 0.8, 1)
+        hm.node_tree.links.new(vv.outputs[0], hm.node_tree.nodes["Material Output"].inputs["Volume"])
+        hz.data.materials.append(hm)
+
     def light(kind, loc, energy, col, size=0.5, aim_at=None):
         o = bpy.data.objects.new(kind, bpy.data.lights.new(kind, kind))
         SC.collection.objects.link(o)
@@ -142,9 +156,9 @@ def build(plate):
         return o
 
     if plate in ("grave", "graveorbit"):
-        AS.hdri("belfast_sunset_puresky", "2k", 0.45, 200)
-        sun = light("SUN", (0, 0, 10), 2.4, (1.0, 0.62, 0.38))
-        sun.rotation_euler = (R(78), 0, R(150))
+        AS.hdri("belfast_sunset_puresky", "2k", 0.05, 200)     # canary look: night, lit only by practicals
+        moon = light("SUN", (0, 0, 10), 0.35, (0.55, 0.65, 1.0))
+        moon.rotation_euler = (R(60), 0, R(200))
         grass = AS.texture("aerial_grass_rock", "1k", scale=0.6, tint=(0.55, 0.62, 0.4))
         box("ground", (0, 0, -0.05), (80, 80, 0.1), grass)
         stone = mat("granite", (0.13, 0.13, 0.135), 0.45)
@@ -174,7 +188,9 @@ def build(plate):
         for x in (-0.35, 0.35):
             bpy.ops.mesh.primitive_cylinder_add(radius=0.03, depth=0.12, location=(x, 0.6, 0.22))
             bpy.context.active_object.data.materials.append(candle)
-            light("POINT", (x, 0.6, 0.32), 4.0, (1.0, 0.65, 0.3), 0.02)
+            light("POINT", (x, 0.6, 0.32), 9.0, (1.0, 0.6, 0.28), 0.02)
+        AS.model("vintage_oil_lamp", "1k", loc=(0.36, -0.5, 0.16), scale=0.5)
+        light("POINT", (0.36, -0.5, 0.5), 45, (1.0, 0.62, 0.3), 0.05)
         for k in range(26):    # rows of other headstones fading into the dusk
             x = -9 + (k % 9) * 2.3 + rr.uniform(-0.3, 0.3)
             y = 3.5 + (k // 9) * 3.2 + rr.uniform(-0.3, 0.3)
@@ -189,27 +205,27 @@ def build(plate):
         fm.use_nodes = True
         fm.node_tree.nodes.remove(fm.node_tree.nodes["Principled BSDF"])
         vol = fm.node_tree.nodes.new("ShaderNodeVolumePrincipled")
-        vol.inputs["Density"].default_value = 0.012
-        vol.inputs["Color"].default_value = (1.0, 0.85, 0.75, 1)
+        vol.inputs["Density"].default_value = 0.02
+        vol.inputs["Color"].default_value = (0.7, 0.75, 0.9, 1)
         fm.node_tree.links.new(vol.outputs[0], fm.node_tree.nodes["Material Output"].inputs["Volume"])
         fog.data.materials.append(fm)
-        light("AREA", (1.2, -1.5, 1.2), 25, (1.0, 0.8, 0.6), 1.0, aim_at=(0, 0.25, 0.4))
+        light("AREA", (1.2, -1.5, 1.2), 10, (1.0, 0.78, 0.55), 1.0, aim_at=(0, 0.25, 0.4))
         aim((0.55, -2.6, 0.9), (0, 0.55, 0.55), 30, 4.0, (0, 0.25, 0.35))
         meta["can"] = proj((0, 0.25, 0.36))
         meta["ground_y"] = proj((0, -1.4, 0))[1]
         meta["slab_front_y"] = proj((0, -0.8, 0.16))[1]
     elif plate == "store":
-        AS.hdri("artist_workshop", "2k", 0.5, 0)
+        AS.hdri("artist_workshop", "2k", 0.03, 0)
         floor = mat("checker", (1, 1, 1), 0.35)
         nt = floor.node_tree
         ch = nt.nodes.new("ShaderNodeTexChecker")
         ch.inputs["Scale"].default_value = 20.0
-        ch.inputs["Color1"].default_value = (0.85, 0.82, 0.74, 1)
-        ch.inputs["Color2"].default_value = (0.25, 0.32, 0.3, 1)
+        ch.inputs["Color1"].default_value = (0.42, 0.39, 0.33, 1)
+        ch.inputs["Color2"].default_value = (0.1, 0.13, 0.12, 1)
         nt.links.new(ch.outputs["Color"], nt.nodes["Principled BSDF"].inputs["Base Color"])
         box("floor", (0, 0, -0.05), (12, 12, 0.1), floor)
-        box("wall", (0, 3.2, 1.75), (12, 0.2, 3.5), mat("storewall", (0.7, 0.62, 0.46), 0.8))
-        box("ceiling", (0, 0, 3.3), (12, 12, 0.1), mat("ceil", (0.8, 0.76, 0.66), 0.9))
+        box("wall", (0, 3.2, 1.75), (12, 0.2, 3.5), mat("storewall", (0.26, 0.2, 0.14), 0.8))
+        box("ceiling", (0, 0, 3.3), (12, 12, 0.1), mat("ceil", (0.12, 0.1, 0.08), 0.9))
         wood = AS.texture("brown_planks_05", "1k", scale=1.0, tint=(0.8, 0.6, 0.42))
         cols = [(0.8, 0.55, 0.05), (0.08, 0.25, 0.6), (0.65, 0.08, 0.06), (0.12, 0.42, 0.16), (0.8, 0.35, 0.05)]
         for side in (-1,):
@@ -227,21 +243,22 @@ def build(plate):
                     for zz in (z + 0.035, z + 0.385):   # crimped seals top and bottom
                         box(f"seal{lvl}_{x:.2f}_{zz:.2f}", (x + w / 2, 2.6, zz), (w * 0.95, 0.03, 0.03), mat("seal", tuple(c * 0.75 for c in col), 0.3))
                     x += w + 0.02
-        for x in (-1.5, 0, 1.5):
-            bpy.ops.mesh.primitive_cylinder_add(radius=0.3, depth=0.05, location=(x, 1.2, 3.1))
-            bpy.context.active_object.data.materials.append(mat("lampshade", (0.95, 0.95, 0.9), 0.3, emit=(1.0, 0.95, 0.85), estr=8))
-            light("POINT", (x, 1.2, 2.8), 140, (1.0, 0.9, 0.75), 0.3)
+        for x in (0.2,):     # canary look: ONE warm hanging lamp, the rest of the shop falls into dark
+            AS.model("hanging_industrial_lamp", "1k", loc=(x, 1.4, 3.3), scale=0.7)
+            light("POINT", (x, 1.4, 2.3), 170, (1.0, 0.7, 0.4), 0.1)
+        light("AREA", (0.4, -2.6, 1.8), 30, (1.0, 0.8, 0.6), 1.5, aim_at=(0, 1.5, 0.8))
+        haze(0.007)
         aim((0.2, -2.2, 1.5), (0, 2.6, 1.1), 26, 5.0)
         meta["floor_y"] = proj((0, 0.5, 0))[1]
         meta["shelf_mid"] = proj((0, 2.6, 0.95))
     elif plate == "factory":
-        AS.hdri("boiler_room", "2k", 0.6, 0)
+        AS.hdri("boiler_room", "2k", 0.05, 0)
         metal = AS.texture("metal_plate", "1k", scale=1.0, tint=(0.6, 0.62, 0.65)) if False else mat("floorm", (0.28, 0.29, 0.3), 0.45, 0.6)
         box("floor", (0, 0, -0.05), (30, 30, 0.1), metal)
         brick = AS.texture("factory_brick", "1k", scale=0.5, tint=(0.75, 0.65, 0.6))
         box("backwall", (0, 4.5, 2.5), (30, 0.3, 5), brick)
         box("sidewall", (-6, 0, 2.5), (0.3, 30, 5), brick)
-        box("ceiling", (0, 0, 4.6), (30, 30, 0.2), mat("fceil", (0.2, 0.2, 0.22), 0.8))
+        box("ceiling", (0, 0, 4.6), (30, 30, 0.2), mat("fceil", (0.06, 0.06, 0.07), 0.8))
         belt = mat("belt", (0.08, 0.08, 0.09), 0.7)
         steel = mat("steel", (0.55, 0.57, 0.6), 0.3, 0.9)
         box("belt", (0, 1.5, 0.9), (12, 0.8, 0.06), belt)
@@ -255,7 +272,9 @@ def build(plate):
         AS.model("modular_industrial_pipes_01", "1k", loc=(-3, 5.4, 0), scale=1.0)
         for x in (-3, 0, 3):
             AS.model("hanging_industrial_lamp", "1k", loc=(x, 1.5, 4.5), scale=0.8)
-            light("POINT", (x, 1.5, 2.3), 250, (1.0, 0.85, 0.6), 0.2)
+            light("POINT", (x, 1.5, 2.3), 220, (1.0, 0.68, 0.38), 0.1)
+        light("AREA", (-1.2, -1.5, 1.8), 25, (1.0, 0.8, 0.6), 1.5, aim_at=(0.5, 1.5, 0.9))
+        haze(0.008)
         for k in range(10):   # rows of finished red cans waiting at the end of the line
             can((3.2 + (k % 5) * 0.12, 1.3 + (k // 5) * 0.12, 0.93), s=1.0)
         aim((-0.9, -0.2, 1.35), (0.9, 1.5, 0.95), 24, 5.6)
@@ -263,20 +282,20 @@ def build(plate):
         meta["belt_right"] = proj((2.5, 1.5, 0.93))
         meta["floor_y"] = proj((-0.5, 0.0, 0))[1]
     elif plate == "home":
-        AS.hdri("artist_workshop", "2k", 0.35, 0)
+        AS.hdri("artist_workshop", "2k", 0.03, 0)
         box("floor", (0, 0, -0.05), (10, 10, 0.1), AS.texture("oak_wood_planks", "1k", scale=0.8))
         paper = mat("wallpaper", (1, 1, 1), 0.8)
         nt = paper.node_tree
         wv = nt.nodes.new("ShaderNodeTexWave")
         wv.inputs["Scale"].default_value = 6
         rp = nt.nodes.new("ShaderNodeValToRGB")
-        rp.color_ramp.elements[0].color = (0.62, 0.5, 0.36, 1)
-        rp.color_ramp.elements[1].color = (0.72, 0.6, 0.44, 1)
+        rp.color_ramp.elements[0].color = (0.25, 0.17, 0.11, 1)
+        rp.color_ramp.elements[1].color = (0.31, 0.21, 0.13, 1)
         nt.links.new(wv.outputs["Fac"], rp.inputs["Fac"])
         nt.links.new(rp.outputs["Color"], nt.nodes["Principled BSDF"].inputs["Base Color"])
         box("wall", (0, 3.0, 1.75), (10, 0.2, 3.5), paper)
         box("wall_l", (-3.2, 0, 1.75), (0.2, 10, 3.5), paper)
-        box("ceiling", (0, 0, 3.4), (10, 10, 0.1), mat("hceil", (0.85, 0.8, 0.72), 0.9))
+        box("ceiling", (0, 0, 3.4), (10, 10, 0.1), mat("hceil", (0.14, 0.11, 0.09), 0.9))
         sofa = mat("sofa", (0.45, 0.22, 0.18), 0.85)
         box("sofa_seat", (0.4, 2.3, 0.3), (2.2, 0.8, 0.4), sofa, bevel=0.08)
         box("sofa_back", (0.4, 2.7, 0.75), (2.2, 0.25, 0.8), sofa, bevel=0.08)
@@ -289,8 +308,11 @@ def build(plate):
         for k in range(3):    # framed family photos
             box(f"frame{k}", (-0.8 + k * 0.9, 2.88, 1.75), (0.5, 0.04, 0.4), mat(f"fr{k}", (0.4, 0.28, 0.15), 0.4))
             box(f"photo{k}", (-0.8 + k * 0.9, 2.86, 1.75), (0.4, 0.02, 0.3), mat(f"ph{k}", (0.7, 0.66, 0.58), 0.7))
-        light("POINT", (1.9, 2.3, 1.3), 120, (1.0, 0.75, 0.45), 0.15)
-        light("AREA", (-1.5, -1.8, 2.4), 260, (1.0, 0.85, 0.7), 2.0, aim_at=(0.2, 2.0, 0.8))
+        light("POINT", (1.9, 2.3, 1.3), 160, (1.0, 0.65, 0.32), 0.05)
+        light("POINT", (-2.0, 1.6, 1.9), 50, (1.0, 0.62, 0.3), 0.1)
+        light("AREA", (-1.0, -2.2, 2.0), 35, (1.0, 0.8, 0.6), 2.0, aim_at=(0.2, 2.0, 0.8))
+        light("AREA", (2.8, 1.0, 2.4), 25, (0.55, 0.65, 1.0), 1.0, aim_at=(0.4, 2.4, 0.8))   # cool moonlight from the window side
+        haze(0.006)
         aim((0.2, -2.6, 1.4), (0.2, 2.4, 1.1), 26, 5.0)
         meta["floor_y"] = proj((0, 0.4, 0))[1]
     for o in bpy.data.objects:
@@ -302,7 +324,7 @@ def build(plate):
     SC.cycles.volume_bounces = 1
     SC.view_settings.view_transform = "AgX"
     SC.view_settings.look = "AgX - Medium High Contrast"
-    SC.view_settings.exposure = {"store": -0.9, "home": -0.4, "factory": -0.3, "grave": -0.8, "graveorbit": -0.8}.get(plate, 0.0)
+    SC.view_settings.exposure = {"store": -1.1, "home": -1.0, "factory": -1.0, "grave": -1.5, "graveorbit": -1.5}.get(plate, 0.0)
     SC.render.resolution_x, SC.render.resolution_y, SC.render.resolution_percentage = 1080, 1920, RES
     if plate == "graveorbit":
         # the hook: a slow 40-degree orbit around the can, pushing in and dropping toward it (one eased move, no stops)

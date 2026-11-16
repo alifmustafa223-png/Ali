@@ -71,7 +71,7 @@ def span(name):
     return CUTS[i], CUTS[i + 1]
 
 
-FRED = dict(skin=(238, 198, 166), hair="neat", hair_col=(95, 65, 42), coat=(242, 242, 238), pants=(55, 55, 62), nose="long", glasses=True)
+FRED = dict(skin=(238, 198, 166), hair="neat", hair_col=(95, 65, 42), coat=(222, 214, 198), pants=(55, 55, 62), nose="long", glasses=True)
 FRED_OLD = dict(skin=(236, 196, 168), hair="grey", hair_col=(215, 215, 220), coat=(150, 112, 78), pants=(70, 66, 70), nose="long", glasses=True)
 DAUGHTER = dict(skin=(232, 190, 160), hair="curly", hair_col=(110, 70, 40), coat=(70, 110, 85), pants=(60, 60, 70), nose="small")
 SON = dict(skin=(226, 186, 150), hair="neat", hair_col=(60, 45, 35), coat=(60, 70, 110), pants=(50, 50, 60), nose="small")
@@ -110,6 +110,17 @@ def char(img, look, x, y, s_, pose, t, shadow=0.5, rim=0.55, rim_col=(1.0, 0.85,
     if blur:
         return E.over(img, E.gblur(ch, blur))
     return E.light_char(ch, img, y, shadow=shadow, rim=rim, rim_col=rim_col)
+
+
+def dust(c, t, n, seed, col=(255, 220, 160), y0=200, y1=1750):
+    """Floating lamp-lit dust motes (the canary look)."""
+    r = random.Random(seed)
+    for k in range(n):
+        x0, yy, sp, ph = r.uniform(0, W), r.uniform(y0, y1), r.uniform(8, 25), r.uniform(0, 6.28)
+        x = (x0 + sp * t + 20 * math.sin(t * 0.7 + ph)) % W
+        y = yy - 10 * t + 15 * math.sin(t * 0.5 + ph * 2)
+        a = int(110 + 90 * math.sin(t * 2 + ph))
+        c.drawCircle(x, y, r.uniform(1.2, 3.2), P(C(*col, max(0, a))))
 
 
 def layer_over(img, draw):
@@ -254,7 +265,7 @@ def sc_hook(t, f):
     ga = ramp(t, ti - 0.35, 0.4)
     if ga > 0:   # Fred's friendly ghost pops up beside his headstone, proud, on "his own idea"
         pose = dict(eyes="squint", brows="smug", mouth="grin", hands=[(-20, 120), (70, -150)], tilt=-6, look=(-0.5, 0))
-        img = char(img, FRED_OLD, cx_can + 290, cy_can + 380 - 40 * math.sin(t * 2.2), 1.0, pose, t, ghost=0.82 * ga)
+        img = char(img, FRED_OLD, cx_can - 300, cy_can + 380 - 40 * math.sin(t * 2.2), 1.0, pose, t, ghost=0.82 * ga)
     lays = [E.title_layer(t, [("THIS MAN IS", 70, 190, E.WHITE, -0.3), ("BURIED INSIDE", 96, 300, E.WHITE, word_t("hook", "buried")),
                               ("A CHIP CAN", 150, 450, E.GOLD, word_t("hook", "can", "chips"))]),
             E.stamp_layer(t, "HIS IDEA!", ti, 520, 1560, 120)]
@@ -304,7 +315,7 @@ def sc_plan(t, f):
     tsame = word_t("plan", "same", "shape")
     tstack = word_t("plan", "stack")
     base_x, base_y = PLAN_X, PLAN_STACK["base_y"]
-    x, y, s_ = 260, 1860, 1.25
+    x, y, s_ = 330, 1800, 1.35
     cheering = t > tstack + 1.2
     pose = dict(eyes="squint" if cheering else "open", brows="up", mouth="grin" if cheering else "smile", look=(0.8, -0.3),
                 hands=[(-30, -150), (30, -150)] if cheering else [(-20, 120), (110, -60)], tilt=-5)
@@ -315,6 +326,8 @@ def sc_plan(t, f):
             for k, (yy, landed) in enumerate(stack_state(t, tsame, PLAN_STACK["n"], base_y, PLAN_STACK["drop_h"], PLAN_STACK["every"])):
                 chip(c, base_x, yy, 1.4)
     img = layer_over(img, draw)
+    if t < tsame - 0.1:     # "Fred had a strange plan": no empty seconds before the next title
+        return img, push("plan", 1.0, 1.08, (560, 960), (600, 1000))(t), [E.title_layer(t, [("A STRANGE PLAN", 104, 320, E.GOLD, word_t("plan", "strange"))])]
     lays = [E.title_layer(t, [("THE SAME SHAPE", 100, 320, E.GOLD, tsame)]),
             E.stamp_layer(t, "STACKABLE!", tstack, 540, 500, 120),
             E.title_layer(t, [("LIKE ROOF TILES", 80, 1330, E.WHITE, word_t("plan", "roof", "tiles"))])]
@@ -384,7 +397,7 @@ def sc_twist(t, f):
 
 def sc_died(t, f):
     img = plate("home")
-    img[..., :3] *= 0.62          # the lamp is the only light now
+    img[..., :3] *= 0.85          # the lamp is the only light now
     tk = word_t("died", "kept", "promise")
     g = E.glow_map(890, 1420, 220, 220)
     img[..., :3] = np.clip(img[..., :3] + g[..., None] * 0.25 * np.array([1.0, 0.75, 0.4], np.float32), 0, 1)
@@ -460,6 +473,9 @@ def render(f, out=None):
     t = f / FPS
     name = SCENES[scene_at(t)][0]
     img, (z, cx, cy), lays = RENDER[name](t, f)
+    if name != "cta":
+        img = layer_over(img, lambda c: dust(c, t + 7 * scene_at(t), 45, scene_at(t) + 1,
+                                             (200, 215, 255) if name in ("hook", "ashes", "end") else (255, 220, 160)))
     shake = (0, 0)
     for at in (word_t("bags", "half", "air"), word_t("twist", "put"), word_t("ashes", "ohio")):
         kk = int((t - at) * FPS + 1e-6)

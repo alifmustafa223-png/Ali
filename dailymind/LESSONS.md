@@ -462,3 +462,9 @@
 - Put 2D physics stacks on a real surface of the plate (measure it in a still), never on an invented pedestal in mid-air.
 - Text from frame 0: give the first title line a start time of -0.3 s so it is already on screen at frame 0.
 - Mastering loop: accept |I+14| <= 0.35 with TP <= -1.5; the 0.2 window oscillated and ended on -1.4 dBTP.
+- OWNER REJECTED v1 "not like the Canary style": the sets were bright (dusk sky, fluorescent store, daylit pink room).
+  THE CANARY LOOK = NIGHT + PRACTICALS: dark world (HDRI <= 0.05), dark walls/ceilings (albedo 0.1-0.3), ONE or two
+  warm practical lamps (oil lamp / hanging lamp, 160-220 W, colour 1.0/0.65/0.32), weak warm fill from the camera,
+  a cool moon rim, exposure -1.0 (-1.5 outdoors), thin haze (<= 0.008; 0.025 turned rooms milky), warm dust motes in
+  every scene, characters' whites toned to off-white. Measure each plate's mean against canary plate_D (~110/70/38).
+- Never leave >2 s of a scene without a title/stamp: "Fred had a strange plan" sat on an empty frame.
