@@ -468,3 +468,8 @@
   a cool moon rim, exposure -1.0 (-1.5 outdoors), thin haze (<= 0.008; 0.025 turned rooms milky), warm dust motes in
   every scene, characters' whites toned to off-white. Measure each plate's mean against canary plate_D (~110/70/38).
 - Never leave >2 s of a scene without a title/stamp: "Fred had a strange plan" sat on an empty frame.
+- OWNER (2nd note): "in the canary video the characters look like part of the environment, here not". Toons pasted at
+  full brightness read as stickers. Fix = `env_light()` in make_pringles.py, use it for every toon-in-3D video:
+  multiply the toon by a heavily blurred copy of the plate (the set's light field: lamp side warm, far side shaded),
+  light-wrap the background round the silhouette edge, a tight dark contact shadow under the soles, and the cast shadow
+  anchored at the real sole row (not the `y` argument - that left a floating gap). Dark/earthy costume colours; no pure white.

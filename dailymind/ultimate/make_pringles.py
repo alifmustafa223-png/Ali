@@ -71,7 +71,7 @@ def span(name):
     return CUTS[i], CUTS[i + 1]
 
 
-FRED = dict(skin=(238, 198, 166), hair="neat", hair_col=(95, 65, 42), coat=(222, 214, 198), pants=(55, 55, 62), nose="long", glasses=True)
+FRED = dict(skin=(238, 198, 166), hair="neat", hair_col=(95, 65, 42), coat=(205, 196, 178), pants=(55, 55, 62), nose="long", glasses=True)
 FRED_OLD = dict(skin=(236, 196, 168), hair="grey", hair_col=(215, 215, 220), coat=(150, 112, 78), pants=(70, 66, 70), nose="long", glasses=True)
 DAUGHTER = dict(skin=(232, 190, 160), hair="curly", hair_col=(110, 70, 40), coat=(70, 110, 85), pants=(60, 60, 70), nose="small")
 SON = dict(skin=(226, 186, 150), hair="neat", hair_col=(60, 45, 35), coat=(60, 70, 110), pants=(50, 50, 60), nose="small")
@@ -109,7 +109,36 @@ def char(img, look, x, y, s_, pose, t, shadow=0.5, rim=0.55, rim_col=(1.0, 0.85,
         return E.over(img, ch)
     if blur:
         return E.over(img, E.gblur(ch, blur))
-    return E.light_char(ch, img, y, shadow=shadow, rim=rim, rim_col=rim_col)
+    ch, img = env_light(ch, img)
+    rows = np.nonzero(ch[..., 3].max(axis=1) > 0.5)[0]
+    feet = rows.max() / K + 4 if len(rows) else y        # the shadow starts AT the soles (no floating gap)
+    return E.light_char(ch, img, feet, shadow=shadow * 0.6, rim=rim * 0.6, rim_col=rim_col)
+
+
+def env_light(ch, img, strength=0.8, ref=0.40):
+    """Make a 2D toon belong to its 3D set (what the canary miners had): (1) the set's own light field - a heavily
+    blurred copy of the plate - multiplies the toon, so the side away from the lamp falls into shade and the toon takes
+    the lamp's colour; (2) light wrap: the background bleeds round the silhouette edge; (3) a tight contact shadow
+    right under the feet (no floating)."""
+    A = ch[..., 3]
+    ys, xs = np.nonzero(A > 0.5)
+    if len(ys) == 0:
+        return ch, img
+    h, w = img.shape[:2]
+    small = Image.fromarray((np.clip(img[..., :3], 0, 1) * 255).astype(np.uint8)).resize((w // 24, h // 24), Image.BOX)
+    from PIL import ImageFilter
+    small = small.filter(ImageFilter.GaussianBlur(3))
+    L = np.asarray(small.resize((w, h), Image.BILINEAR)).astype(np.float32) / 255.0
+    fac = np.clip(L / ref, 0.32, 1.12) ** 0.7
+    ch[..., :3] *= (1 - strength) + strength * fac
+    edge = np.clip(A - E.gblur(np.dstack([A] * 4), 9 * K)[..., 0], 0, 1) * 1.6
+    ch[..., :3] = np.clip(ch[..., :3] * (1 - 0.45 * edge[..., None]) + 0.45 * edge[..., None] * np.clip(L * 1.4, 0, 1), 0, 1)
+    fy, x0, x1 = ys.max(), xs.min(), xs.max()
+    yy, xx = np.ogrid[0:h, 0:w]
+    rx, ry = 0.42 * (x1 - x0), 0.07 * (x1 - x0) + 6
+    cs = np.exp(-(((xx - (x0 + x1) / 2) / rx) ** 2 + ((yy - fy + ry * 0.3) / ry) ** 2))
+    img[..., :3] *= (1 - 0.82 * cs[..., None])
+    return ch, img
 
 
 def dust(c, t, n, seed, col=(255, 220, 160), y0=200, y1=1750):
