@@ -57,5 +57,6 @@ END CARD: use `ultimate/cta2.py` (draw_cta2) for every new video — the owner d
 LONG-FORM (16:9, 10 min): "What If You Got $1 Every Time Someone Thought About You?" (`ultimate/make_thoughts.py` + `long_engine.py`).
 Canary in the coal mine (toon characters in 3D Blender mine plates: `blender/mine_plates.py` + `ultimate/make_canary.py`, audio `make_canary_audio.py`, QC `qc_canary.py`).
 Great Molasses Flood 1919 FINAL = v2 (canary look + Chris voice: `blender/boston_plates.py` + `ultimate/make_molasses2.py`, audio `make_molasses2_audio.py`, QC `qc_molasses2.py`); rejected v1: Three.js page `molasses/molasses.html` recorded to MP4, `molasses/make_audio.py`, QC `molasses/qc_molasses.py`).
+Chip can / Fred Baur buried in his can (canary look + real 3D hook orbit: `blender/pringles_plates.py` + `ultimate/make_pringles.py`, audio `make_pringles_audio.py`, QC `qc_pringles.py`).
 Fortune cookies are Japanese (APPROVED 2D style, `ultimate/make_fortune.py` + `make_fortune_audio.py`, QC `qc_fortune.py`).
 Don't repeat topics.

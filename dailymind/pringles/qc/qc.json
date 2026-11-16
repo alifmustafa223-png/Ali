@@ -1,0 +1,52 @@
+[
+ {
+  "check": "frame count",
+  "ok": true,
+  "detail": "1885 / 1885"
+ },
+ {
+  "check": "length 61-65 s",
+  "ok": true,
+  "detail": "62.83 s"
+ },
+ {
+  "check": "no 1-frame pops",
+  "ok": true,
+  "detail": "0 suspects []"
+ },
+ {
+  "check": "chips rest exactly on the stack",
+  "ok": true,
+  "detail": "16 chips, fall 0.483 s at g=3600.0 px/s^2"
+ },
+ {
+  "check": "crumbs never pass below the floor",
+  "ok": true,
+  "detail": "lowest 1700.0 / floor 1700.0"
+ },
+ {
+  "check": "loudness -14 +-0.5 LUFS",
+  "ok": true,
+  "detail": "-14.3 LUFS"
+ },
+ {
+  "check": "true peak <= -1.5 dBTP",
+  "ok": true,
+  "detail": "-1.5 dBTP"
+ },
+ {
+  "check": "no clipped samples",
+  "ok": true,
+  "detail": "0 samples"
+ },
+ {
+  "check": "every SFX within 1 frame",
+  "ok": true,
+  "detail": "35 cues, off: []"
+ },
+ {
+  "check": "final mix transcript == script",
+  "ok": true,
+  "detail": "heard: \"This man is buried inside a can of chips, and it was his own idea. His name was Fred Bauer, a Navy veteran with a PhD in chemistry, working at Procter & Gamble. In the 1960s, chips came in bags, half-air, full of broken crumbs. Fred had a strange plan. Make every chip the same curved shape, so they could stack, one on top of another, like tiny roof tiles. Then he designed a tall tube to hold the stack. No air, no crushed chips. In 1970, he got the patent, and that tube became one of the most famous snack cans on earth. But here's the twist. Fred was so proud of that can, he told his family, When I die, put me in it. In 2008, he died at 89. And his kids kept their promise. Part of his ashes went into a chip can, buried in his grave in Ohio. The man who invented the can is still inside one. Learn something new. Like and subscribe.\""
+ }
+]

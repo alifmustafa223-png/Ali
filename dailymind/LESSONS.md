@@ -451,3 +451,14 @@
 - Impact shakes: <= 14 Hz noise, damped; a 30 Hz shake reads as a per-frame jump (the QC pop detector caught it).
 - draw_cta2 with a negative time draws the button before the card: start the card time at its scene start.
 - Full-HD PNG frames ~3 MB: pack to JPG (q96) as they finish or the cloud disk fills.
+
+## Chip can / Fred Baur (canary look + REAL 3D hook orbit, vidIQ Chris, 62.8 s, QC ALL PASS)
+- First cloud video with a real 3D camera move: 110 Cycles frames (45% res, 20 samples, ~16 s each = 30 min) of a
+  40-degree orbit + push-in for the hook, plus track.json (projected can position per frame) to pin 2D toons to the set.
+  After the orbit ends, keep pushing in on its last frame - never let the camera stop dead.
+- "Dusk" needs exposure -0.8, half-strength sunset HDRI, thin fog (0.012) and dark granite; the first pass was a washed
+  grey. Gold engraving on dark stone reads at phone size; grey-on-grey did not.
+- A held prop must sit BEHIND the hand (draw prop, then character) at T.hand_pos - otherwise it covers the face or floats.
+- Put 2D physics stacks on a real surface of the plate (measure it in a still), never on an invented pedestal in mid-air.
+- Text from frame 0: give the first title line a start time of -0.3 s so it is already on screen at frame 0.
+- Mastering loop: accept |I+14| <= 0.35 with TP <= -1.5; the 0.2 window oscillated and ended on -1.4 dBTP.

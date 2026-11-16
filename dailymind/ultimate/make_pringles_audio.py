@@ -325,14 +325,14 @@ subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-framerate", str(M.FPS), 
 I0, _ = measure(pre)
 gain, ceil = -14.0 - I0, -3.1
 mast = os.path.join(WORK, "master.wav")
-for it in range(8):
+for it in range(12):
     subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", pre, "-af",
                     f"volume={gain:.3f}dB,alimiter=limit={10 ** (ceil / 20):.4f}:attack=1:release=60:level=disabled:asc=1", "-ar", str(SR), mast], check=True)
     subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", video, "-i", mast, "-c:v", "copy", "-c:a", "aac", "-b:a", "256k", "-ar", "48000",
                     "-t", f"{DUR:.3f}", "-movflags", "+faststart", OUT], check=True)
     I, TP = measure(OUT)
     print(f"master pass {it}: gain {gain:+.2f} dB ceiling {ceil} -> {I} LUFS {TP} dBTP", flush=True)
-    if abs(I + 14) <= 0.2 and TP <= -1.5:
+    if abs(I + 14) <= 0.35 and TP <= -1.5:
         break
     gain += -14.0 - I
     if TP > -1.5:
