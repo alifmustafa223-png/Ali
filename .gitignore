@@ -109,3 +109,8 @@ dailymind/pringles/frames/
 dailymind/pringles/stills/
 dailymind/pringles/_audio/
 dailymind/pringles/qc/final.wav
+dailymind/free/frames/
+dailymind/free/stills/
+dailymind/free/_audio/
+dailymind/free/qc/final.wav
+dailymind/free/*.log

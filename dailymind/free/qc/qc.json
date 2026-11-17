@@ -1,0 +1,57 @@
+[
+ {
+  "check": "frame count",
+  "ok": true,
+  "detail": "1938 / 1938"
+ },
+ {
+  "check": "length 61-65 s",
+  "ok": true,
+  "detail": "64.60 s"
+ },
+ {
+  "check": "no 1-frame pops",
+  "ok": true,
+  "detail": "0 suspects []"
+ },
+ {
+  "check": "cart items rest exactly on the pile",
+  "ok": true,
+  "detail": "7 items, fall 0.650 s at g=3600.0 px/s^2"
+ },
+ {
+  "check": "tumbleweed rolls without slipping",
+  "ok": true,
+  "detail": "r=85.0, centre r above the floor y=1790.0"
+ },
+ {
+  "check": "tomatoes land on the ground",
+  "ok": true,
+  "detail": "6 tomatoes, ground y=1640.0"
+ },
+ {
+  "check": "loudness -14 +-0.5 LUFS",
+  "ok": true,
+  "detail": "-14.2 LUFS"
+ },
+ {
+  "check": "true peak <= -1.5 dBTP",
+  "ok": true,
+  "detail": "-1.9 dBTP"
+ },
+ {
+  "check": "no clipped samples",
+  "ok": true,
+  "detail": "0 samples"
+ },
+ {
+  "check": "every SFX within 1 frame",
+  "ok": true,
+  "detail": "35 cues, off: []"
+ },
+ {
+  "check": "final mix transcript == script",
+  "ok": true,
+  "detail": "heard: \"What if everything was free? For everyone. By lunch, the stores would be empty. Day one. No prices, no money. People grab TVs, cars, steak. Why take one when you can take ten? By the afternoon, shelves are bare. Gas stations run dry. Day two. Your paycheck is worthless. So why go to work? Truck drivers stay home. Farmers stop shipping. Food rots in the fields because nobody delivers it. So the government steps in. One loaf per person. The lines go around the block. This isn't fiction. When the Soviet Union and Venezuela fixed prices too low, people waited hours for bread. Here's the twist. Prices were never just about money. They tell everyone what's rare and what's worth making. The things that really are free, like air, only work because there's enough for everyone. So nothing is truly free. Someone always pays. In time, in effort, or in a very long line. Learn something new? Like and subscribe!\""
+ }
+]

@@ -479,3 +479,11 @@
   (scale ~2.0, head well above the counter), props in front, catmull camera, titles/stamps/splats, CTA v2.
   The chip-can v4 (make_pringles.py) reuses the same voice/timings/audio/QC - only the picture changed.
 - Toon behind a counter: feet y ~1760-1800 for scale 2.0 (1930 hid everything below the chin).
+
+## What If Everything Was Free? (owner's own what-if topic, fortune 2D style, Chris voice 63.5 s, 64.6 s total)
+- Owner picked the topic and the simple search title ("What If Everything Was Free? 😳") from 6 options: offer titles.
+- What-if topics still need real anchors (Soviet/Venezuela bread queues) and a twist (prices = signals) for retention.
+- Several stamps in one line: show them ONE AT A TIME in the same spot (TIME -> EFFORT -> A LONG LINE), never stacked.
+- Anyone "behind" something (counter, bed blanket, cart) must have that front drawn AFTER the toon, or they stand in front of it.
+- A stamp on a same-colour surface disappears (red on red counter): change the surface or the stamp colour.
+- Keep 1.5 GB free before a render: delete old videos' frames/_audio (the encode failed once with a full disk).
