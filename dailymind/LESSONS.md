@@ -487,3 +487,17 @@
 - Anyone "behind" something (counter, bed blanket, cart) must have that front drawn AFTER the toon, or they stand in front of it.
 - A stamp on a same-colour surface disappears (red on red counter): change the surface or the stamp colour.
 - Keep 1.5 GB free before a render: delete old videos' frames/_audio (the encode failed once with a full disk).
+
+## What If the Internet Shut Down for a Day? (what-if #2, fortune 2D style, Chris 59.2 s -> 61.5 s total)
+- Hour-by-hour "timeline" structure (minute 1 / hour 1 / hour 3 / midnight) gives every scene a natural title slam.
+- Real anchors (2024 update crash 8.5M PCs, 2021 Facebook 6-hour outage + locked-out engineers) as the twist.
+- A sub-scene that starts on a mid-line word must last >= 2 s: the hospital shot was 1.1 s until the trucks cut moved
+  from "trucks" to "never".
+- Never put stamps over faces or over a board's text: check every stamp position against the hero's head at its scale.
+- Whisper spells "cancelled" as "canceled": map it in the QC norm (FIX dict) like "learned" -> "learn".
+- Toon `hoodie=True` draws colourful stripes; don't use it for a plain hoodie.
+- SFX can change words in the final-mix transcript: noise sounds read as "sh" ("trucks" -> "shops"/"sharks"), a stamp
+  right after a word ate its last "s" ("flights" -> "flight"). Fix by timing: put stamps/flaps AFTER the word ends
+  (and move the picture cue with them), finish physics impacts before the next key word, use tonal taps not noise.
+- A walk cycle must be tied to distance travelled (walk = x / 45), not time: a fast leg cycle at slow speed = 1-frame pop.
+- Wall props at face height get drawn over a walking character's face: draw them BEFORE the toon, and keep them visible.

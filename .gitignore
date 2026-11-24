@@ -114,3 +114,8 @@ dailymind/free/stills/
 dailymind/free/_audio/
 dailymind/free/qc/final.wav
 dailymind/free/*.log
+dailymind/offline/frames/
+dailymind/offline/stills/
+dailymind/offline/_audio/
+dailymind/offline/qc/final.wav
+dailymind/offline/*.log
