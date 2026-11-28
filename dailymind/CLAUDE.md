@@ -60,6 +60,7 @@ Great Molasses Flood 1919 FINAL = v2 (canary look + Chris voice: `blender/boston
 Chip can / Fred Baur buried in his can (FINAL = all-2D fortune-cookie style, `ultimate/make_pringles.py`, audio `make_pringles_audio.py`, QC `qc_pringles.py`; the rejected canary-look versions used `blender/pringles_plates.py`).
 What If Everything Was Free? (what-if explainer, fortune 2D style, `ultimate/make_free.py`, audio `make_free_audio.py`, QC `qc_free.py`).
 What If the Internet Shut Down for a Day? (what-if #2, fortune 2D style, `ultimate/make_offline.py`, audio `make_offline_audio.py`, QC `qc_offline.py`).
+What If Everyone Stopped Sleeping? (what-if #3, fortune 2D style, `ultimate/make_sleep.py`, audio `make_sleep_audio.py`, QC `qc_sleep.py`).
 OWNER PREFERS THE FORTUNE-COOKIE 2D STYLE (2026-11-16): use `make_fortune.py` / `make_pringles.py` as the template for new videos.
 Fortune cookies are Japanese (APPROVED 2D style, `ultimate/make_fortune.py` + `make_fortune_audio.py`, QC `qc_fortune.py`).
 Don't repeat topics.

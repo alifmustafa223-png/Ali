@@ -1,0 +1,52 @@
+[
+ {
+  "check": "frame count",
+  "ok": true,
+  "detail": "1856 / 1856"
+ },
+ {
+  "check": "length 61-65 s",
+  "ok": true,
+  "detail": "61.88 s"
+ },
+ {
+  "check": "no 1-frame pops",
+  "ok": true,
+  "detail": "0 suspects []"
+ },
+ {
+  "check": "calendar pages rest on the floor",
+  "ok": true,
+  "detail": "10 pages, terminal speed 520.0 px/s, floor y=1720.0"
+ },
+ {
+  "check": "coffee drop hits the cup on its word",
+  "ok": true,
+  "detail": "released at 7.518 s, g=3600.0 px/s^2"
+ },
+ {
+  "check": "loudness -14 +-0.5 LUFS",
+  "ok": true,
+  "detail": "-14.2 LUFS"
+ },
+ {
+  "check": "true peak <= -1.5 dBTP",
+  "ok": true,
+  "detail": "-2.5 dBTP"
+ },
+ {
+  "check": "no clipped samples",
+  "ok": true,
+  "detail": "0 samples"
+ },
+ {
+  "check": "every SFX within 1 frame",
+  "ok": true,
+  "detail": "38 cues, off: []"
+ },
+ {
+  "check": "final mix transcript == script",
+  "ok": true,
+  "detail": "heard: \"What if nobody on earth slept for a week? By day three, people would see things that aren't there. Night one, coffee sells out. By morning, everyone is cranky and forgetting words. After 24 hours awake, your reactions are as slow as someone who's drunk. Now picture every driver like that. Day two, brains start switching off. Tiny sleeps, a few seconds long, mid-sentence, or on the highway. Day three, people see things moving that aren't there. Tempers explode. This really happened. In 1964, a 17-year-old named Randy Gardner stayed awake for 11 days for a science fair. By the end, he was seeing things. Here's the twist. Sleep isn't rest, it's cleaning. While you sleep, your brain washes away the waste it built up all day. Staying awake is so dangerous, Guinness stopped tracking that record. So tonight, go to sleep. Learn something new, like and subscribe.\""
+ }
+]

@@ -501,3 +501,12 @@
   (and move the picture cue with them), finish physics impacts before the next key word, use tonal taps not noise.
 - A walk cycle must be tied to distance travelled (walk = x / 45), not time: a fast leg cycle at slow speed = 1-frame pop.
 - Wall props at face height get drawn over a walking character's face: draw them BEFORE the toon, and keep them visible.
+
+## What If Everyone Stopped Sleeping? (what-if #3, fortune 2D style, Chris 60.8 s -> 61.9 s total)
+- Script length: Chris reads ~14.6 chars/s; 892 chars = 60.8 s. Target 870-910 chars for a 61-65 s video
+  (936 would have pushed the voice past 64 s).
+- vidIQ charged 14 credits (not 28) for 892 chars this time: always read `_credits.used` from the call, don't assume.
+- Overlapping-circle shapes (brain lobes, clouds): stroke ALL outlines first (thick), then fill ALL on top, so only the
+  silhouette line shows; per-circle outline+fill leaves messy inner lines.
+- Lessons applied from the start (no re-render needed): stamps 0.3-0.5 s after their word, tonal taps (not noise)
+  for impacts near key words, fronts drawn after toons, stamps placed away from faces and the frame edge.
